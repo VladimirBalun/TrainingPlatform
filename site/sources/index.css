@@ -1,0 +1,11 @@
+body,
+html {
+    padding: 0;
+    margin: 0;
+    background: #E7E7E7;
+}
+
+.block {
+    background-color: white;
+    border: 1px solid #E0E0E0;
+}

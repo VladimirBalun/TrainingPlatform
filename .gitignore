@@ -1,0 +1,4 @@
+.idea/*
+application/vendor/*
+site/node_modules/*
+site/build/*

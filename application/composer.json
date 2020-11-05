@@ -1,0 +1,27 @@
+{
+  "name": "vladimir_balun/training",
+  "description": "Platform for training courses",
+  "type": "project",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.1",
+    "phpmailer/phpmailer": "^6.1",
+    "gabordemooij/redbean": "^5.6",
+    "monolog/monolog": "^2.1",
+    "bramus/router": "^1.5",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src",
+      "Tests\\": "tests",
+      "App\\Common\\": "src/common",
+      "App\\Data\\": "src/data",
+      "App\\Data\\Entity\\": "src/data/entity",
+      "App\\Data\\DAO\\": "src/data/dao",
+      "App\\Data\\Service\\": "src/data/service",
+      "App\\Controllers\\": "src/controllers"
+    }
+  }
+}
