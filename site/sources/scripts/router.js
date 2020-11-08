@@ -20,6 +20,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import mainPage from "../pages/main-page";
+import creativePage from "../pages/creative-page";
 import signupPage from "../pages/signup-page"
 
 Vue.use(VueRouter);
@@ -29,6 +30,10 @@ const router = new VueRouter({
         {
             path: "/",
             component: mainPage
+        },
+        {
+            path: "/creative/:id",
+            component: creativePage
         },
         {
             path: "/signup",

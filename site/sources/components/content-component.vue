@@ -17,18 +17,25 @@
 <template>
     <div class="content-wrapper">
         <div class="content block">
-            <p class="content-title hidden-lg hidden-md hidden-sm">{{ title }}</p>
-            <img class="content-image" :src="image_url">
-            <p class="content-title hidden-xs">{{ title }}</p>
-            <p class="content-date">Дата события: {{ event_date }}</p>
+            <i class="fas fa-user-circle"></i>
+            <p class="content-title">Как женское "Нет" превратить в женское "Да"</p>
             <p class="content-description">{{ brief_description }}</p>
-            <p class="content-price">{{ price }}</p>
-            <a class="content-button" href="#">Подробнее</a>
+            <img class="content-image" :src="image_url">
+
+            <p class="content-date">
+                <i class="fas fa-calendar-alt"></i>{{ (event_date === null) ? ('Без даты') : (event_date) }}
+                <!--<label class="content-type"><i class="fas fa-toggle-off"></i></i>Offline</label>-->
+                <label class="content-type"><i class="fas fa-toggle-on"></i></i>Online</label>
+            </p><hr>
+            <p class="content-price">{{ price }}₽</p>
+            <router-link  target="_blank" :to="'/creative/' + id" class="content-button">Подробнее<i class="fas fa-angle-double-right"></i></router-link>
         </div>
     </div>
 </template>
 
 <script>
+
+    "use strict";
 
     export default {
         props: ["id", "title", "brief_description", "image_url", "event_date", "price"],
@@ -40,59 +47,78 @@
 <style scoped>
 
     .content {
-        height: 400px;
         margin-bottom: 30px;
         border-radius: 5px;
     }
 
     .content-image {
+        width: 100%;
+    }
+
+    .fa-user-circle {
+        margin: 20px 20px 0 20px;
+        font-size: 42px;
         float: left;
-        position: relative;
-        height: 100%;
-        padding: 20px;
+        color: #2D71BC;
     }
 
     .content-title {
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
-        font-size: 20px;
-        padding: 20px 20px 0 20px;
+        font-size: 17px;
+        padding: 17px 20px 5px 20px;
+    }
+
+    .fa-calendar-alt, .fa-toggle-on, .fa-toggle-off {
+        font-size: 17px;
+        margin-right: 10px;
+        transform: translateY(1px);
     }
 
     .content-date {
-        font-size: 14px;
-        font-weight: bold;
+        margin: 20px 0 0 20px;
+        font-size: 15px;
         font-family: 'Open Sans', sans-serif;
-        color: #10367B;;
+        color: #e08d3c
+    }
+
+    .content-type {
+        float: right;
+        margin-right: 20px;
     }
 
     .content-description {
         color: #666666;
-        padding: 0 20px 20px 20px;
-        font-size: 16px;
-        height: 225px;
+        padding: 0 20px 10px 20px;
+        font-size: 15px;
         font-family: 'Open Sans', sans-serif;
     }
 
     .content-price {
-        font-size: 27px;
+        font-size: 23px;
         color: #10367B;;
         font-family: 'Roboto', sans-serif;
         display: inline-block;
-        padding-top: 17px;
+        padding: 2px 0 8px 20px;
+    }
+
+    .fa-angle-double-right {
+        font-size: 15px;
+        margin-left: 10px;
+        transform: translateY(1px);
     }
 
     .content-button {
         display: inline;
         float: right;
-        margin: 20px;
+        margin: 0 20px 20px 20px;
         font-size: 16px;
         text-decoration: none;
         background-color: #2D71BC;
         color: white;
         border: none;
         border-radius: 5px;
-        padding: 7px 30px 7px 30px;
+        padding: 7px 25px 7px 25px;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
     }

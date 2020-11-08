@@ -19,8 +19,8 @@
         <header-component></header-component>
         <diV class="main-page container">
             <div class="row">
-                <navigation-component class="col-lg-4 col-md-4 hidden-sm hidden-xs"></navigation-component>
-                <content-component v-for="creative in demoCreatives" class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+                <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-xs"></navigation-component>
+                <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
                     :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
                     :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
                 </content-component>

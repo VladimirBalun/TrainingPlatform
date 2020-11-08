@@ -16,8 +16,13 @@
 
 <template>
     <div class="navigation-wrapper">
+        <div class="search-block block">
+           <p class="navigation-title"><i class="fas fa-search"></i>Поиск</p><hr>
+           <input type="text" placeholder="Введите название...">
+           <button class="navigation-button">Искать</button>
+        </div>
         <div class="navigation block">
-            <p class="navigation-title">Фильтры</p>
+            <p class="navigation-title"><i class="fas fa-filter"></i>Фильтры</p><hr>
             <label for="navigation-categoty">Категория:</label>
             <select id="navigation-categoty">
                 <option>Не выбрано</option>
@@ -27,7 +32,7 @@
             <select id="navigation-type">
                 <option>Не выбрано</option>
                 <option v-for="theme in themesModel">{{ theme }}</option>
-            </select>
+            </select><hr>
             <label for="navigation-country">Страна:</label>
             <select v-model="selectedCountryModel" @change="onChangeCountryModel($event)" id="navigation-country">
                 <option>Не выбрано</option>
@@ -37,12 +42,12 @@
             <select v-model="selectedCityModel" :disabled="selectedCountryModel === 'Не выбрано'" id="navigation-city">
                 <option>Не выбрано</option>
                 <option v-for="city in citiesModel">{{ city }}</option>
-            </select>
+            </select><hr>
             <label for="navigation-type-off-onl">Тип:</label>
             <p id="navigation-type-off-onl" class="target-label">
                 <label><input name="dzen" type="radio"/></label>Онлайн
                 <label><input name="dzen" type="radio"/></label>Оффлайн
-            </p>
+            </p><hr>
             <label for="navigation-sort">Сортировка:</label>
             <select id="navigation-sort">
                 <option>Не выбрано</option>
@@ -53,15 +58,15 @@
             <p class="target-label">
                 <label><input name="sort" type="radio"/></label>Возрастание
                 <label><input name="sort" type="radio"/></label>Убывание
-            </p>
+            </p><hr>
             <label>Цена от:</label>
             <input v-model="priceFromModel" :disabled="isFreeModel" type="number">
             <label>Цена до:</label>
             <input v-model="priceToModel" :disabled="isFreeModel" type="number">
             <label class="target-label">Бесплатные:</label>
-            <input v-model="isFreeModel" type="checkbox">
+            <input v-model="isFreeModel" type="checkbox"><hr>
             <div class="wrapper">
-                <button class="navigation-button">Искать</button>
+                <button class="navigation-button">Применить</button>
             </div>
         </div>
     </div>
@@ -125,8 +130,9 @@
 <style scoped>
 
     hr {
-        background-color: #CCCCCC;
-        padding: 0 20px 0 20px;
+        padding-top: 0;
+        margin: 15px 0 20px 0;
+        color: #DBDBD8;
     }
 
     label {
@@ -142,32 +148,44 @@
         height: 2000px;
     }
 
-    .navigation {
-        background-color: white;
+    .search-block {
+        margin-bottom: 30px;
         border-radius: 5px;
+    }
+
+    .navigation {
+        border-radius: 5px;
+        background-color: white;
     }
 
     select {
-        border: 1px solid #666666;
+        border: none;
+        background-color: #EEF3F8;
         color: black;
         display: block;
         width: calc(100% - 40px);
-        padding: 5px 10px 5px 10px;
+        padding: 10px 15px 10px 15px;
         border-radius: 5px;
         font-size: 16px;
         margin: 0 20px 10px 20px;
         font-family: 'Open Sans', sans-serif;
+        transition: .3s;
     }
 
-    input[type="number"] {
-       border: 1px solid #666666;
+    input[type="text"], input[type="number"] {
+        border: none;
         display: block;
-        margin: 0 20px 10px 20px;
+        margin: 0 20px 0 20px;
         border-radius: 5px;
+        background-color: #EEF3F8;
         font-size: 16px;
-        padding: 6px 10px 6px 10px;
+        padding: 10px 15px 10px 15px;
         font-family: 'Open Sans', sans-serif;
         width: calc(100% - 40px);
+    }
+
+    input[type="radio"] {
+        padding: 5px;
     }
 
     .target-label {
@@ -176,12 +194,18 @@
         font-family: 'Open Sans', sans-serif;
     }
 
+    .fa-search, .fa-filter {
+        font-size: 15px;
+        margin-right: 10px;
+        transform: translateY(-1px);
+    }
+
     .navigation-title {
         color: black;
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
         font-size: 20px;
-        padding: 20px 20px 10px 20px;
+        padding: 15px 20px 0 20px;
     }
 
     .navigation-button {
@@ -193,8 +217,18 @@
         color: white;
         border: none;
         border-radius: 5px;
-        padding: 6px 10px 6px 10px;
+        padding: 10px 10px 10px 10px;
         font-family: 'Open Sans', sans-serif;
+        transition: .3s;
+    }
+
+    .navigation-button:hover {
+        outline: none;
+        background-color: #193777;
+    }
+
+    #navigation-type, #navigation-city {
+        margin-bottom: 23px;
     }
 
 </style>

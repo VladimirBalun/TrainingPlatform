@@ -14,36 +14,23 @@
 - limitations under the License.
 -->
 
-<!--<nav class="main-menu">
-    <router-link to="/" class="nav-button">RacingWorld</router-link>
-    <router-link to="/news" class="nav-button">News</router-link>
-    <router-link to="/forum" class="nav-button">Forum</router-link>
-    <router-link to="/downloads" class="nav-button">Downloads</router-link>
-</nav>!-->
-
 <template>
-
-  <header>
-      <div class="header-up">
-          <div class="container">
-              <div class="row">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                      <div class="header-title-wrapper">
-                          <router-link to="/" class="header-title">Training.com</router-link>
-                      </div>
-                  </div>
-                  <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                      <router-link to="/signup" class="header-link">Подать объявление</router-link>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="header-down">
-
-      </div>
-
-  </header>
-
+    <header>
+        <div class="header-up">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="header-title-wrapper">
+                            <router-link to="/" class="header-title">Training.com</router-link>
+                        </div>
+                    </div>
+                    <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <router-link to="/signup" class="header-link">Подать объявление</router-link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 </template>
 
 <script>
@@ -77,11 +64,6 @@
         background-color: #10367B;
     }
 
-    .header-down {
-        height: 50px;
-        background-color: white;
-    }
-
     .header-link {
         border-radius: 5px;
         color: white;
@@ -93,6 +75,12 @@
         text-decoration: none;
         background-color: transparent;
         float: right;
+        transition: .5s;
+    }
+
+    .header-link:hover {
+        color: #10367B;
+        background-color: white;
     }
 
 </style>
