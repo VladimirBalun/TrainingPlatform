@@ -45,25 +45,28 @@ namespace App\Data\DAO {
 
         public function getCreativeById($id) {
             $database_creative = R::getRow(
-                'SELECT cr.title, cr.brief_description, cr.description, cr.image_url, cr.event_date, cr.price 
+                'SELECT cr.title, cr.description, cr.image_url, cr.event_date, cr.price, 
+                    cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name,
+                    cit.name, cat.name, th.name
                 FROM creatives cr
                 LEFT JOIN countries coun ON cr.id_country = coun.id
                 LEFT JOIN cities cit ON cr.id_city = cit.id
                 LEFT JOIN categories cat ON cr.id_category = cat.id
                 LEFT JOIN themes th ON cr.id_theme = th.id
-                WHERE cr.id = :creative_id
-                LIMIT 1',
-                ['creative_id' => $id]
+                WHERE cr.id = ?
+                LIMIT 1', [$id]
             );
 
             $creative = new CreativeEntity();
             $creative->setId($database_creative['id']);
             $creative->setTitle($database_creative['title']);
-            $creative->setBriefDescription($database_creative['brief_description']);
             $creative->setDescription($database_creative['description']);
             $creative->setImageUrl($database_creative['image_url']);
             $creative->setEventDate($database_creative['event_date']);
             $creative->setPrice($database_creative['price']);
+            $creative->setEmail($database_creative['advertiser_site']);
+            $creative->setSite($database_creative['advertiser_email']);
+            $creative->setPhone($database_creative['advertiser_phone']);
             return $creative;
         }
 

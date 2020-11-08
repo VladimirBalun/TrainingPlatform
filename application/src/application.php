@@ -18,8 +18,10 @@
 
 namespace App {
 
-    use App\Controllers\CreativesController;
+    use App\Controllers\AdvertisersController;
+    use App\Data\Entity\AdvertiserEntity;
     use Bramus\Router\Router;
+    use App\Controllers\CreativesController;
     use App\Controllers\MetaInformationController;
 
     require_once '../vendor/autoload.php';
@@ -42,6 +44,23 @@ namespace App {
         header('Access-Control-Allow-Origin: *');
         $controller = new CreativesController();
         echo $controller->getDemoCreatives();
+    });
+
+    $router->get('/creative', function() {
+        header('Access-Control-Allow-Origin: *');
+        $controller = new CreativesController();
+        echo $controller->getCreativeById($_GET['creative_id']);
+    });
+
+    $router->get("/advertisers", function () {
+        header('Access-Control-Allow-Origin: *');
+        echo 'Hello world';
+        $advertiser = new AdvertiserEntity();
+        $advertiser->setUsername('vladimir_balun');
+        $advertiser->setEmail('vladimirbalun@yandex.ru');
+        $advertiser->setPassword('10041998');
+        $controller = new AdvertisersController();
+        return $controller->signupAdvertiser($advertiser);
     });
 
     $router->run();

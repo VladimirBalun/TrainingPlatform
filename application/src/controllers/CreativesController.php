@@ -56,8 +56,23 @@ namespace App\Controllers {
         }
 
         public function getCreativeById($id) {
-            $creative_from_database = $this->creatives_service->getCreativeBydId($id);
-            return json_encode($creative_from_database, JSON_UNESCAPED_UNICODE);
+            $creative_from_database = $this->creatives_service->getCreativeById($id);
+            $creative_for_response = new class() {
+                public $id;
+                public $title;
+                public $description;
+                public $image_url;
+                public $event_date;
+                public $price;
+            };
+
+            $creative_for_response->id = $creative_from_database->getId();
+            $creative_for_response->title = $creative_from_database->getTitle();
+            $creative_for_response->description = $creative_from_database->getDescription();
+            $creative_for_response->image_url = $creative_from_database->getImageUrl();
+            $creative_for_response->event_date = $creative_from_database->getEventDate();
+            $creative_for_response->price = $creative_from_database->getPrice();
+            return json_encode($creative_for_response, JSON_UNESCAPED_UNICODE);
         }
 
     }

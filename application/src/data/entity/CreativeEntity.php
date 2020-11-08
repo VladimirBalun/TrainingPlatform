@@ -32,6 +32,9 @@ namespace App\Data\Entity {
         private $category;
         private $theme;
         private $online;
+        private $email;
+        private $site;
+        private $phone;
 
         public function getId() {
             return $this->id;
@@ -87,6 +90,70 @@ namespace App\Data\Entity {
 
         public function setEventDate($event_date) {
             $this->event_date = $event_date;
+        }
+
+        public function getCountry() {
+            return $this->country;
+        }
+
+        public function setCountry($country) {
+            $this->country = $country;
+        }
+
+        public function getCity() {
+            return $this->city;
+        }
+
+        public function setCity($city) {
+            $this->city = $city;
+        }
+
+        public function getCategory() {
+            return $this->category;
+        }
+
+        public function setCategory($category) {
+            $this->category = $category;
+        }
+
+        public function getTheme() {
+            return $this->theme;
+        }
+
+        public function setTheme($theme) {
+            $this->theme = $theme;
+        }
+
+        public function getOnline() {
+            return $this->online;
+        }
+
+        public function setOnline($online) {
+            $this->online = $online;
+        }
+
+        public function getEmail() {
+            return $this->email;
+        }
+
+        public function setEmail($email) {
+            $this->email = $email;
+        }
+
+        public function getSite() {
+            return $this->site;
+        }
+
+        public function setSite($site) {
+            $this->site = $site;
+        }
+
+        public function getPhone() {
+            return $this->phone;
+        }
+
+        public function setPhone($phone) {
+            $this->phone = $phone;
         }
 
     }
