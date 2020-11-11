@@ -16,31 +16,21 @@
  * limitations under the License.
  */
 
-namespace App\Data\Entity {
+namespace App\Common {
 
-    use App\Data\Entity\CountryEntity;
+    class Status {
 
-    class CityEntity {
-
-        private $id;
-        private $name;
-
-        public function getId() {
-            return $this->id;
-        }
-
-        public function setId($id) {
-            $this->id = $id;
-        }
-
-        public function getName() {
-            return $this->name;
-        }
-
-        public function setName($name) {
-            $this->name = $name;
-        }
+        // Signup
+        public static $SIGNUP_SUCESS = 0;
+        public static $SIGNUP_ERROR_USERNAME_EXISTS = 1;
+        public static $SIGNUP_ERROR_EMAIL_EXISTS = 2;
+        public static $SIGNUP_ERROR_INCORRECT_USERNAME = 3;
+        public static $SIGNUP_ERROR_INCORRECT_EMAIL = 4;
+        public static $SIGNUP_ERROR_INCORRECT_PASSWORD = 5;
+        public static $SIGNUP_ERROR_UNKNOWN = 6;
 
     }
 
 }
+
+

@@ -33,20 +33,19 @@ namespace App\Controllers {
         }
 
         public function loginAdvertiser($advertiser) {
-            $result = $this->advertisers_service->loginAdvertiser($advertiser);
             $response = new class() {
                 public $result;
             };
-            $response->result = $result;
+            $response->result = $this->advertisers_service->loginAdvertiser($advertiser);
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
         public function signupAdvertiser($advertiser) {
-            $result = $this->advertisers_service->signupAdvertiser($advertiser);
             $response = new class() {
                 public $result;
             };
-            $response->result = $result;
+
+            $response->result = $this->advertisers_service->signupAdvertiser($advertiser);
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 

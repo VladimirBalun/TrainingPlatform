@@ -54,13 +54,12 @@ namespace App {
 
     $router->get("/advertisers", function () {
         header('Access-Control-Allow-Origin: *');
-        echo 'Hello world';
         $advertiser = new AdvertiserEntity();
         $advertiser->setUsername('vladimir_balun');
         $advertiser->setEmail('vladimirbalun@yandex.ru');
         $advertiser->setPassword('10041998');
         $controller = new AdvertisersController();
-        return $controller->signupAdvertiser($advertiser);
+        echo $controller->signupAdvertiser($advertiser);
     });
 
     $router->run();

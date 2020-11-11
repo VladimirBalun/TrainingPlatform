@@ -16,30 +16,15 @@
  * limitations under the License.
  */
 
-namespace App\Data\Entity {
+namespace App\Common {
 
-    use App\Data\Entity\CountryEntity;
+    class Limits {
 
-    class CityEntity {
+        public static $DOUBLE_MD5_HASH_SIZE = 32;
 
-        private $id;
-        private $name;
-
-        public function getId() {
-            return $this->id;
-        }
-
-        public function setId($id) {
-            $this->id = $id;
-        }
-
-        public function getName() {
-            return $this->name;
-        }
-
-        public function setName($name) {
-            $this->name = $name;
-        }
+        public static $USERNAME_MAX_SIZE = 64;
+        public static $EMAIL_MAX_SIZE = 255;
+        public static $PASSWORD_MAX_SIZE = 128;
 
     }
 

@@ -24,6 +24,7 @@ namespace App\Data\Entity {
         private $username;
         private $email;
         private $password;
+        private $hash;
 
         public function getId() {
             return $this->id;
@@ -55,6 +56,14 @@ namespace App\Data\Entity {
 
         public function setPassword($password) {
             $this->password = $password;
+        }
+
+        public function getHash() {
+            return $this->hash;
+        }
+
+        public function setHash($hash) {
+            $this->hash = $hash;
         }
 
     }

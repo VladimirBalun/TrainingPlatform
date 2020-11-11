@@ -18,6 +18,8 @@
 
 namespace App\Data\Service {
 
+    use App\Common\Limits;
+    use App\Common\Status;
     use App\Data\DAO\AdvertisersDAO;
 
     class AdvertisersService {
@@ -33,7 +35,30 @@ namespace App\Data\Service {
         }
 
         public function signupAdvertiser($advertiser) {
-            return true;
+            if (($advertiser->getUsername() == '') || (strlen($advertiser->getUsername()) > Limits::$USERNAME_MAX_SIZE)) {
+                return Status::$SIGNUP_ERROR_INCORRECT_USERNAME;
+            } else if (($advertiser->getEmail() == '') || (strlen($advertiser->getEmail()) > Limits::$EMAIL_MAX_SIZE)) {
+                return Status::$SIGNUP_ERROR_INCORRECT_EMAIL;
+            } else if (($advertiser->getPassword() == '') || (strlen($advertiser->getPassword()) != Limits::$DOUBLE_MD5_HASH_SIZE)) {
+                return Status::$SIGNUP_ERROR_INCORRECT_PASSWORD;
+            }
+
+            $is_exists_username = $this->advertisers_dao->findAdvertiserByUsername($advertiser->getUsername());
+            if ($is_exists_username) {
+                return Status::$SIGNUP_ERROR_USERNAME_EXISTS;
+            }
+
+            $is_exists_email = $this->advertisers_dao->findAdvertiserByEmail($advertiser->getEmail());
+            if ($is_exists_email) {
+                return Status::$SIGNUP_ERROR_EMAIL_EXISTS;
+            }
+
+            $was_added_advertiser = $this->advertisers_dao->addAdvertiser($advertiser);
+            if ($was_added_advertiser) {
+                return Status::$SIGNUP_SUCESS;
+            } else {
+                return Status::$SIGNUP_ERROR_UNKNOWN;
+            }
         }
 
     }
