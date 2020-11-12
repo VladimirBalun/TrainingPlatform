@@ -21,7 +21,9 @@ import VueRouter from "vue-router";
 
 import mainPage from "../pages/main-page";
 import creativePage from "../pages/creative-page";
-import signupPage from "../pages/signup-page"
+import signupPage from "../pages/signup-page";
+import loginPage from "../pages/login-page";
+import advertiserRoomPage from "../pages/advertiser-room-page";
 
 Vue.use(VueRouter);
 
@@ -38,6 +40,14 @@ const router = new VueRouter({
         {
             path: "/signup",
             component: signupPage
+        },
+        {
+            path: "/login",
+            component: loginPage
+        },
+        {
+            path: "/advertiser_room",
+            component: advertiserRoomPage
         }
     ]
 });

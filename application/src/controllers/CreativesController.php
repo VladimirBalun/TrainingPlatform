@@ -18,22 +18,42 @@
 
 namespace App\Controllers {
 
-    use RedBeanPHP\R;
-    use App\Common\Database;
     use App\Data\Service\CreativesService;
 
-    class CreativesController {
+    class CreativesController extends Controller {
 
         private $creatives_service;
 
         public function __construct() {
+            parent::__construct();
             $this->creatives_service = new CreativesService();
-            R::setup(Database::$access['dsn'], Database::$access['user'], Database::$access['pass']);
-            R::freeze(true);
         }
 
         public function getDemoCreatives() {
             $creatives_from_database = $this->creatives_service->getDemoCreatives();
+            $creatives_for_response = array();
+            foreach ($creatives_from_database as $creative_from_database) {
+                $creative = new class() {
+                    public $id;
+                    public $title;
+                    public $brief_description;
+                    public $image_url;
+                    public $event_date;
+                    public $price;
+                };
+                $creative->id = $creative_from_database->getId();
+                $creative->title = $creative_from_database->getTitle();
+                $creative->brief_description = $creative_from_database->getBriefDescription();
+                $creative->image_url = $creative_from_database->getImageUrl();
+                $creative->event_date = $creative_from_database->getEventDate();
+                $creative->price = $creative_from_database->getPrice();
+                array_push($creatives_for_response, $creative);
+            }
+            return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
+            $creatives_from_database = $this->creatives_service->getProposedDemoCreativesByCreativeId($creative_id, $count);
             $creatives_for_response = array();
             foreach ($creatives_from_database as $creative_from_database) {
                 $creative = new class() {

@@ -19,14 +19,16 @@
         <header-component></header-component>
         <div class="creative-page container">
             <div class="row">
-                <creative-contacts-component class="col-lg-4 col-md-4 hidden-sm hidden-xs"
+                <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"
                     :image_url="this.creativeImageURL" :price="this.creativePrice">
                 </creative-contacts-component>
-                <creative-information-component class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+                <creative-information-component class="col-lg-8 col-md-8 col-sm-7 col-xs-12"
                     :title="this.creativeTitle" :description="this.creativeDescription">
                 </creative-information-component>
+                <proposed-creatives-component :id="id"></proposed-creatives-component>
             </div>
         </div>
+        <footer-component></footer-component>
     </div>
 </template>
 
@@ -38,6 +40,7 @@
     import footerComponent from "../components/footer-component";
     import creativeContactsComponent from "../components/creative-contacts-component";
     import creativeInformationComponent from "../components/creative-information-component";
+    import proposedCreativesComponent from "../components/proposed-creatives-component";
 
     export default {
         name: "creative-page",
@@ -45,7 +48,8 @@
             headerComponent,
             footerComponent,
             creativeContactsComponent,
-            creativeInformationComponent
+            creativeInformationComponent,
+            proposedCreativesComponent
         },
         data() {
             return {
@@ -87,7 +91,19 @@
 <style scoped>
 
     .creative-page {
+        position: relative;
         margin-top: 30px;
+        margin-bottom: 30px;
+        min-height: 100%;
+    }
+
+    @media(max-width:767px) {
+
+        .creative-page {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
     }
 
 </style>

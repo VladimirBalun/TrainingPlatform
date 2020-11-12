@@ -55,7 +55,7 @@ namespace App\Data\Service {
 
             $was_added_advertiser = $this->advertisers_dao->addAdvertiser($advertiser);
             if ($was_added_advertiser) {
-                return Status::$SIGNUP_SUCESS;
+                return Status::$SIGNUP_SUCCESS;
             } else {
                 return Status::$SIGNUP_ERROR_UNKNOWN;
             }

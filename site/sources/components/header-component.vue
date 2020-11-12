@@ -19,12 +19,17 @@
         <div class="header-up">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                         <div class="header-title-wrapper">
                             <router-link to="/" class="header-title">Training.com</router-link>
                         </div>
                     </div>
-                    <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="hidden-lg hidden-md hidden-sm col-xs-2">
+                        <div class="mobile-filters-menu">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                    </div>
+                    <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-10">
                         <router-link to="/signup" class="header-link">Подать объявление</router-link>
                     </div>
                 </div>
@@ -81,6 +86,22 @@
     .header-link:hover {
         color: #10367B;
         background-color: white;
+    }
+
+    @media(max-width:767px) {
+
+        .mobile-filters-menu {
+            color: white;
+            font-size: 23px;
+            margin-top: 10px;
+        }
+
+        .header-link {
+            margin-top: 12px;
+            font-size: 15px;
+            padding: 2px 20px 2px 20px;
+        }
+
     }
 
 </style>

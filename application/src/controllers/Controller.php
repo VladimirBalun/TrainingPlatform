@@ -16,28 +16,20 @@
  * limitations under the License.
  */
 
-namespace App\Data\Service {
+namespace App\Controllers {
 
-    use App\Data\DAO\CreativesDAO;
+    use RedBeanPHP\R;
+    use App\Common\Database;
 
-    class CreativesService {
+    class Controller {
 
-        private $creatives_dao;
-
-        function __construct() {
-            $this->creatives_dao = new CreativesDAO();
+        public function __construct() {
+            R::setup(Database::$access['dsn'], Database::$access['user'], Database::$access['pass']);
+            R::freeze(true);
         }
 
-        public function getDemoCreatives() {
-            return $this->creatives_dao->getDemoCreatives();
-        }
-
-        public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
-            return $this->creatives_dao->getProposedDemoCreativesByCreativeId($creative_id, $count);
-        }
-
-        public function getCreativeById($id) {
-            return $this->creatives_dao->getCreativeById($id);
+        public function __destruct() {
+            R::close();
         }
 
     }

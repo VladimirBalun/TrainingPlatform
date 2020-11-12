@@ -18,22 +18,22 @@
     <div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-lg-offset-3">
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="signup-form block">
                         <p class="signup-icon"><i class="fas fa-user-circle"></i></p>
                         <label for="signup-username"><label class="signup-require-color">*</label> Введите имя пользователя:</label>
-                        <input class="signup-input" type="text" id="signup-username"
+                        <input class="signup-input" type="text" id="signup-username" maxlength="64"
                             v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
                         <label for="signup-email"><label class="signup-require-color">*</label> Введите e-mail:</label>
-                        <input class="signup-input" type="text" id="signup-email"
+                        <input class="signup-input" type="text" id="signup-email" maxlength="255"
                             v-model="emailModel" v-bind:class="{ 'error-input': !isValidEmail }">
                         <label for="signup-password"><label class="signup-require-color">*</label> Введите пароль:</label>
-                        <input class="signup-input" type="password" id="signup-password"
+                        <input class="signup-input" type="password" id="signup-password" maxlength="128"
                             v-model="passwordModel" v-bind:class="{ 'error-input': !isValidPassword }">
                         <label for="signup-privacy"><label class="signup-require-color">*</label> Принимаю условия политики конфиденциальности</label>
                         <input type="checkbox" id="signup-privacy">
                         <button @click="onSignupButtonClick">Зарегистрироваться</button>
-                        <p>{{ errorMessage }}</p>
+                        <p class="signup-error-message">{{ errorMessage }}</p>
                         <p class="signup-login"></p>
                     </form>
                 </div>
@@ -45,6 +45,8 @@
 <script>
 
     "use strict";
+
+    import MD5 from "crypto-js/md5";
 
     export default {
         name: "signup-page",
@@ -106,9 +108,15 @@
                     this.errorMessage = "Неверный e-mail, e-mail должен иметь стандартный вид, например advertiser@ad.ru"
                     return false;
                 }
+
+                return true;
             },
             onSignupButtonClick() {
                 this.errorMessage = "";
+                this.usernameModel = this.usernameModel.trim();
+                this.emailModel = this.emailModel.trim();
+                this.passwordModel = this.passwordModel.trim();
+
                 if (!this.checkFormOnEmpty()) {
                     return;
                 }
@@ -117,43 +125,66 @@
                 }
 
                 const SIGNUP_SUCCESS = 0;
-                const USERNAME_BUSY_ERROR = 1;
-                const EMAIL_BUSY_ERROR = 2;
-                const UNKNOWN_ERROR = 3;
+                const SIGNUP_ERROR_USERNAME_EXISTS = 1;
+                const SIGNUP_ERROR_EMAIL_EXISTS = 2;
+                const SIGNUP_ERROR_INCORRECT_USERNAME = 3;
+                const SIGNUP_ERROR_INCORRECT_EMAIL = 4;
+                const SIGNUP_ERROR_INCORRECT_PASSWORD = 5;
+                const SIGNUP_ERROR_UNKNOWN = 6;
 
                 const self = this;
-                this.$http.post("http://localhost:8080/advertisers/signup",
-                    { params: { username: self.usernameModel, email: self.emailModel, password: self.passwordModel } })
+                this.$http.post("http://localhost:8080/advertisers_signup",
+                    {
+                              username: self.usernameModel,
+                              email: self.emailModel,
+                              password: MD5(self.passwordModel)
+                          })
                     .then(response => {
+                        console.log(response);
                         const status = response.status;
                         switch (status) {
                             case SIGNUP_SUCCESS: {
-
+                                alert("Успешная регистрация");
                                 break;
                             }
-                            case USERNAME_BUSY_ERROR: {
+                            case SIGNUP_ERROR_USERNAME_EXISTS: {
                                 self.isValidUsername = false;
                                 self.errorMessage = "Пользователь с таким именем уже существует";
                                 break;
                             }
-                            case EMAIL_BUSY_ERROR: {
+                            case SIGNUP_ERROR_EMAIL_EXISTS: {
                                 self.isValidEmail = false;
                                 self.errorMessage = "Пользователь с таким e-mail уже существует";
                                 break;
                             }
-                            case UNKNOWN_ERROR: {
+                            case SIGNUP_ERROR_INCORRECT_USERNAME:
+                                self.isValidUsername = false;
+                                self.errorMessage = "Пользователь не был зарегистрирован, некорректное имя пользователя";
+                                break;
+                            case SIGNUP_ERROR_INCORRECT_EMAIL:
+                                self.isValidEmail = false;
+                                self.errorMessage = "Пользователь не был зарегистрирован, некорректный e-mail";
+                                break;
+                            case SIGNUP_ERROR_INCORRECT_PASSWORD:
+                                self.isValidEmail = false;
+                                self.errorMessage = "Пользователь не был зарегистрирован, некорректный пароль";
+                                break;
+                            case SIGNUP_ERROR_UNKNOWN: {
                                 self.isValidUsername = false;
                                 self.isValidEmail = false;
                                 self.isValidPassword = false;
-                                self.errorMessage = "Пользователь не был зарегистрирован, неверно введены данные";
+                                self.errorMessage = "Пользователь не был зарегистрирован из-за неизвестно ошибки, " +
+                                    "попробуйте повторить вашу попытку позже...";
                                 break;
                             }
                         }
                     }, error => {
+                        console.log(error);
                         self.isValidUsername = false;
                         self.isValidEmail = false;
                         self.isValidPassword = false;
-                        self.errorMessage = "Пользователь не был зарегистрирован, неверно введены данные";
+                        self.errorMessage = "Пользователь не был зарегистрирован возможно из-за ошибки, " +
+                            "связанной с сетевым соединением, попробуйте повторить вашу попытку позже...";
                     });
             }
         }
@@ -164,7 +195,7 @@
 <style scoped>
 
     .signup-form {
-        margin-top: 150px;
+        margin-top: 70px;
         padding: 70px 80px 80px 80px;
     }
 
@@ -220,5 +251,21 @@
         background-color: #193777;
     }
 
+    .signup-error-message {
+        font-family: 'Open Sans', sans-serif;
+        text-align: center;
+        color: #d92626;
+        font-size: 15px;
+        margin-top: 20px;
+    }
+
+    @media(max-width:767px) {
+
+        .signup-form {
+            margin-top: 15px;
+            padding: 70px 30px 70px 30px;
+        }
+
+    }
 
 </style>

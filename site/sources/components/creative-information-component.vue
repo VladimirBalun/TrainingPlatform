@@ -17,8 +17,16 @@
 <template>
     <div class="creative-information-block-wrapper">
         <div class="creative-information-block block">
-            <p class="creative-information-title">{{ title }}</p>
-            <p class=""></p>
+            <p class="creative-information-title">{{ title }}</p><hr>
+            <div class="creative-information-meta-block">
+                <p class="creative-information-meta-data">Категория: {{ category }}</p>
+                <p class="creative-information-meta-data">Тема: {{ category }}</p>
+                <p class="creative-information-meta-data">Страна: {{ (country === null) ? ('Не указана') : (country) }}</p>
+                <p class="creative-information-meta-data">Город: {{ (city === 'null') ? ('Не указан') : (city) }}</p>
+                <p class="creative-information-meta-data">Дата: {{ category }}</p>
+                <p class="creative-information-meta-data">Тип: {{ category }}</p>
+            </div>
+            <hr>
             <p class="creative-information-description">{{ description }}</p>
         </div>
     </div>
@@ -39,7 +47,6 @@
 
     .creative-information-block {
         padding: 12px 20px 20px 20px;
-        height: 700px;
     }
 
     .creative-information-title {
@@ -50,6 +57,19 @@
     .creative-information-description {
         font-family: 'Open Sans', sans-serif;
         font-size: 17px;
+    }
+
+    .creative-information-meta-data {
+        width: 50%;
+        display: inline-block;
+    }
+
+    @media(max-width:767px) {
+
+        .creative-information-block {
+            margin-top: 15px;
+        }
+
     }
 
 </style>

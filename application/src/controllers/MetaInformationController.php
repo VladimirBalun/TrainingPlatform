@@ -19,13 +19,11 @@
 namespace App\Controllers {
 
     use App\Data\Service\CitiesService;
-    use RedBeanPHP\R;
-    use App\Common\Database;
     use App\Data\Service\CountriesService;
     use App\Data\Service\EventThemesService;
     use App\Data\Service\EventCategoriesService;
 
-    class MetaInformationController {
+    class MetaInformationController extends Controller {
 
         private $cities_service;
         private $countries_service;
@@ -33,12 +31,11 @@ namespace App\Controllers {
         private $event_categories_service;
 
         public function __construct() {
+            parent::__construct();
             $this->cities_service = new CitiesService();
             $this->countries_service = new CountriesService();
             $this->event_themes_service = new EventThemesService();
             $this->event_categories_service = new EventCategoriesService();
-            R::setup(Database::$access['dsn'], Database::$access['user'], Database::$access['pass']);
-            R::freeze(true);
         }
 
         public function getAllMetaInformation() {

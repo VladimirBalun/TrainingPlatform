@@ -19,7 +19,7 @@
         <header-component></header-component>
         <diV class="main-page container">
             <div class="row">
-                <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-xs"></navigation-component>
+                <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"></navigation-component>
                 <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
                     :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
                     :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
@@ -56,9 +56,7 @@
               const self = this;
               this.$http.get("http://localhost:8080/demo_creatives")
                   .then(response => {
-                    console.log(response);
                       response.body.forEach(creative => {
-                          console.log(creative.image_url);
                           self.demoCreatives.push({
                               "id" : creative.id,
                               "title" : creative.title,
@@ -82,6 +80,14 @@
 
     .main-page {
         margin-top: 30px;
+    }
+
+    @media(max-width:767px) {
+
+        .main-page {
+            margin-top: 15px;
+        }
+
     }
 
 </style>

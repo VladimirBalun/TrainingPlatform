@@ -131,6 +131,7 @@
     @media(max-width:767px) {
         .content {
             height: auto;
+            margin-bottom: 15px;
         }
 
         .content-image {
@@ -139,13 +140,6 @@
             height: auto;
         }
 
-        .content-title {
-            text-align: center;
-        }
-
-        .content-description {
-            text-align: center;
-        }
     }
 
 </style>

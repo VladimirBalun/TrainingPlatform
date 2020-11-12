@@ -15,24 +15,17 @@
 -->
 
 <template>
-    <footer>
 
-    </footer>
 </template>
 
 <script>
 
     export default {
-       name: "footer-component"
+        name: "login-page"
     }
 
 </script>
 
 <style scoped>
-
-    footer {
-        height: 100px;
-        background-color: #292929;
-    }
 
 </style>

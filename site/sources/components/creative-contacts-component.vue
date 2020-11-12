@@ -17,7 +17,6 @@
 <template>
     <div class="creative-contacts-block-wrapper">
         <div class="creative-contacts-block block">
-            <p class="creative-contacts-price">Цена: {{ price }}₽</p>
             <img class="creative-contacts-image" :src="image_url" alt="image">
             <p class="creative-contacts-number">{{ phone }}</p>
             <div class="creative-contacts-wrapper">
@@ -44,18 +43,12 @@
 <style scoped>
 
     .creative-contacts-block {
-        padding: 12px 20px 20px 20px;
+        padding: 20px 20px 20px 20px;
     }
 
     .creative-contacts-image {
         width: 100%;
         border-radius: 5px;
-    }
-
-    .creative-contacts-price {
-        font-family: 'Roboto', sans-serif;
-        font-size: 27px;
-        text-align: center;
     }
 
     .creative-contacts-number {

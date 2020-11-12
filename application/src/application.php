@@ -46,18 +46,38 @@ namespace App {
         echo $controller->getDemoCreatives();
     });
 
+    $router->get('/proposed_demo_creatives', function () {
+        header('Access-Control-Allow-Origin: *');
+        $controller = new CreativesController();
+        echo $controller->getProposedDemoCreativesByCreativeId($_GET['creative_id'], $_GET['count']);
+    });
+
     $router->get('/creative', function() {
         header('Access-Control-Allow-Origin: *');
         $controller = new CreativesController();
         echo $controller->getCreativeById($_GET['creative_id']);
     });
 
-    $router->get("/advertisers", function () {
+    $router->get("/advertisers_check", function () {
+        header('Access-Control-Allow-Origin: *');
+        echo '{ "result" : true }';
+    });
+
+    $router->post("/advertisers_login", function () {
         header('Access-Control-Allow-Origin: *');
         $advertiser = new AdvertiserEntity();
-        $advertiser->setUsername('vladimir_balun');
-        $advertiser->setEmail('vladimirbalun@yandex.ru');
-        $advertiser->setPassword('10041998');
+        $advertiser->setEmail($_POST['email']);
+        $advertiser->setPassword($_POST['password']);
+        $controller = new AdvertisersController();
+        echo $controller->loginAdvertiser($advertiser);
+    });
+
+    $router->post("/advertisers_signup", function () {
+        header('Access-Control-Allow-Origin: *');
+        $advertiser = new AdvertiserEntity();
+        $advertiser->setUsername($_POST['username']);
+        $advertiser->setEmail($_POST['email']);
+        $advertiser->setPassword($_POST['password']);
         $controller = new AdvertisersController();
         echo $controller->signupAdvertiser($advertiser);
     });

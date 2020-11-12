@@ -21,7 +21,7 @@
            <input type="text" placeholder="Введите название...">
            <button class="navigation-button">Искать</button>
         </div>
-        <div class="navigation block">
+        <div class="navigation block hidden-xs">
             <p class="navigation-title"><i class="fas fa-filter"></i>Фильтры</p><hr>
             <label for="navigation-categoty">Категория:</label>
             <select id="navigation-categoty">
@@ -229,6 +229,18 @@
 
     #navigation-type, #navigation-city {
         margin-bottom: 23px;
+    }
+
+    @media(max-width:767px) {
+
+      .search-block {
+          margin-bottom: 15px;
+      }
+
+      .navigation-wrapper {
+          height: auto;
+      }
+
     }
 
 </style>

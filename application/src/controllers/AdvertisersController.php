@@ -18,18 +18,16 @@
 
 namespace App\Controllers {
 
-    use RedBeanPHP\R;
-    use App\Common\Database;
+    use App\Common\Status;
     use App\Data\Service\AdvertisersService;
 
-    class AdvertisersController {
+    class AdvertisersController extends Controller {
 
         private $advertisers_service;
 
         public function __construct() {
+            parent::__construct();
             $this->advertisers_service = new AdvertisersService();
-            R::setup(Database::$access['dsn'], Database::$access['user'], Database::$access['pass']);
-            R::freeze(true);
         }
 
         public function loginAdvertiser($advertiser) {
@@ -37,6 +35,12 @@ namespace App\Controllers {
                 public $result;
             };
             $response->result = $this->advertisers_service->loginAdvertiser($advertiser);
+            if ($response->result == Status::$LOGIN_SUCCESS) {
+                $one_month_tls = time() + 60 * 60 * 24 * 30;
+                setcookie('username', $advertiser->getUsername(), $one_month_tls, '/', null, null, true); // httponly !!!
+                setcookie('hash', $advertiser->getHash(), $one_month_tls, '/', null, null, true); // httponly !!!
+            }
+
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 

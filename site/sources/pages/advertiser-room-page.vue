@@ -15,24 +15,30 @@
 -->
 
 <template>
-    <footer>
-
-    </footer>
+    <div>
+        <header-component></header-component>
+        <div>
+           Комната администратора
+        </div>
+        <footer-component></footer-component>
+    </div>
 </template>
 
 <script>
 
+    import headerComponent from "../components/header-component";
+    import footerComponent from "../components/footer-component";
+
     export default {
-       name: "footer-component"
+        name: "advertiser-room-page",
+        components: {
+            headerComponent,
+            footerComponent,
+        }
     }
 
 </script>
 
 <style scoped>
-
-    footer {
-        height: 100px;
-        background-color: #292929;
-    }
 
 </style>
