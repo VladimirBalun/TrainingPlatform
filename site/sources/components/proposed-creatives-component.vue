@@ -15,9 +15,9 @@
 -->
 
 <template>
-    <div class="proposed-creatives-block">
+    <div>
         <p class="proposed-creatives-title col-lg-12 col-md-12 col-sm-12 col-xs-12">Похожие объявления</p>
-        <content-component v-for="creative in proposedDemoCreatives" class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+        <content-component v-for="creative in proposedDemoCreatives" class="proposed-creatives-block col-lg-4 col-md-4 col-sm-6 col-xs-12"
             :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
             :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
         </content-component>
@@ -79,6 +79,14 @@
         margin: 30px 0 30px 0;
         font-family: 'Roboto', sans-serif;
         font-size: 27px;
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+
+        .proposed-creatives-block:last-of-type {
+            display: none;
+        }
+
     }
 
 </style>

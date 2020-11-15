@@ -16,14 +16,25 @@
 
 <template>
     <div class="creative-contacts-block-wrapper">
+        <div class="creative-contacts-price-block block">
+            <p class="creative-contacts-price-text"><i class="fas fa-tags"></i> {{ price }}₽</p>
+        </div>
         <div class="creative-contacts-block block">
             <img class="creative-contacts-image" :src="image_url" alt="image">
             <p class="creative-contacts-number">{{ phone }}</p>
             <div class="creative-contacts-wrapper">
-                <a href="" class="creative-contacts-button">Перейти на сайт</a>
+                <a :href="site" class="creative-contacts-button">Перейти на сайт</a>
             </div>
             <div class="creative-contacts-wrapper">
-                <a href="" class="creative-contacts-button">Написать сообщение</a>
+                <a :href="'mailto:' + email" class="creative-contacts-button">Написать сообщение</a>
+            </div>
+        </div>
+        <div class="hidden-xs">
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
         </div>
     </div>
@@ -79,6 +90,38 @@
     .creative-contacts-button:hover {
         text-decoration: none;
         background-color: #10367B;
+    }
+
+    .creative-contacts-price-block {
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 25px;
+        font-family: 'Roboto', sans-serif;
+        padding: 15px 0 5px 0;
+    }
+
+    .advertisement-block {
+        margin-top: 30px;
+    }
+
+    .advertisement-image {
+        position: relative;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .fa-tags {
+        font-size: 18px;
+        margin-right: 5px;
+        transform: translateY(-1px);
+    }
+
+    @media(max-width:767px) {
+
+        .creative-contacts-price-block {
+            margin: 0 0 15px 0;
+        }
+
     }
 
 </style>

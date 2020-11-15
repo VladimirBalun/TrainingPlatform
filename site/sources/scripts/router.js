@@ -23,7 +23,7 @@ import mainPage from "../pages/main-page";
 import creativePage from "../pages/creative-page";
 import signupPage from "../pages/signup-page";
 import loginPage from "../pages/login-page";
-import advertiserRoomPage from "../pages/advertiser-room-page";
+import adminRoomPage from "../pages/admin-room-page"
 
 Vue.use(VueRouter);
 
@@ -46,8 +46,8 @@ const router = new VueRouter({
             component: loginPage
         },
         {
-            path: "/advertiser_room",
-            component: advertiserRoomPage
+            path: "/admin_room/:id",
+            component: adminRoomPage
         }
     ]
 });

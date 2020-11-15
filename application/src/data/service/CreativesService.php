@@ -32,6 +32,10 @@ namespace App\Data\Service {
             return $this->creatives_dao->getDemoCreatives();
         }
 
+        public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
+            return $this->creatives_dao->getAdvertiserDemoCreativesByAdvertiserId($advertiser_id);
+        }
+
         public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
             return $this->creatives_dao->getProposedDemoCreativesByCreativeId($creative_id, $count);
         }

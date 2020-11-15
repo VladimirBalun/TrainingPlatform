@@ -69,6 +69,23 @@
                 <button class="navigation-button">Применить</button>
             </div>
         </div>
+        <div class="hidden-xs">
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+        </div>
     </div>
 </template>
 
@@ -145,7 +162,6 @@
 
     .navigation-wrapper {
         position: relative;
-        height: 2000px;
     }
 
     .search-block {
@@ -156,6 +172,7 @@
     .navigation {
         border-radius: 5px;
         background-color: white;
+        margin-bottom: 30px;
     }
 
     select {
@@ -229,6 +246,16 @@
 
     #navigation-type, #navigation-city {
         margin-bottom: 23px;
+    }
+
+    .advertisement-block {
+        margin-bottom: 30px;
+    }
+
+    .advertisement-image {
+        position: relative;
+        width: 100%;
+        border-radius: 5px;
     }
 
     @media(max-width:767px) {

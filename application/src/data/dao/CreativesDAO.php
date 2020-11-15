@@ -18,6 +18,10 @@
 
 namespace App\Data\DAO {
 
+    use App\Data\Entity\CityEntity;
+    use App\Data\Entity\CountryEntity;
+    use App\Data\Entity\EventCategoryEntity;
+    use App\Data\Entity\EventThemeEntity;
     use RedBeanPHP\R;
     use App\Data\Entity\CreativeEntity;
 
@@ -37,6 +41,29 @@ namespace App\Data\DAO {
                 $creative->setImageUrl($database_creative['image_url']);
                 $creative->setEventDate($database_creative['event_date']);
                 $creative->setPrice($database_creative['price']);
+                array_push($creatives, $creative);
+            }
+
+            return $creatives;
+        }
+
+        public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
+            $database_creatives = R::getAll(
+                'SELECT id, title, image_url, event_date, moderation_status, moderation_text 
+                FROM creatives
+                WHERE id_advertiser = ?',
+                [$advertiser_id]
+            );
+
+            $creatives = array();
+            foreach ($database_creatives as $database_creative) {
+                $creative = new CreativeEntity();
+                $creative->setId($database_creative['id']);
+                $creative->setTitle($database_creative['title']);
+                $creative->setImageUrl($database_creative['image_url']);
+                $creative->setEventDate($database_creative['event_date']);
+                $creative->setModerationStatus((int)$database_creative['moderation_status']);
+                $creative->setModerationText($database_creative['moderation_text']);
                 array_push($creatives, $creative);
             }
 
@@ -75,8 +102,8 @@ namespace App\Data\DAO {
         public function getCreativeById($id) {
             $database_creative = R::getRow(
                 'SELECT cr.title, cr.description, cr.image_url, cr.event_date, cr.price, 
-                    cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name,
-                    cit.name, cat.name, th.name
+                    cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name as country_name,
+                    cit.name as city_name, cat.name as category_name, th.name as theme_name, is_online
                 FROM creatives cr
                 LEFT JOIN countries coun ON cr.id_country = coun.id
                 LEFT JOIN cities cit ON cr.id_city = cit.id
@@ -93,9 +120,31 @@ namespace App\Data\DAO {
             $creative->setImageUrl($database_creative['image_url']);
             $creative->setEventDate($database_creative['event_date']);
             $creative->setPrice($database_creative['price']);
-            $creative->setEmail($database_creative['advertiser_site']);
-            $creative->setSite($database_creative['advertiser_email']);
+            $creative->setEmail($database_creative['advertiser_email']);
+            $creative->setSite($database_creative['advertiser_site']);
             $creative->setPhone($database_creative['advertiser_phone']);
+            $creative->setOnline($database_creative['is_online']);
+
+            $category = new EventCategoryEntity();
+            $category->setName($database_creative['category_name']);
+            $creative->setCategory($category);
+
+            $theme = new EventThemeEntity();
+            $theme->setName($database_creative['theme_name']);
+            $creative->setTheme($theme);
+
+            if ($database_creative['city_name'] != null) {
+                $city = new CityEntity();
+                $city->setName($database_creative['city_name']);
+                $creative->setCity($city);
+            }
+
+            if ($database_creative['country_name'] != null) {
+                $country = new CountryEntity();
+                $country->setName($database_creative['country_name']);
+                $creative->setCountry($country);
+            }
+
             return $creative;
         }
 

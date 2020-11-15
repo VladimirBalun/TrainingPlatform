@@ -52,6 +52,29 @@ namespace App\Controllers {
             return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
         }
 
+        public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
+            $creatives_from_database = $this->creatives_service->getAdvertiserDemoCreativesByAdvertiserId($advertiser_id);
+            $creatives_for_response = array();
+            foreach ($creatives_from_database as $creative_from_database) {
+                $creative = new class() {
+                    public $id;
+                    public $title;
+                    public $image_url;
+                    public $event_date;
+                    public $moderation_status;
+                    public $moderation_text;
+                };
+                $creative->id = $creative_from_database->getId();
+                $creative->title = $creative_from_database->getTitle();
+                $creative->image_url = $creative_from_database->getImageUrl();
+                $creative->event_date = $creative_from_database->getEventDate();
+                $creative->moderation_status = $creative_from_database->getModerationStatus();
+                $creative->moderation_text = $creative_from_database->getModerationText();
+                array_push($creatives_for_response, $creative);
+            }
+            return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
+        }
+
         public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
             $creatives_from_database = $this->creatives_service->getProposedDemoCreativesByCreativeId($creative_id, $count);
             $creatives_for_response = array();
@@ -70,6 +93,7 @@ namespace App\Controllers {
                 $creative->image_url = $creative_from_database->getImageUrl();
                 $creative->event_date = $creative_from_database->getEventDate();
                 $creative->price = $creative_from_database->getPrice();
+
                 array_push($creatives_for_response, $creative);
             }
             return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
@@ -84,6 +108,14 @@ namespace App\Controllers {
                 public $image_url;
                 public $event_date;
                 public $price;
+                public $email;
+                public $phone;
+                public $site;
+                public $category;
+                public $theme;
+                public $country;
+                public $city;
+                public $is_online;
             };
 
             $creative_for_response->id = $creative_from_database->getId();
@@ -92,6 +124,18 @@ namespace App\Controllers {
             $creative_for_response->image_url = $creative_from_database->getImageUrl();
             $creative_for_response->event_date = $creative_from_database->getEventDate();
             $creative_for_response->price = $creative_from_database->getPrice();
+            $creative_for_response->email = $creative_from_database->getEmail();
+            $creative_for_response->phone = $creative_from_database->getPhone();
+            $creative_for_response->site = $creative_from_database->getSite();
+            $creative_for_response->is_online = $creative_from_database->getOnline();
+            $creative_for_response->category = $creative_from_database->getCategory()->getName();
+            $creative_for_response->theme = $creative_from_database->getTheme()->getName();
+            if ($creative_from_database->getCountry() != null) {
+                $creative_for_response->country = $creative_from_database->getCountry()->getName();
+            }
+            if ($creative_from_database->getCity() != null) {
+                $creative_for_response->city = $creative_from_database->getCity()->getName();
+            }
             return json_encode($creative_for_response, JSON_UNESCAPED_UNICODE);
         }
 

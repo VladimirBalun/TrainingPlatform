@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="signup-form block">
-                        <p class="signup-icon"><i class="fas fa-user-circle"></i></p>
+                        <p class="signup-link-text"><span class="signup-link active-signup-link">Регистрация</span> / <span class="signup-link">Вход</span></p>
                         <label for="signup-username"><label class="signup-require-color">*</label> Введите имя пользователя:</label>
                         <input class="signup-input" type="text" id="signup-username" maxlength="64"
                             v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
@@ -32,7 +32,7 @@
                             v-model="passwordModel" v-bind:class="{ 'error-input': !isValidPassword }">
                         <label for="signup-privacy"><label class="signup-require-color">*</label> Принимаю условия политики конфиденциальности</label>
                         <input type="checkbox" id="signup-privacy">
-                        <button @click="onSignupButtonClick">Зарегистрироваться</button>
+                        <button @click="onSignupButtonClick">Зарегистрироваться</button><hr>
                         <p class="signup-error-message">{{ errorMessage }}</p>
                         <p class="signup-login"></p>
                     </form>
@@ -194,26 +194,47 @@
 
 <style scoped>
 
+    hr {
+        margin-top: 60px;
+    }
+
     .signup-form {
         margin-top: 70px;
+        background-color: #2a2f51;
         padding: 70px 80px 80px 80px;
+    }
+
+    .signup-link-text {
+        color: white;
+        font-size: 27px;
+        font-family: 'Roboto', sans-serif;
+        margin-bottom: 30px;
+    }
+
+    .signup-link:hover {
+        color: #365afa;
+    }
+
+    .signup-link {
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .active-signup-link {
+        padding-bottom: 7px;
+        border-bottom: 3px solid #365afa;
     }
 
     label {
         font-weight: normal;
         font-family: 'Open Sans', sans-serif;
         font-size: 14px;
-        color: #666666;
+        color: white;
         margin-top: 10px;
     }
 
-    .signup-icon {
-        text-align: center;
-        font-size: 100px;
-        color: #e08d3c;
-    }
-
     .signup-input  {
+        outline: none;
         border: none;
         width: 100%;
         display: block;
@@ -237,7 +258,7 @@
         width: 100%;
         font-size: 16px;
         margin-top: 10px;
-        background-color: #2D71BC;
+        background-color: #365afa;
         color: white;
         border: none;
         border-radius: 5px;

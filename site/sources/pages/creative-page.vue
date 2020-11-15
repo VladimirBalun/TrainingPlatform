@@ -17,18 +17,21 @@
 <template>
     <div>
         <header-component></header-component>
-        <div class="creative-page container">
+        <div v-show="pageLoaded" class="creative-page container">
             <div class="row">
-                <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"
-                    :image_url="this.creativeImageURL" :price="this.creativePrice">
+                <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
+                    :image_url="this.creativeImageURL" :email="this.advertiserEmail"
+                    :phone="this.advertiserPhone" :site="this.advertiserSite" :price="this.creativePrice">
                 </creative-contacts-component>
                 <creative-information-component class="col-lg-8 col-md-8 col-sm-7 col-xs-12"
-                    :title="this.creativeTitle" :description="this.creativeDescription">
+                    :title="this.creativeTitle" :description="this.creativeDescription"
+                    :country="this.creativeCountry" :city="this.creativeCity"
+                    :category="this.creativeCategory" :theme="this.creativeTheme"
+                    :event_date="this.creativeEventDate">
                 </creative-information-component>
                 <proposed-creatives-component :id="id"></proposed-creatives-component>
             </div>
         </div>
-        <footer-component></footer-component>
     </div>
 </template>
 
@@ -53,12 +56,19 @@
         },
         data() {
             return {
-                pageStatus: 0,
+                pageLoaded: false,
                 creativeTitle: "",
                 creativeDescription: "",
                 creativeImageURL: "",
                 creativeEventDate: "",
-                creativePrice: 0
+                creativePrice: 0,
+                creativeCity: "",
+                creativeCountry: "",
+                creativeCategory: "",
+                creativeTheme: "",
+                advertiserEmail: "",
+                advertiserPhone: "",
+                advertiserSite: "",
             };
         },
         computed: {
@@ -71,17 +81,26 @@
                 const self = this;
                 this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
                     .then(response => {
+                        console.log(response);
                         self.creativeTitle = response.body.title;
                         self.creativeDescription = response.body.description;
                         self.creativeImageURL = response.body.image_url;
                         self.creativeEventDate = response.body.event_date;
                         self.creativePrice = response.body.price;
+                        self.advertiserEmail = response.body.email;
+                        self.advertiserPhone = response.body.phone;
+                        self.advertiserSite = response.body.site;
+                        self.creativeCity = response.body.city;
+                        self.creativeCountry = response.body.country;
+                        self.creativeCategory = response.body.category;
+                        self.creativeTheme = response.body.theme;
+                        self.pageLoaded = true;
                     }, error => {
                         console.log(error);
                     });
             },
         },
-        created() {
+        async created() {
             this.loadCreativeInformation();
         }
     }
@@ -93,8 +112,6 @@
     .creative-page {
         position: relative;
         margin-top: 30px;
-        margin-bottom: 30px;
-        min-height: 100%;
     }
 
     @media(max-width:767px) {

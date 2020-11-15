@@ -35,6 +35,8 @@ namespace App\Data\Entity {
         private $email;
         private $site;
         private $phone;
+        private $moderation_status;
+        private $moderation_text;
 
         public function getId() {
             return $this->id;
@@ -154,6 +156,22 @@ namespace App\Data\Entity {
 
         public function setPhone($phone) {
             $this->phone = $phone;
+        }
+
+        public function getModerationStatus() {
+            return $this->moderation_status;
+        }
+
+        public function setModerationStatus($moderation_status) {
+            $this->moderation_status = $moderation_status;
+        }
+
+        public function getModerationText() {
+            return $this->moderation_text;
+        }
+
+        public function setModerationText($moderation_text) {
+            $this->moderation_text = $moderation_text;
         }
 
     }

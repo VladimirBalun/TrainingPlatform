@@ -52,6 +52,12 @@ namespace App {
         echo $controller->getProposedDemoCreativesByCreativeId($_GET['creative_id'], $_GET['count']);
     });
 
+    $router->get('/advertiser_demo_creative', function () {
+        header('Access-Control-Allow-Origin: *');
+        $controller = new CreativesController();
+        echo $controller->getAdvertiserDemoCreativesByAdvertiserId($_GET['advertiser_id']);
+    });
+
     $router->get('/creative', function() {
         header('Access-Control-Allow-Origin: *');
         $controller = new CreativesController();
