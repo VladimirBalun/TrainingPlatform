@@ -32,6 +32,10 @@ namespace App\Data\Service {
             return $this->creatives_dao->getDemoCreatives();
         }
 
+        public function getDemoCreativesByTitlePattern($title_pattern) {
+            return $this->creatives_dao->getDemoCreativesByTitlePattern($title_pattern);
+        }
+
         public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
             return $this->creatives_dao->getAdvertiserDemoCreativesByAdvertiserId($advertiser_id);
         }
@@ -42,6 +46,14 @@ namespace App\Data\Service {
 
         public function getCreativeById($id) {
             return $this->creatives_dao->getCreativeById($id);
+        }
+
+        public function addCreative($creative) {
+            return $this->creatives_dao->addCreative($creative);
+        }
+
+        public function removeCreativeById($creative_id) {
+            return $this->creatives_dao->removeCreativeById($creative_id);
         }
 
     }

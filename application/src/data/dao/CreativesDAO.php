@@ -32,6 +32,38 @@ namespace App\Data\DAO {
                 'SELECT id, title, brief_description, image_url, event_date, price FROM creatives'
             );
 
+            return $this->fillDemoCreativesFromDatabase($database_creatives);
+        }
+
+        public function getDemoCreativesByTitlePattern($title_pattern) {
+            $database_creatives = R::getAll(
+                'SELECT id, title, brief_description, image_url, event_date, price 
+                FROM creatives
+                WHERE title LIKE \'%?%\'',
+                [$title_pattern]
+            );
+
+            return $this->fillDemoCreativesFromDatabase($database_creatives);
+        }
+
+        /*
+         * In the future need to use categories and themes
+         * of the creatives for valid offers
+         */
+
+        public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
+            $database_creatives = R::getAll(
+                'SELECT id, title, brief_description, image_url, event_date, price
+                FROM creatives
+                WHERE id != :id_creative
+                LIMIT :count_creatives',
+                ['id_creative' => $creative_id, 'count_creatives' => $count]
+            );
+
+            return $this->fillDemoCreativesFromDatabase($database_creatives);
+        }
+
+        private function fillDemoCreativesFromDatabase($database_creatives) {
             $creatives = array();
             foreach ($database_creatives as $database_creative) {
                 $creative = new CreativeEntity();
@@ -64,35 +96,6 @@ namespace App\Data\DAO {
                 $creative->setEventDate($database_creative['event_date']);
                 $creative->setModerationStatus((int)$database_creative['moderation_status']);
                 $creative->setModerationText($database_creative['moderation_text']);
-                array_push($creatives, $creative);
-            }
-
-            return $creatives;
-        }
-
-        /*
-         * In the future need to use categories and themes
-         * of the creatives for valid offers
-         */
-
-        public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
-            $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price
-                FROM creatives
-                WHERE id != :id_creative
-                LIMIT :count_creatives',
-                ['id_creative' => $creative_id, 'count_creatives' => $count]
-            );
-
-            $creatives = array();
-            foreach ($database_creatives as $database_creative) {
-                $creative = new CreativeEntity();
-                $creative->setId($database_creative['id']);
-                $creative->setTitle($database_creative['title']);
-                $creative->setBriefDescription($database_creative['brief_description']);
-                $creative->setImageUrl($database_creative['image_url']);
-                $creative->setEventDate($database_creative['event_date']);
-                $creative->setPrice($database_creative['price']);
                 array_push($creatives, $creative);
             }
 
@@ -146,6 +149,14 @@ namespace App\Data\DAO {
             }
 
             return $creative;
+        }
+
+        public function addCreative($creative) {
+            return true;
+        }
+
+        public function removeCreativeById($creative_id) {
+            return true;
         }
 
     }

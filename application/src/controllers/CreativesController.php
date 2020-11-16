@@ -31,6 +31,20 @@ namespace App\Controllers {
 
         public function getDemoCreatives() {
             $creatives_from_database = $this->creatives_service->getDemoCreatives();
+            return $this->generateDemoCreativesResponse($creatives_from_database);
+        }
+
+        public function getDemoCreativesByTitlePattern($title_pattern) {
+            $creatives_from_database = $this->creatives_service->getDemoCreativesByTitlePattern($title_pattern);
+            return $this->generateDemoCreativesResponse($creatives_from_database);
+        }
+
+        public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
+            $creatives_from_database = $this->creatives_service->getProposedDemoCreativesByCreativeId($creative_id, $count);
+            return $this->generateDemoCreativesResponse($creatives_from_database);
+        }
+
+        private function generateDemoCreativesResponse($creatives_from_database) {
             $creatives_for_response = array();
             foreach ($creatives_from_database as $creative_from_database) {
                 $creative = new class() {
@@ -47,6 +61,7 @@ namespace App\Controllers {
                 $creative->image_url = $creative_from_database->getImageUrl();
                 $creative->event_date = $creative_from_database->getEventDate();
                 $creative->price = $creative_from_database->getPrice();
+
                 array_push($creatives_for_response, $creative);
             }
             return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
@@ -70,30 +85,6 @@ namespace App\Controllers {
                 $creative->event_date = $creative_from_database->getEventDate();
                 $creative->moderation_status = $creative_from_database->getModerationStatus();
                 $creative->moderation_text = $creative_from_database->getModerationText();
-                array_push($creatives_for_response, $creative);
-            }
-            return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
-        }
-
-        public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
-            $creatives_from_database = $this->creatives_service->getProposedDemoCreativesByCreativeId($creative_id, $count);
-            $creatives_for_response = array();
-            foreach ($creatives_from_database as $creative_from_database) {
-                $creative = new class() {
-                    public $id;
-                    public $title;
-                    public $brief_description;
-                    public $image_url;
-                    public $event_date;
-                    public $price;
-                };
-                $creative->id = $creative_from_database->getId();
-                $creative->title = $creative_from_database->getTitle();
-                $creative->brief_description = $creative_from_database->getBriefDescription();
-                $creative->image_url = $creative_from_database->getImageUrl();
-                $creative->event_date = $creative_from_database->getEventDate();
-                $creative->price = $creative_from_database->getPrice();
-
                 array_push($creatives_for_response, $creative);
             }
             return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
@@ -137,6 +128,14 @@ namespace App\Controllers {
                 $creative_for_response->city = $creative_from_database->getCity()->getName();
             }
             return json_encode($creative_for_response, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function addCreative($creative) {
+            return $this->creatives_service->addCreative($creative);
+        }
+
+        public function removeCreativeById($creative_id) {
+            return $this->creatives_service->removeCreativeById($creative_id);
         }
 
     }
