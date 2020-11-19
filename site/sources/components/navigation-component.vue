@@ -260,13 +260,13 @@
 
     @media(max-width:767px) {
 
-      .search-block {
-          margin-bottom: 15px;
-      }
+        .search-block {
+            margin-bottom: 15px;
+        }
 
-      .navigation-wrapper {
-          height: auto;
-      }
+        .navigation-wrapper {
+            height: auto;
+        }
 
     }
 

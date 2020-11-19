@@ -19,9 +19,11 @@
         <header-component></header-component>
         <div class="container">
             <div class="row">
-                <admin-room-navigation-component class="col-lg-3 col-md-3 col-sm-3 col-xs-12"></admin-room-navigation-component>
-                <admin-room-content-component v-for="creative in advertiserActiveCreatives" class="col-lg-9 col-md-9 col-sm-9 col-xs-12"
-                    :id="creative.id" :title="creative.title" :image_url="creative.image_url">
+                <admin-room-navigation-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"></admin-room-navigation-component>
+                <admin-room-content-component v-for="creative in advertiserActiveCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
+                    :id="creative.id" :title="creative.title" :image_url="creative.image_url" :event_date="creative.event_date"
+                    :moderation_status="creative.moderation_status" :moderation_text="creative.moderation_text"
+                    :brief_description="creative.brief_description">
                 </admin-room-content-component>
             </div>
         </div>
@@ -53,10 +55,6 @@
         },
         methods: {
             fillAdvertiserCreatives() {
-                const MODERATION_STATUS_IN_PROGRESS = 0;
-                const MODERATION_STATUS_SUCCESS = 1;
-                const MODERATION_STATUS_FAILED = 2;
-
                 const self = this;
                 this.$http.get("http://localhost:8080/advertiser_demo_creative", { params: { advertiser_id: self.id } })
                     .then(response => {
@@ -65,6 +63,7 @@
                             self.advertiserActiveCreatives.push({
                                 "id" : creative.id,
                                 "title" : creative.title,
+                                "brief_description" : creative.brief_description,
                                 "image_url" : creative.image_url,
                                 "event_date" : creative.event_date,
                                 "moderation_status" : creative.moderation_status,
@@ -72,10 +71,13 @@
                             });
                         });
                     });
-            }
+            },
         },
         created() {
             this.fillAdvertiserCreatives();
+            this.$on('clickDeleteCreative', (creativeId) => {
+                console.log(creativeId);
+            });
         }
     }
 

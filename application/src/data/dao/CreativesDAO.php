@@ -29,7 +29,9 @@ namespace App\Data\DAO {
 
         public function getDemoCreatives() {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price FROM creatives'
+                'SELECT id, title, brief_description, image_url, event_date, price 
+                    FROM creatives
+                    WHERE moderation_status != 0'
             );
 
             return $this->fillDemoCreativesFromDatabase($database_creatives);
@@ -39,7 +41,7 @@ namespace App\Data\DAO {
             $database_creatives = R::getAll(
                 'SELECT id, title, brief_description, image_url, event_date, price 
                 FROM creatives
-                WHERE title LIKE \'%?%\'',
+                WHERE title LIKE \'%?%\' AND moderation_status != 0',
                 [$title_pattern]
             );
 
@@ -55,7 +57,7 @@ namespace App\Data\DAO {
             $database_creatives = R::getAll(
                 'SELECT id, title, brief_description, image_url, event_date, price
                 FROM creatives
-                WHERE id != :id_creative
+                WHERE id != :id_creative AND moderation_status != 0
                 LIMIT :count_creatives',
                 ['id_creative' => $creative_id, 'count_creatives' => $count]
             );
@@ -81,7 +83,7 @@ namespace App\Data\DAO {
 
         public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
             $database_creatives = R::getAll(
-                'SELECT id, title, image_url, event_date, moderation_status, moderation_text 
+                'SELECT id, title, brief_description, image_url, event_date, moderation_status, moderation_text 
                 FROM creatives
                 WHERE id_advertiser = ?',
                 [$advertiser_id]
@@ -92,6 +94,7 @@ namespace App\Data\DAO {
                 $creative = new CreativeEntity();
                 $creative->setId($database_creative['id']);
                 $creative->setTitle($database_creative['title']);
+                $creative->setBriefDescription($database_creative['brief_description']);
                 $creative->setImageUrl($database_creative['image_url']);
                 $creative->setEventDate($database_creative['event_date']);
                 $creative->setModerationStatus((int)$database_creative['moderation_status']);
@@ -106,7 +109,8 @@ namespace App\Data\DAO {
             $database_creative = R::getRow(
                 'SELECT cr.title, cr.description, cr.image_url, cr.event_date, cr.price, 
                     cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name as country_name,
-                    cit.name as city_name, cat.name as category_name, th.name as theme_name, is_online
+                    cit.name as city_name, cat.name as category_name, th.name as theme_name, is_online,
+                    moderation_status
                 FROM creatives cr
                 LEFT JOIN countries coun ON cr.id_country = coun.id
                 LEFT JOIN cities cit ON cr.id_city = cit.id
@@ -127,6 +131,7 @@ namespace App\Data\DAO {
             $creative->setSite($database_creative['advertiser_site']);
             $creative->setPhone($database_creative['advertiser_phone']);
             $creative->setOnline($database_creative['is_online']);
+            $creative->setModerationStatus((int)$database_creative['moderation_status']);
 
             $category = new EventCategoryEntity();
             $category->setName($database_creative['category_name']);

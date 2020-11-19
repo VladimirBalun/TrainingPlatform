@@ -47,6 +47,7 @@
     "use strict";
 
     import MD5 from "crypto-js/md5";
+    import * as protocol from '../scripts/protocol'
 
     export default {
         name: "signup-page",
@@ -124,14 +125,6 @@
                     return;
                 }
 
-                const SIGNUP_SUCCESS = 0;
-                const SIGNUP_ERROR_USERNAME_EXISTS = 1;
-                const SIGNUP_ERROR_EMAIL_EXISTS = 2;
-                const SIGNUP_ERROR_INCORRECT_USERNAME = 3;
-                const SIGNUP_ERROR_INCORRECT_EMAIL = 4;
-                const SIGNUP_ERROR_INCORRECT_PASSWORD = 5;
-                const SIGNUP_ERROR_UNKNOWN = 6;
-
                 const self = this;
                 this.$http.post("http://localhost:8080/advertisers_signup",
                     {
@@ -143,33 +136,33 @@
                         console.log(response);
                         const status = response.status;
                         switch (status) {
-                            case SIGNUP_SUCCESS: {
+                            case protocol.SIGNUP_SUCCESS: {
                                 alert("Успешная регистрация");
                                 break;
                             }
-                            case SIGNUP_ERROR_USERNAME_EXISTS: {
+                            case protocol.SIGNUP_ERROR_USERNAME_EXISTS: {
                                 self.isValidUsername = false;
                                 self.errorMessage = "Пользователь с таким именем уже существует";
                                 break;
                             }
-                            case SIGNUP_ERROR_EMAIL_EXISTS: {
+                            case protocol.SIGNUP_ERROR_EMAIL_EXISTS: {
                                 self.isValidEmail = false;
                                 self.errorMessage = "Пользователь с таким e-mail уже существует";
                                 break;
                             }
-                            case SIGNUP_ERROR_INCORRECT_USERNAME:
+                            case protocol.SIGNUP_ERROR_INCORRECT_USERNAME:
                                 self.isValidUsername = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован, некорректное имя пользователя";
                                 break;
-                            case SIGNUP_ERROR_INCORRECT_EMAIL:
+                            case protocol.SIGNUP_ERROR_INCORRECT_EMAIL:
                                 self.isValidEmail = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован, некорректный e-mail";
                                 break;
-                            case SIGNUP_ERROR_INCORRECT_PASSWORD:
+                            case protocol.SIGNUP_ERROR_INCORRECT_PASSWORD:
                                 self.isValidEmail = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован, некорректный пароль";
                                 break;
-                            case SIGNUP_ERROR_UNKNOWN: {
+                            case protocol.SIGNUP_ERROR_UNKNOWN: {
                                 self.isValidUsername = false;
                                 self.isValidEmail = false;
                                 self.isValidPassword = false;

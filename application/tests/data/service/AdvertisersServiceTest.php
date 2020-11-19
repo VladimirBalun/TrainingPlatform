@@ -18,7 +18,7 @@
 
 namespace Tests\data\service {
 
-    use App\Common\Status;
+    use App\Common\Protocol;
     use App\Data\Entity\AdvertiserEntity;
     use App\Data\Service\AdvertisersService;
     use PHPUnit\Framework\TestCase;
@@ -32,10 +32,10 @@ namespace Tests\data\service {
             $advertisers_service = new AdvertisersService();
 
             $advertiser->setUsername('');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_USERNAME, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_USERNAME, $advertisers_service->signupAdvertiser($advertiser));
 
             $advertiser->setUsername('max_length_username_more_than_64_symbols____________________________');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_USERNAME, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_USERNAME, $advertisers_service->signupAdvertiser($advertiser));
         }
 
         public function testSignupWithIncorrectEmail() {
@@ -45,12 +45,12 @@ namespace Tests\data\service {
             $advertisers_service = new AdvertisersService();
 
             $advertiser->setEmail('');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_EMAIL, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_EMAIL, $advertisers_service->signupAdvertiser($advertiser));
 
             $advertiser->setEmail('max_length_email_more_than_255_symbols______________________________________
                 _____________________________________________________________________________________________________
                 _____________________________________________________________________________________________________');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_EMAIL, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_EMAIL, $advertisers_service->signupAdvertiser($advertiser));
         }
 
         public function testSignupWithIncorrectPassword() {
@@ -60,13 +60,13 @@ namespace Tests\data\service {
             $advertisers_service = new AdvertisersService();
 
             $advertiser->setPassword('');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_PASSWORD, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_PASSWORD, $advertisers_service->signupAdvertiser($advertiser));
 
             $advertiser->setPassword('password_length_is_more_than_md5_hash_length');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_PASSWORD, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_PASSWORD, $advertisers_service->signupAdvertiser($advertiser));
 
             $advertiser->setPassword('less_than_md5_hash_length');
-            $this->assertEquals(Status::$SIGNUP_ERROR_INCORRECT_PASSWORD, $advertisers_service->signupAdvertiser($advertiser));
+            $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_PASSWORD, $advertisers_service->signupAdvertiser($advertiser));
         }
 
     }

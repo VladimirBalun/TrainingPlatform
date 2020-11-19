@@ -19,6 +19,9 @@
         <header-component></header-component>
         <div v-show="pageLoaded" class="creative-page container">
             <div class="row">
+                <div v-show="moderation !== ''" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="creative-page-error-block">{{ moderation }}</div>
+                </div>
                 <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
                     :image_url="this.creativeImageURL" :email="this.advertiserEmail"
                     :phone="this.advertiserPhone" :site="this.advertiserSite" :price="this.creativePrice">
@@ -45,6 +48,8 @@
     import creativeInformationComponent from "../components/creative-information-component";
     import proposedCreativesComponent from "../components/proposed-creatives-component";
 
+    import * as protocol from '../scripts/protocol'
+
     export default {
         name: "creative-page",
         components: {
@@ -66,6 +71,7 @@
                 creativeCountry: "",
                 creativeCategory: "",
                 creativeTheme: "",
+                creativeModerationStatus: 0,
                 advertiserEmail: "",
                 advertiserPhone: "",
                 advertiserSite: "",
@@ -74,6 +80,20 @@
         computed: {
             id() {
                 return this.$route.params.id;
+            },
+            moderation() {
+                switch (this.creativeModerationStatus) {
+                    case protocol.MODERATION_STATUS_IN_PROGRESS: {
+                        return "Данное объявление не было опубликовано и его пока не могут " +
+                            "увидеть другие пользователи, так как оно еще находится в режиме модерации...";
+                    }
+                    case protocol.MODERATION_STATUS_FAILED: {
+                        return "Данное объявление не было опубликовано и его пока не могут " +
+                            "увидеть другие пользователи, так как оно не прошло модерацию...";
+                    }
+                }
+
+                return "";
             }
         },
         methods: {
@@ -94,6 +114,7 @@
                         self.creativeCountry = response.body.country;
                         self.creativeCategory = response.body.category;
                         self.creativeTheme = response.body.theme;
+                        self.creativeModerationStatus = response.body.moderation_status;
                         self.pageLoaded = true;
                     }, error => {
                         console.log(error);
@@ -114,10 +135,25 @@
         margin-top: 30px;
     }
 
+    .creative-page-error-block {
+        background-color: #8f1c2a;
+        margin-bottom: 30px;
+        border-radius: 5px;
+        color: white;
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 15px;
+        padding: 20px;
+    }
+
     @media(max-width:767px) {
 
         .creative-page {
             margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .creative-page-error-block {
             margin-bottom: 15px;
         }
 

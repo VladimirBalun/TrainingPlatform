@@ -74,6 +74,7 @@ namespace App\Controllers {
                 $creative = new class() {
                     public $id;
                     public $title;
+                    public $brief_description;
                     public $image_url;
                     public $event_date;
                     public $moderation_status;
@@ -81,6 +82,7 @@ namespace App\Controllers {
                 };
                 $creative->id = $creative_from_database->getId();
                 $creative->title = $creative_from_database->getTitle();
+                $creative->brief_description = $creative_from_database->getBriefDescription();
                 $creative->image_url = $creative_from_database->getImageUrl();
                 $creative->event_date = $creative_from_database->getEventDate();
                 $creative->moderation_status = $creative_from_database->getModerationStatus();
@@ -107,6 +109,7 @@ namespace App\Controllers {
                 public $country;
                 public $city;
                 public $is_online;
+                public $moderation_status;
             };
 
             $creative_for_response->id = $creative_from_database->getId();
@@ -119,6 +122,7 @@ namespace App\Controllers {
             $creative_for_response->phone = $creative_from_database->getPhone();
             $creative_for_response->site = $creative_from_database->getSite();
             $creative_for_response->is_online = $creative_from_database->getOnline();
+            $creative_for_response->moderation_status = $creative_from_database->getModerationStatus();
             $creative_for_response->category = $creative_from_database->getCategory()->getName();
             $creative_for_response->theme = $creative_from_database->getTheme()->getName();
             if ($creative_from_database->getCountry() != null) {

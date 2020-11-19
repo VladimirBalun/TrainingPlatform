@@ -18,7 +18,7 @@
 
 namespace App\Controllers {
 
-    use App\Common\Status;
+    use App\Common\Protocol;
     use App\Data\Service\AdvertisersService;
 
     class AdvertisersController extends Controller {
@@ -35,7 +35,7 @@ namespace App\Controllers {
                 public $result;
             };
             $response->result = $this->advertisers_service->loginAdvertiser($advertiser);
-            if ($response->result == Status::$LOGIN_SUCCESS) {
+            if ($response->result == Protocol::$LOGIN_SUCCESS) {
                 $one_month_tls = time() + 60 * 60 * 24 * 30;
                 setcookie('username', $advertiser->getUsername(), $one_month_tls, '/', null, null, true); // httponly !!!
                 setcookie('hash', $advertiser->getHash(), $one_month_tls, '/', null, null, true); // httponly !!!

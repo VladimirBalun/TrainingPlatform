@@ -18,7 +18,13 @@
 
 namespace App\Common {
 
-    class Status {
+    /*
+     * This constants use in protocol between client application, because
+     * if you want ot change this constant, you'll need to change the same
+     * constant value in the client application
+     */
+
+    class Protocol {
 
         // Signup
         public static $SIGNUP_SUCCESS = 0;
@@ -34,6 +40,10 @@ namespace App\Common {
         public static $LOGIN_ERROR_INCORRECT_EMAIL_OR_PASSWORD = 1;
         public static $LOGIN_ERROR_UNKNOWN = 2;
 
+        // Moderation
+        public static $MODERATION_STATUS_IN_PROGRESS = 0;
+        public static $MODERATION_STATUS_SUCCESS = 1;
+        public static $MODERATION_STATUS_FAILED = 2;
     }
 
 }

@@ -17,14 +17,19 @@
 <template>
     <div class="admin-room-navigation-wrapper">
         <div class="admin-room-block block">
+            <input type="text" placeholder="Введите адрес изображения...">
+            <button class="admin-room-navigation-button">Сменить изображение</button><hr>
             <button class="admin-room-navigation-button">Добавить объявление</button>
         </div>
         <div class="hidden-xs">
-            <div class="admin-room-advertisement-block">
-                <img class="admin-room-advertisement-image" src="https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-1/74352875_104980200936259_1210857521053433856_n.png?_nc_cat=102&ccb=2&_nc_sid=dbb9e7&_nc_ohc=M8xnZuw3zh8AX9xNd8C&_nc_ht=scontent-arn2-1.xx&oh=b3b4e9468f4bb7c1fa2495d1ac11c66b&oe=5FD50247">
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
-            <div class="admin-room-advertisement-block">
-                <img class="admin-room-advertisement-image" src="https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-1/74352875_104980200936259_1210857521053433856_n.png?_nc_cat=102&ccb=2&_nc_sid=dbb9e7&_nc_ohc=M8xnZuw3zh8AX9xNd8C&_nc_ht=scontent-arn2-1.xx&oh=b3b4e9468f4bb7c1fa2495d1ac11c66b&oe=5FD50247">
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
+            </div>
+            <div class="advertisement-block">
+                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
         </div>
     </div>
@@ -42,17 +47,20 @@
 <style scoped>
 
     .admin-room-navigation-wrapper {
-        padding-bottom: 30px;
+        margin-bottom: 30px;
     }
 
     .admin-room-block {
-        padding: 20px;
         margin-top: 30px;
     }
 
-    .admin-room-advertisement-image {
+    .advertisement-block {
         margin-top: 30px;
         position: relative;
+        border-radius: 5px;
+    }
+
+    .advertisement-image {
         width: 100%;
         border-radius: 5px;
     }
@@ -62,7 +70,6 @@
         outline: none;
         text-align: center;
         display: block;
-        width: 100%;
         font-size: 16px;
         text-decoration: none;
         background-color: #2D71BC;
@@ -71,11 +78,37 @@
         padding: 7px 30px 7px 30px;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
+        margin: 20px;
+        width: calc(100% - 40px);
     }
 
     .admin-room-navigation-button:hover {
         text-decoration: none;
         background-color: #10367B;
+    }
+
+    input[type="text"] {
+        border: none;
+        display: block;
+        margin: 20px 20px 0 20px;
+        border-radius: 5px;
+        background-color: #EEF3F8;
+        font-size: 16px;
+        padding: 10px 15px 10px 15px;
+        font-family: 'Open Sans', sans-serif;
+        width: calc(100% - 40px);
+    }
+
+    @media(max-width:767px) {
+
+        .admin-room-block {
+            margin-top: 15px;
+        }
+
+        .admin-room-navigation-wrapper {
+            margin-bottom: 0;
+        }
+
     }
 
 </style>

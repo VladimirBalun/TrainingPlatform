@@ -21,14 +21,12 @@
             <p class="content-title">Как женское "Нет" превратить в женское "Да"</p>
             <p class="content-description">{{ brief_description }}</p>
             <img class="content-image" :src="image_url">
-
             <p class="content-date">
                 <i class="fas fa-calendar-alt"></i>{{ (event_date === null) ? ('Без даты') : (event_date) }}
-                <!--<label class="content-type"><i class="fas fa-toggle-off"></i></i>Offline</label>-->
-                <label class="content-type"><i class="fas fa-toggle-on"></i></i>Online</label>
+                <label class="content-type"><i class="fas fa-toggle-on"></i>Online</label>
             </p><hr>
             <p class="content-price">{{ price }}₽</p>
-            <router-link  target="_blank" :to="'/creative/' + id" class="content-button">Подробнее<i class="fas fa-angle-double-right"></i></router-link>
+            <router-link target="_blank" :to="'/creative/' + id" class="content-button">Подробнее<i class="fas fa-angle-double-right"></i></router-link>
         </div>
     </div>
 </template>
@@ -96,7 +94,7 @@
 
     .content-price {
         font-size: 23px;
-        color: #10367B;;
+        color: #10367B;
         font-family: 'Roboto', sans-serif;
         display: inline-block;
         padding: 2px 0 8px 20px;
