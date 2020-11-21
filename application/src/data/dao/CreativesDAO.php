@@ -41,8 +41,8 @@ namespace App\Data\DAO {
             $database_creatives = R::getAll(
                 'SELECT id, title, brief_description, image_url, event_date, price 
                 FROM creatives
-                WHERE title LIKE \'%?%\' AND moderation_status != 0',
-                [$title_pattern]
+                WHERE title LIKE ? AND moderation_status != 0',
+                ['%' . $title_pattern . '%']
             );
 
             return $this->fillDemoCreativesFromDatabase($database_creatives);

@@ -18,8 +18,8 @@
     <div class="navigation-wrapper">
         <div class="search-block block">
            <p class="navigation-title"><i class="fas fa-search"></i>Поиск</p><hr>
-           <input type="text" placeholder="Введите название...">
-           <button class="navigation-button">Искать</button>
+           <input type="text" v-model="searchCreativesPatternModel" placeholder="Введите название...">
+           <button v-on:click="onSearchCreativesButtonClick" class="navigation-button">Искать</button>
         </div>
         <div class="navigation block hidden-xs">
             <p class="navigation-title"><i class="fas fa-filter"></i>Фильтры</p><hr>
@@ -95,8 +95,10 @@
 
     export default {
         name: "navigation-component",
+        emits: ["search-creatives-button-clicked"],
         data() {
             return {
+                searchCreativesPatternModel: "",
                 categoriesModel: [],
                 themesModel: [],
                 countriesModel: [],
@@ -130,11 +132,11 @@
                         });
                 }
             },
-
             onChangeCountryModel(event) {
                 this.fillCitiesModelBySelectedCountry(event);
             },
-            onFindButtonClick() {
+            onSearchCreativesButtonClick() {
+                this.$root.$emit("search-creatives-button-clicked", this.searchCreativesPatternModel);
             }
         },
         created() {

@@ -46,10 +46,10 @@ namespace App {
         echo $controller->getDemoCreatives();
     });
 
-    $router->get('/demo_creatives', function() {
+    $router->get('/search_demo_creatives', function() {
         header('Access-Control-Allow-Origin: *');
         $controller = new CreativesController();
-        echo $controller->getDemoCreativesByTitlePattern($_GET['title_pattern']);
+        echo $controller->getDemoCreativesByTitlePattern(urldecode($_GET['title_pattern']));
     });
 
     $router->get('/proposed_demo_creatives', function () {

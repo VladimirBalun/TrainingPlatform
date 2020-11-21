@@ -18,7 +18,7 @@
     <div class="content-wrapper">
         <div class="content block">
             <i class="fas fa-user-circle"></i>
-            <p class="content-title">Как женское "Нет" превратить в женское "Да"</p>
+            <p class="content-title">{{ title }}</p>
             <p class="content-description">{{ brief_description }}</p>
             <img class="content-image" :src="image_url">
             <p class="content-date">
@@ -61,10 +61,14 @@
     }
 
     .content-title {
+        height: 70px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
         font-size: 17px;
-        padding: 17px 20px 5px 20px;
+        padding: 17px 20px 5px 0;
     }
 
     .fa-calendar-alt, .fa-toggle-on, .fa-toggle-off {

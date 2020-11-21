@@ -53,24 +53,47 @@
         },
         methods: {
             fillDemoCreatives() {
-              const self = this;
-              this.$http.get("http://localhost:8080/demo_creatives")
-                  .then(response => {
-                      response.body.forEach(creative => {
-                          self.demoCreatives.push({
-                              "id" : creative.id,
-                              "title" : creative.title,
-                              "brief_description" : creative.brief_description,
-                              "image_url" : creative.image_url,
-                              "event_date" : creative.event_date,
-                              "price" : creative.price,
-                          })
-                      });
-                  });
+                const self = this;
+                this.$http.get("http://localhost:8080/demo_creatives")
+                    .then(response => {
+                        self.demoCreatives = [];
+                        response.body.forEach(creative => {
+                            self.demoCreatives.push({
+                                "id" : creative.id,
+                                "title" : creative.title,
+                                "brief_description" : creative.brief_description,
+                                "image_url" : creative.image_url,
+                                "event_date" : creative.event_date,
+                                "price" : creative.price,
+                            })
+                        });
+                    });
+            },
+            fillCreativesByTitlePattern(titlePattern) {
+                const self = this;
+                this.$http.get("http://localhost:8080/search_demo_creatives", { params: { title_pattern: encodeURI(titlePattern) } })
+                    .then(response => {
+                        self.demoCreatives = [];
+                        console.log(response);
+                        response.body.forEach(creative => {
+                            self.demoCreatives.push({
+                                "id" : creative.id,
+                                "title" : creative.title,
+                                "brief_description" : creative.brief_description,
+                                "image_url" : creative.image_url,
+                                "event_date" : creative.event_date,
+                                "price" : creative.price,
+                            })
+                        });
+                    });
             }
         },
         created() {
             this.fillDemoCreatives();
+            const self = this;
+            this.$root.$on("search-creatives-button-clicked", (titlePattern) => {
+                self.fillCreativesByTitlePattern(titlePattern);
+            })
         }
     };
 
