@@ -25,10 +25,11 @@
                 <router-link target="_blank" :to="'/creative/' + id" class="admin-room-content-button">
                     Подробнее<i class="fas fa-angle-double-right"></i>
                 </router-link>
-                <button v-on:click="onChangeCreativeButtonClick(id)"class="admin-room-content-button"><i class="fas fa-pencil-alt"></i></button>
-                <button v-on:click="onDeleteCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-trash-alt"></i></button>
+                <button v-on:click="onChangeCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-pencil-alt"></i></button>
+                <button data-toggle="modal" data-target="#delete-creative-modal" v-on:click="onDeleteCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-trash-alt"></i></button>
             </div>
         </div>
+        <admin-room-delete-creative-modal></admin-room-delete-creative-modal>
     </div>
 </template>
 
@@ -36,7 +37,12 @@
 
     import * as protocol from '../scripts/protocol'
 
+    import adminRoomDeleteCreativeModal from './admin-room-delete-creative-modal';
+
     export default {
+        components: {
+            adminRoomDeleteCreativeModal
+        },
         props: ["id", "title", "brief_description", "image_url", "event_date", "moderation_status", "moderation_text"],
         name: "admin-room-content-component",
         computed: {
@@ -62,10 +68,10 @@
         },
         methods: {
             onChangeCreativeButtonClick(creativeId) {
-              this.$emit('clickDeleteCreative', creativeId);
+                this.$root.$emit('click-change-creative', creativeId);
             },
             onDeleteCreativeButtonClick(creativeId) {
-                this.$emit('clickDeleteCreative', creativeId);
+                this.$root.$emit('click-delete-creative', creativeId);
             }
         }
     }

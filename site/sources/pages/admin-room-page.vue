@@ -75,8 +75,13 @@
         },
         created() {
             this.fillAdvertiserCreatives();
-            this.$on('clickDeleteCreative', (creativeId) => {
+
+            const self = this;
+            this.$root.$on('deleted-creative', (creativeId) => {
                 console.log(creativeId);
+                self.advertiserActiveCreatives = self.advertiserActiveCreatives.filter((creative) => {
+                    return creative.id !== creativeId;
+                });
             });
         }
     }

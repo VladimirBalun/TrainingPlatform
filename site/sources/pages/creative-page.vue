@@ -17,24 +17,32 @@
 <template>
     <div>
         <header-component></header-component>
-        <div v-show="pageLoaded" class="creative-page container">
+        <div class="creative-page container">
             <div class="row">
-                <div v-show="moderation !== ''" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="creative-page-error-block">{{ moderation }}</div>
+                <div v-show="(pageLoaded) && (creativeTitle !== null) && (creativeDescription !== null)">
+                    <div v-show="moderation !== ''" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="creative-page-error-block">{{ moderation }}</div>
+                    </div>
+                    <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
+                        :image_url="creativeImageURL" :email="advertiserEmail"
+                        :phone="advertiserPhone" :site="advertiserSite" :price="creativePrice">
+                    </creative-contacts-component>
+                    <creative-information-component class="col-lg-8 col-md-8 col-sm-7 col-xs-12"
+                        :title="creativeTitle" :description="creativeDescription"
+                        :country="creativeCountry" :city="creativeCity"
+                        :category="creativeCategory" :theme="creativeTheme"
+                        :event_date="creativeEventDate">
+                    </creative-information-component>
+                    <proposed-creatives-component :id="id"></proposed-creatives-component>
                 </div>
-                <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
-                    :image_url="this.creativeImageURL" :email="this.advertiserEmail"
-                    :phone="this.advertiserPhone" :site="this.advertiserSite" :price="this.creativePrice">
-                </creative-contacts-component>
-                <creative-information-component class="col-lg-8 col-md-8 col-sm-7 col-xs-12"
-                    :title="this.creativeTitle" :description="this.creativeDescription"
-                    :country="this.creativeCountry" :city="this.creativeCity"
-                    :category="this.creativeCategory" :theme="this.creativeTheme"
-                    :event_date="this.creativeEventDate">
-                </creative-information-component>
-                <proposed-creatives-component :id="id"></proposed-creatives-component>
+                <div v-show="(pageLoaded) && ((creativeTitle === null) || (creativeDescription === null))">
+                    <div class="creative-page-error-message col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        Объявление не найдено, возможно оно было удалено или деактивировано рекламодателем...
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -144,6 +152,16 @@
         font-family: 'Open Sans', sans-serif;
         font-size: 15px;
         padding: 20px;
+    }
+
+    .creative-page-error-message {
+        height: 90vh;
+        font-size: 18px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Roboto', sans-serif;
     }
 
     @media(max-width:767px) {

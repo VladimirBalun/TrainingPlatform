@@ -20,10 +20,17 @@
         <diV class="main-page container">
             <div class="row">
                 <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"></navigation-component>
-                <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
-                    :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
-                    :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
-                </content-component>
+                <div v-show="(pageLoaded) && (demoCreatives.length !== 0)">
+                    <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
+                                       :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
+                                       :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
+                    </content-component>
+                </div>
+                <div v-show="(pageLoaded) && (demoCreatives.length === 0)">
+                    <div class="main-page-error-message col-lg-8 col-md-8 col-sm-7 col-xs-12">
+                        По вашему запросу не найдено ни одного объявления...
+                    </div>
+                </div>
             </div>
         </diV>
         <footer-component></footer-component>
@@ -48,6 +55,7 @@
         },
         data() {
             return {
+                pageLoaded: false,
                 demoCreatives: []
             };
         },
@@ -67,6 +75,8 @@
                                 "price" : creative.price,
                             })
                         });
+
+                        self.pageLoaded = true;
                     });
             },
             fillCreativesByTitlePattern(titlePattern) {
@@ -105,10 +115,24 @@
         margin-top: 30px;
     }
 
+    .main-page-error-message {
+        height: 90vh;
+        font-size: 18px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Roboto', sans-serif;
+    }
+
     @media(max-width:767px) {
 
         .main-page {
             margin-top: 15px;
+        }
+
+        .main-page-error-message {
+            height: 60vh;
         }
 
     }
