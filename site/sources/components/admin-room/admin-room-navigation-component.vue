@@ -19,7 +19,7 @@
         <div class="admin-room-block block">
             <input type="text" placeholder="Введите адрес изображения...">
             <button class="admin-room-navigation-button">Сменить изображение</button><hr>
-            <button class="admin-room-navigation-button">Добавить объявление</button>
+            <button class="admin-room-navigation-button" data-toggle="modal" data-target="#add-creative-modal">Добавить объявление</button>
         </div>
         <div class="hidden-xs">
             <div class="advertisement-block">
@@ -32,14 +32,19 @@
                 <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
         </div>
+        <admin-room-add-creative-component></admin-room-add-creative-component>
     </div>
 </template>
 
 <script>
 
-    export default {
-        name: "admin-room-navigation-component"
+    import adminRoomAddCreativeComponent from './admin-room-add-creative-component'
 
+    export default {
+        name: "admin-room-navigation-component",
+        components: {
+            adminRoomAddCreativeComponent
+        },
     }
 
 </script>

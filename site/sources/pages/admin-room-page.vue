@@ -33,8 +33,8 @@
 <script>
 
     import headerComponent from "../components/header-component";
-    import adminRoomContentComponent from "../components/admin-room-content-component"
-    import adminRoomNavigationComponent from "../components/admin-room-navigation-component";
+    import adminRoomContentComponent from "../components/admin-room/admin-room-content-component"
+    import adminRoomNavigationComponent from "../components/admin-room/admin-room-navigation-component";
 
     export default {
         name: "admin-room-page",

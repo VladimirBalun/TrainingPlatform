@@ -35,7 +35,7 @@
 
 <script>
 
-    import * as protocol from '../scripts/protocol'
+    import * as protocol from '../../scripts/protocol'
 
     import adminRoomDeleteCreativeModal from './admin-room-delete-creative-modal';
 

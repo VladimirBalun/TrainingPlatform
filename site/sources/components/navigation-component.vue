@@ -126,6 +126,7 @@
                     this.selectedCityModel = "Не выбрано";
                 } else {
                     const self = this;
+                    this.selectedCityModel = "Не выбрано";
                     this.$http.get("http://localhost:8080/cities", { params: { country_name: event.target.value } })
                         .then(response => {
                             self.citiesModel = response.body;

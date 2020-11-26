@@ -26,57 +26,83 @@ namespace App {
 
     require_once '../vendor/autoload.php';
 
+    function validateCORSPolicy() {
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
+            // you want to allow, and if so:
+            header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');    // cache for 1 day
+        }
+
+        // Access-Control headers are received during OPTIONS requests
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+                // may also be using PUT, PATCH, HEAD etc
+                header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+            }
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+                header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+            }
+        }
+    }
+
     $router = new Router();
 
     $router->get('/meta', function() {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new MetaInformationController();
         echo $controller->getAllMetaInformation();
     });
 
     $router->get('/cities', function() {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new MetaInformationController();
         echo $controller->getCitiesByCountryName($_GET['country_name']);
     });
 
     $router->get('/demo_creatives', function() {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new CreativesController();
         echo $controller->getDemoCreatives();
     });
 
     $router->get('/search_demo_creatives', function() {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new CreativesController();
         echo $controller->getDemoCreativesByTitlePattern(urldecode($_GET['title_pattern']));
     });
 
     $router->get('/proposed_demo_creatives', function () {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new CreativesController();
         echo $controller->getProposedDemoCreativesByCreativeId($_GET['creative_id'], $_GET['count']);
     });
 
     $router->get('/advertiser_demo_creative', function () {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new CreativesController();
         echo $controller->getAdvertiserDemoCreativesByAdvertiserId($_GET['advertiser_id']);
     });
 
     $router->get('/creative', function() {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $controller = new CreativesController();
         echo $controller->getCreativeById($_GET['creative_id']);
     });
 
+    $router->post('/add_creative', function() {
+        validateCORSPolicy();
+        echo var_dump($_POST['creative_id']);
+    });
+
     $router->get("/advertisers_check", function () {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         echo '{ "result" : true }';
     });
 
     $router->post("/advertisers_login", function () {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $advertiser = new AdvertiserEntity();
         $advertiser->setEmail($_POST['email']);
         $advertiser->setPassword($_POST['password']);
@@ -85,7 +111,7 @@ namespace App {
     });
 
     $router->post("/advertisers_signup", function () {
-        header('Access-Control-Allow-Origin: *');
+        validateCORSPolicy();
         $advertiser = new AdvertiserEntity();
         $advertiser->setUsername($_POST['username']);
         $advertiser->setEmail($_POST['email']);

@@ -20,7 +20,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Подтверждение</h5>
+                        <h5 class="modal-title">Удаление</h5>
                         <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close">
                             <i class="fas fa-window-close"></i>
                         </button>
