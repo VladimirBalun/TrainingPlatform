@@ -19,23 +19,23 @@
         <header-component></header-component>
         <div class="creative-page container">
             <div class="row">
-                <div v-show="(pageLoaded) && (creativeTitle !== null) && (creativeDescription !== null)">
+                <div v-show="(pageLoaded) && (creative.title !== null) && (creative.description !== null)">
                     <div v-show="moderation !== ''" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="creative-page-error-block">{{ moderation }}</div>
                     </div>
                     <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
-                        :image_url="creativeImageURL" :email="advertiserEmail"
-                        :phone="advertiserPhone" :site="advertiserSite" :price="creativePrice">
+                        :image_url="creative.imageURL" :email="creative.advertiserEmail"
+                        :phone="creative.advertiserPhone" :site="creative.advertiserSite" :price="creative.price">
                     </creative-contacts-component>
                     <creative-information-component class="col-lg-8 col-md-8 col-sm-7 col-xs-12"
-                        :title="creativeTitle" :description="creativeDescription"
-                        :country="creativeCountry" :city="creativeCity"
-                        :category="creativeCategory" :theme="creativeTheme"
-                        :event_date="creativeEventDate" :online="creativeOnline">
+                        :title="creative.title" :description="creative.description"
+                        :country="creative.country" :city="creative.city"
+                        :category="creative.category" :theme="creative.theme"
+                        :eventDate="creative.eventDate" :online="creative.online">
                     </creative-information-component>
                     <proposed-creatives-component :id="id"></proposed-creatives-component>
                 </div>
-                <div v-show="(pageLoaded) && ((creativeTitle === null) || (creativeDescription === null))">
+                <div v-show="(pageLoaded) && ((creative.title === null) || (creative.description === null))">
                     <div class="creative-page-error-message col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         Объявление не найдено, возможно оно было удалено или деактивировано рекламодателем...
                     </div>
@@ -70,20 +70,23 @@
         data() {
             return {
                 pageLoaded: false,
-                creativeTitle: "",
-                creativeDescription: "",
-                creativeImageURL: "",
-                creativeEventDate: "",
-                creativePrice: 0,
-                creativeCity: "",
-                creativeCountry: "",
-                creativeCategory: "",
-                creativeTheme: "",
-                creativeModerationStatus: 0,
-                advertiserEmail: "",
-                advertiserPhone: "",
-                advertiserSite: "",
-                creativeOnline: 0
+                creative: {
+                    title: "",
+                    description: "",
+                    imageURL: "",
+                    eventDate: "",
+                    price: 0,
+                    city: "",
+                    country: "",
+                    category: "",
+                    theme: "",
+                    status: 0,
+                    email: "",
+                    advertiserEmail: "",
+                    advertiserPhone: "",
+                    advertiserSite: "",
+                    online: 0
+                }
             };
         },
         computed: {
@@ -111,28 +114,29 @@
                 this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
                     .then(response => {
                         console.log(response);
-                        self.creativeTitle = response.body.title;
-                        self.creativeDescription = response.body.description;
-                        self.creativeImageURL = response.body.image_url;
-                        self.creativeEventDate = response.body.event_date;
-                        self.creativePrice = response.body.price;
-                        self.advertiserEmail = response.body.email;
-                        self.advertiserPhone = response.body.phone;
-                        self.advertiserSite = response.body.site;
-                        self.creativeCity = response.body.city;
-                        self.creativeCountry = response.body.country;
-                        self.creativeCategory = response.body.category;
-                        self.creativeTheme = response.body.theme;
-                        self.creativeModerationStatus = response.body.moderation_status;
-                        self.creativeOnline = response.body.online;
-                        console.log(self.creativeOnline);
+                        self.creative.title = response.body.title;
+                        self.creative.description = response.body.description;
+                        self.creative.imageURL = response.body.image_url;
+                        self.creative.eventDate = response.body.event_date;
+                        self.creative.price = response.body.price;
+                        self.creative.advertiserEmail = response.body.email;
+                        self.creative.advertiserPhone = response.body.phone;
+                        self.creative.advertiserSite = response.body.site;
+                        self.creative.city = response.body.city;
+                        self.creative.country = response.body.country;
+                        self.creative.category = response.body.category;
+                        self.creative.theme = response.body.theme;
+                        self.creative.moderationStatus = response.body.moderation_status;
+                        self.creative.online = response.body.online;
+
+                        document.title = self.creative.title;
                         self.pageLoaded = true;
                     }, error => {
                         console.log(error);
                     });
             },
         },
-        async created() {
+        created() {
             this.loadCreativeInformation();
         }
     }

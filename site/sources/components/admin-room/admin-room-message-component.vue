@@ -21,7 +21,7 @@
 <script>
 
     export default {
-    name: "admin-room-message-component"
+        name: "admin-room-message-component"
     }
 
 </script>

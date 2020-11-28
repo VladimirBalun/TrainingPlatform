@@ -25,7 +25,7 @@
                         <input class="signup-input" type="text" id="signup-username" maxlength="64"
                             v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
                         <label for="signup-email"><label class="signup-require-color">*</label> Введите e-mail:</label>
-                        <input class="signup-input" type="text" id="signup-email" maxlength="255"
+                        <input class="signup-input" type="text" id="signup-email" maxlength="320"
                             v-model="emailModel" v-bind:class="{ 'error-input': !isValidEmail }">
                         <label for="signup-password"><label class="signup-require-color">*</label> Введите пароль:</label>
                         <input class="signup-input" type="password" id="signup-password" maxlength="128"

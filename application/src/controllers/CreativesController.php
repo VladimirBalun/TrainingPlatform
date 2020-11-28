@@ -52,6 +52,7 @@ namespace App\Controllers {
                     public $title;
                     public $brief_description;
                     public $image_url;
+                    public $advertiser_image_url;
                     public $event_date;
                     public $price;
                     public $online;
@@ -60,6 +61,7 @@ namespace App\Controllers {
                 $creative->title = $creative_from_database->getTitle();
                 $creative->brief_description = $creative_from_database->getBriefDescription();
                 $creative->image_url = $creative_from_database->getImageUrl();
+                $creative->advertiser_image_url = $creative_from_database->getAdvertiser()->getImageUrl();
                 $creative->event_date = $creative_from_database->getEventDate();
                 $creative->price = $creative_from_database->getPrice();
                 $creative->online = $creative_from_database->getOnline();

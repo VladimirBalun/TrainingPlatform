@@ -17,12 +17,13 @@
 <template>
     <div class="content-wrapper">
         <div class="content block">
-            <i class="fas fa-user-circle"></i>
+            <img class="advertiser-image" v-show="advertiserImageWasLoaded" alt="advertiser_image" :src="advertiserImageUrl" @load="onAdvertiserImageLoad">
+            <i v-show="!advertiserImageWasLoaded" class="fas fa-user-circle"></i>
             <p class="content-title">{{ title }}</p>
-            <p class="content-description">{{ brief_description }}</p>
-            <img class="content-image" :src="image_url">
+            <p class="content-description">{{ briefDescription }}</p>
+            <img alt="creative_image" class="content-image" :src="imageUrl">
             <p class="content-date">
-                <i class="fas fa-calendar-alt"></i>{{ (event_date === null) ? ('Без даты') : (event_date) }}
+                <i class="fas fa-calendar-alt"></i>{{ (eventDate === null) ? ('Без даты') : (eventDate) }}
                 <label v-show="online" class="content-type"><i class="fas fa-toggle-on"></i>Online</label>
                 <label v-show="!online" class="content-type"><i class="fas fa-toggle-off"></i>Offline</label>
             </p><hr>
@@ -37,8 +38,18 @@
     "use strict";
 
     export default {
-        props: ["id", "title", "brief_description", "image_url", "event_date", "price", "online"],
-        name: "content-component"
+        props: ["id", "title", "briefDescription", "imageUrl", "advertiserImageUrl", "eventDate", "price", "online"],
+        name: "content-component",
+        data() {
+            return {
+                advertiserImageWasLoaded: false
+            };
+        },
+        methods: {
+            onAdvertiserImageLoad() {
+                this.advertiserImageWasLoaded = true;
+            }
+        }
     }
 
 </script>
@@ -55,15 +66,23 @@
         height: 205px;
     }
 
+    .advertiser-image {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        float: left;
+        margin: 20px 20px 0 20px;
+    }
+
     .fa-user-circle {
         margin: 20px 20px 0 20px;
-        font-size: 42px;
+        font-size: 45px;
         float: left;
         color: #2D71BC;
     }
 
     .content-title {
-        height: 70px;
+        height: 73px;
         display: flex;
         justify-content: left;
         align-items: center;
@@ -155,9 +174,9 @@
             padding: 5px 0 8px 20px;
         }
 
-       .content-description {
-          height: 130px;
-       }
+        .content-description {
+            height: 130px;
+        }
 
         .content-image {
             width: 292px;
@@ -180,6 +199,7 @@
     }
 
     @media(max-width:767px) {
+
         .content {
             height: auto;
             margin-bottom: 15px;

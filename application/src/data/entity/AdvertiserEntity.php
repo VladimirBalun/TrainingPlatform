@@ -25,6 +25,7 @@ namespace App\Data\Entity {
         private $email;
         private $password;
         private $hash;
+        private $imageUrl;
 
         public function getId() {
             return $this->id;
@@ -64,6 +65,14 @@ namespace App\Data\Entity {
 
         public function setHash($hash) {
             $this->hash = $hash;
+        }
+
+        public function getImageUrl() {
+            return $this->imageUrl;
+        }
+
+        public function setImageUrl($imageUrl) {
+            $this->imageUrl = $imageUrl;
         }
 
     }

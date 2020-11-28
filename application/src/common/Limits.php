@@ -23,8 +23,9 @@ namespace App\Common {
         public static $DOUBLE_MD5_HASH_SIZE = 32;
 
         public static $USERNAME_MAX_SIZE = 64;
-        public static $EMAIL_MAX_SIZE = 255;
+        public static $EMAIL_MAX_SIZE = 320;
         public static $PASSWORD_MAX_SIZE = 128;
+        public static $URL_MAX_SIZE = 2083;
 
     }
 

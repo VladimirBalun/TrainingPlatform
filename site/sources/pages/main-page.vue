@@ -22,9 +22,9 @@
                 <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"></navigation-component>
                 <div v-show="(pageLoaded) && (demoCreatives.length !== 0)">
                     <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
-                        :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
-                        :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price"
-                        :online="creative.online">
+                        :id="creative.id" :title="creative.title" :briefDescription="creative.briefDescription"
+                        :imageUrl="creative.imageUrl" :eventDate="creative.eventDate" :price="creative.price"
+                        :online="creative.online" :advertiserImageUrl="creative.advertiserImageUrl">
                     </content-component>
                 </div>
                 <div v-show="(pageLoaded) && (demoCreatives.length === 0)">
@@ -34,7 +34,6 @@
                 </div>
             </div>
         </diV>
-        <!--<footer-component></footer-component>-->
     </div>
 </template>
 
@@ -43,14 +42,12 @@
     "use strict";
 
     import headerComponent from "../components/header-component";
-    import footerComponent from "../components/footer-component";
     import contentComponent from "../components/content-component";
     import navigationComponent from "../components/navigation-component.vue";
 
     export default {
         components: {
             headerComponent,
-            footerComponent,
             contentComponent,
             navigationComponent
         },
@@ -68,13 +65,14 @@
                         self.demoCreatives = [];
                         response.body.forEach(creative => {
                             self.demoCreatives.push({
-                                "id" : creative.id,
-                                "title" : creative.title,
-                                "brief_description" : creative.brief_description,
-                                "image_url" : creative.image_url,
-                                "event_date" : creative.event_date,
-                                "price" : creative.price,
-                                "online" : creative.online
+                                id : creative.id,
+                                title : creative.title,
+                                briefDescription : creative.brief_description,
+                                imageUrl : creative.image_url,
+                                advertiserImageUrl : creative.advertiser_image_url,
+                                eventDate : creative.event_date,
+                                price : creative.price,
+                                online : creative.online
                             })
                         });
 
@@ -89,13 +87,14 @@
                         console.log(response);
                         response.body.forEach(creative => {
                             self.demoCreatives.push({
-                                "id" : creative.id,
-                                "title" : creative.title,
-                                "brief_description" : creative.brief_description,
-                                "image_url" : creative.image_url,
-                                "event_date" : creative.event_date,
-                                "price" : creative.price,
-                                "online" : creative.online
+                                id : creative.id,
+                                title : creative.title,
+                                briefDescription : creative.brief_description,
+                                imageUrl : creative.image_url,
+                                advertiserImageUrl : creative.advertiser_image_url,
+                                eventDate : creative.event_date,
+                                price : creative.price,
+                                online : creative.online
                             })
                         });
                     });

@@ -18,6 +18,7 @@
 
 namespace App\Data\DAO {
 
+    use App\Data\Entity\AdvertiserEntity;
     use App\Data\Entity\CityEntity;
     use App\Data\Entity\CountryEntity;
     use App\Data\Entity\EventCategoryEntity;
@@ -29,8 +30,10 @@ namespace App\Data\DAO {
 
         public function getDemoCreatives() {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price, is_online 
-                    FROM creatives
+                'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
+                        cr.price, cr.is_online, ad.image_url as advertiser_image_url
+                    FROM creatives cr
+                    LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id                    
                     WHERE moderation_status != 0'
             );
 
@@ -39,8 +42,10 @@ namespace App\Data\DAO {
 
         public function getDemoCreativesByTitlePattern($title_pattern) {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price, is_online 
-                FROM creatives
+                'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
+                    cr.price, cr.is_online, ad.image_url as advertiser_image_url
+                FROM creatives cr
+                LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
                 WHERE title LIKE ? AND moderation_status != 0',
                 ['%' . $title_pattern . '%']
             );
@@ -55,9 +60,11 @@ namespace App\Data\DAO {
 
         public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price, is_online
-                FROM creatives
-                WHERE id != :id_creative AND moderation_status != 0
+                'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
+                    cr.price, cr.is_online, ad.image_url as advertiser_image_url
+                FROM creatives cr
+                LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
+                WHERE cr.id != :id_creative AND moderation_status != 0
                 LIMIT :count_creatives',
                 ['id_creative' => $creative_id, 'count_creatives' => $count]
             );
@@ -76,6 +83,11 @@ namespace App\Data\DAO {
                 $creative->setEventDate($database_creative['event_date']);
                 $creative->setPrice((int)$database_creative['price']);
                 $creative->setOnline((int)$database_creative['is_online']);
+
+                $advertiser = new AdvertiserEntity();
+                $advertiser->setImageUrl($database_creative['advertiser_image_url']);
+                $creative->setAdvertiser($advertiser);
+
                 array_push($creatives, $creative);
             }
 

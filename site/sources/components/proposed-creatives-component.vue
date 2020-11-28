@@ -18,8 +18,9 @@
     <div>
         <p class="proposed-creatives-title col-lg-12 col-md-12 col-sm-12 col-xs-12">Похожие объявления</p>
         <content-component v-for="creative in proposedDemoCreatives" class="proposed-creatives-block col-lg-4 col-md-4 col-sm-6 col-xs-12"
-            :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
-            :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
+            :id="creative.id" :title="creative.title" :briefDescription="creative.briefDescription"
+            :imageUrl="creative.imageUrl" :eventDate="creative.eventDate" :price="creative.price"
+            :online="creative.online" :advertiserImageUrl="creative.advertiserImageUrl">
         </content-component>
     </div>
 </template>
@@ -55,12 +56,14 @@
                         console.log(response);
                         response.body.forEach(creative => {
                             self.proposedDemoCreatives.push({
-                                "id" : creative.id,
-                                "title" : creative.title,
-                                "brief_description" : creative.brief_description,
-                                "image_url" : creative.image_url,
-                                "event_date" : creative.event_date,
-                                "price" : creative.price,
+                                id : creative.id,
+                                title : creative.title,
+                                briefDescription : creative.brief_description,
+                                imageUrl : creative.image_url,
+                                advertiserImageUrl : creative.advertiser_image_url,
+                                eventDate : creative.event_date,
+                                price : creative.price,
+                                online : creative.online
                             })
                         });
                     });

@@ -17,6 +17,7 @@
 <template>
     <div class="admin-room-navigation-wrapper">
         <div class="admin-room-block block">
+            <img :src="advertiserImageUrl">
             <input type="text" placeholder="Введите адрес изображения...">
             <button class="admin-room-navigation-button">Сменить изображение</button><hr>
             <button class="admin-room-navigation-button" data-toggle="modal" data-target="#add-creative-modal">Добавить объявление</button>
@@ -42,6 +43,7 @@
 
     export default {
         name: "admin-room-navigation-component",
+        props: "advertiserImageUrl",
         components: {
             adminRoomAddCreativeComponent
         },

@@ -37,6 +37,7 @@ namespace App\Data\Entity {
         private $phone;
         private $moderation_status;
         private $moderation_text;
+        private $advertiser;
 
         public function getId() {
             return $this->id;
@@ -172,6 +173,14 @@ namespace App\Data\Entity {
 
         public function setModerationText($moderation_text) {
             $this->moderation_text = $moderation_text;
+        }
+
+        public function getAdvertiser() {
+            return $this->advertiser;
+        }
+
+        public function setAdvertiser($advertiser) {
+            $this->advertiser = $advertiser;
         }
 
     }
