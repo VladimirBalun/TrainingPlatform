@@ -24,9 +24,9 @@
                 <p class="creative-information-meta-data"><i class="fas fa-circle"></i><span class="bold-label">Страна:</span> {{ (country === null) ? ('Не указана') : (country) }}</p>
                 <p class="creative-information-meta-data"><i class="fas fa-circle"></i><span class="bold-label">Город:</span> {{ (city === null) ? ('Не указан') : (city) }}</p>
                 <p class="creative-information-meta-data"><i class="fas fa-circle"></i><span class="bold-label">Дата:</span> {{ (event_date === null) ? ('Не указана') : (event_date) }}</p>
-                <p class="creative-information-meta-data"><i class="fas fa-circle"></i><span class="bold-label">Тип:</span> {{ (is_online) ? ('Online') : ('Offline') }}</p>
+                <p class="creative-information-meta-data"><i class="fas fa-circle"></i><span class="bold-label">Тип:</span> {{ (online === 0) ? ('Online') : ('Offline') }}</p>
             </div><hr>
-            <p class="creative-information-description">{{ description }}</p>
+          <p class="creative-information-description" v-html="description"></p>
             <div style="position:relative;overflow:hidden;"><a href="https://yandex.com/maps?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Yandex.Maps</a><a href="https://yandex.com/maps/?ll=38.583678%2C55.221603&utm_medium=mapframe&utm_source=maps&z=7" style="color:#eee;font-size:12px;position:absolute;top:14px;">Yandex.Maps: search for places, addresses, and public transport</a><iframe src="https://yandex.com/map-widget/v1/-/CCezzrd" width="710" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
         </div>
     </div>
@@ -37,7 +37,7 @@
     "use strict";
 
     export default {
-        props: ["title", "description", "category", "theme", "country", "city", "event_date", "is_online"],
+        props: ["title", "description", "category", "theme", "country", "city", "event_date", "online"],
         name: "creative-information-component"
     }
 

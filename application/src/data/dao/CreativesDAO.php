@@ -29,7 +29,7 @@ namespace App\Data\DAO {
 
         public function getDemoCreatives() {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price 
+                'SELECT id, title, brief_description, image_url, event_date, price, is_online 
                     FROM creatives
                     WHERE moderation_status != 0'
             );
@@ -39,7 +39,7 @@ namespace App\Data\DAO {
 
         public function getDemoCreativesByTitlePattern($title_pattern) {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price 
+                'SELECT id, title, brief_description, image_url, event_date, price, is_online 
                 FROM creatives
                 WHERE title LIKE ? AND moderation_status != 0',
                 ['%' . $title_pattern . '%']
@@ -55,7 +55,7 @@ namespace App\Data\DAO {
 
         public function getProposedDemoCreativesByCreativeId($creative_id, $count) {
             $database_creatives = R::getAll(
-                'SELECT id, title, brief_description, image_url, event_date, price
+                'SELECT id, title, brief_description, image_url, event_date, price, is_online
                 FROM creatives
                 WHERE id != :id_creative AND moderation_status != 0
                 LIMIT :count_creatives',
@@ -69,12 +69,13 @@ namespace App\Data\DAO {
             $creatives = array();
             foreach ($database_creatives as $database_creative) {
                 $creative = new CreativeEntity();
-                $creative->setId($database_creative['id']);
+                $creative->setId((int)$database_creative['id']);
                 $creative->setTitle($database_creative['title']);
                 $creative->setBriefDescription($database_creative['brief_description']);
                 $creative->setImageUrl($database_creative['image_url']);
                 $creative->setEventDate($database_creative['event_date']);
-                $creative->setPrice($database_creative['price']);
+                $creative->setPrice((int)$database_creative['price']);
+                $creative->setOnline((int)$database_creative['is_online']);
                 array_push($creatives, $creative);
             }
 
@@ -157,7 +158,33 @@ namespace App\Data\DAO {
         }
 
         public function addCreative($creative) {
-            return true;
+            return R::exec(
+                'INSERT INTO creatives(title, brief_description, description, image_url, 
+	                price, event_date, is_online, advertiser_site, advertiser_email, advertiser_phone, id_advertiser,
+                    id_country, id_city, id_category, id_theme) 
+                VALUES (:title, :briefDescription, :description, :image,
+	                :price, :eventDate, :online, :site, :email, :phone, 1,
+                    (SELECT id FROM countries WHERE name = :country),
+	                (SELECT id FROM cities WHERE name = :city),
+	                (SELECT id FROM categories WHERE name = :category),
+	                (SELECT id FROM themes WHERE name = :theme));  ',
+                [
+                    'title' => $creative->getTitle(),
+                    'briefDescription' => $creative->getBriefDescription(),
+                    'description' => $creative->getDescription(),
+                    'category' => $creative->getCategory(),
+                    'theme' => $creative->getTheme(),
+                    'country' => $creative->getCountry(),
+                    'city' => $creative->getCity(),
+                    'eventDate' => $creative->getEventDate(),
+                    'image' => $creative->getImageUrl(),
+                    'email' => $creative->getEmail(),
+                    'site' => $creative->getSite(),
+                    'phone' => $creative->getPhone(),
+                    'price' => $creative->getPrice(),
+                    'online' => $creative->getOnline()
+                ]
+            );
         }
 
         public function removeCreativeById($creative_id) {

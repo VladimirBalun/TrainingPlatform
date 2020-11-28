@@ -91,11 +91,6 @@ namespace App {
         echo $controller->getCreativeById($_GET['creative_id']);
     });
 
-    $router->post('/add_creative', function() {
-        validateCORSPolicy();
-        echo var_dump($_POST['creative_id']);
-    });
-
     $router->get("/advertisers_check", function () {
         validateCORSPolicy();
         echo '{ "result" : true }';

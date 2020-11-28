@@ -54,6 +54,7 @@ namespace App\Controllers {
                     public $image_url;
                     public $event_date;
                     public $price;
+                    public $online;
                 };
                 $creative->id = $creative_from_database->getId();
                 $creative->title = $creative_from_database->getTitle();
@@ -61,6 +62,7 @@ namespace App\Controllers {
                 $creative->image_url = $creative_from_database->getImageUrl();
                 $creative->event_date = $creative_from_database->getEventDate();
                 $creative->price = $creative_from_database->getPrice();
+                $creative->online = $creative_from_database->getOnline();
 
                 array_push($creatives_for_response, $creative);
             }
@@ -108,7 +110,7 @@ namespace App\Controllers {
                 public $theme;
                 public $country;
                 public $city;
-                public $is_online;
+                public $online;
                 public $moderation_status;
             };
 
@@ -121,7 +123,7 @@ namespace App\Controllers {
             $creative_for_response->email = $creative_from_database->getEmail();
             $creative_for_response->phone = $creative_from_database->getPhone();
             $creative_for_response->site = $creative_from_database->getSite();
-            $creative_for_response->is_online = $creative_from_database->getOnline();
+            $creative_for_response->online = $creative_from_database->getOnline();
             $creative_for_response->moderation_status = $creative_from_database->getModerationStatus();
             $creative_for_response->category = $creative_from_database->getCategory()->getName();
             $creative_for_response->theme = $creative_from_database->getTheme()->getName();
@@ -135,7 +137,11 @@ namespace App\Controllers {
         }
 
         public function addCreative($creative) {
-            return $this->creatives_service->addCreative($creative);
+            $response = new class() {
+                public $result;
+            };
+            $response->result = $this->creatives_service->addCreative($creative);
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
         public function removeCreativeById($creative_id) {

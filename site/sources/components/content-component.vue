@@ -23,7 +23,8 @@
             <img class="content-image" :src="image_url">
             <p class="content-date">
                 <i class="fas fa-calendar-alt"></i>{{ (event_date === null) ? ('Без даты') : (event_date) }}
-                <label class="content-type"><i class="fas fa-toggle-on"></i>Online</label>
+                <label v-show="online" class="content-type"><i class="fas fa-toggle-on"></i>Online</label>
+                <label v-show="!online" class="content-type"><i class="fas fa-toggle-off"></i>Offline</label>
             </p><hr>
             <p class="content-price">{{ price }}₽</p>
             <router-link target="_blank" :to="'/creative/' + id" class="content-button">Подробнее<i class="fas fa-angle-double-right"></i></router-link>
@@ -36,7 +37,7 @@
     "use strict";
 
     export default {
-        props: ["id", "title", "brief_description", "image_url", "event_date", "price"],
+        props: ["id", "title", "brief_description", "image_url", "event_date", "price", "online"],
         name: "content-component"
     }
 
@@ -50,7 +51,8 @@
     }
 
     .content-image {
-        width: 100%;
+        width: 358px;
+        height: 205px;
     }
 
     .fa-user-circle {
@@ -93,6 +95,7 @@
         color: #666666;
         padding: 0 20px 10px 20px;
         font-size: 15px;
+        height: 115px;
         font-family: 'Open Sans', sans-serif;
     }
 
@@ -130,14 +133,63 @@
         background-color: #10367B;
     }
 
+    @media (min-width: 992px) and (max-width: 1199px) {
+
+        .content-title {
+            font-size: 16px;
+        }
+
+        .fa-angle-double-right {
+            font-size: 14px;
+            margin-left: 7px;
+        }
+
+        .content-button {
+            margin: 0 20px 20px 20px;
+            font-size: 15px;
+            padding: 7px 20px 7px 20px;
+        }
+
+        .content-price {
+            font-size: 19px;
+            padding: 5px 0 8px 20px;
+        }
+
+       .content-description {
+          height: 130px;
+       }
+
+        .content-image {
+            width: 292px;
+            height: 165px;
+        }
+
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+
+        .content-description {
+            height: auto;
+        }
+
+        .content-image {
+            width: 100%;
+            height: auto;
+        }
+
+    }
+
     @media(max-width:767px) {
         .content {
             height: auto;
             margin-bottom: 15px;
         }
 
+        .content-description {
+            height: auto;
+        }
+
         .content-image {
-            padding-top: 10px;
             width: 100%;
             height: auto;
         }

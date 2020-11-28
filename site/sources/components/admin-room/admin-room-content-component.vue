@@ -86,12 +86,18 @@
 
     .admin-room-content-title {
         padding: 20px 20px 5px 20px;
-        font-size: 21px;
+        height: 70px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
         font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        font-size: 17px;
     }
 
     .admin-room-content-description {
         font-size: 15px;
+        height: 115px;
         margin: 0 20px 20px 20px;
         font-family: 'Open Sans', sans-serif;
     }
@@ -104,7 +110,8 @@
     }
 
     .admin-room-content-image {
-        width: 100%;
+        width: 358px;
+        height: 205px;
     }
 
     .admin-room-content-block-inner-wrapper {
@@ -145,6 +152,60 @@
     .admin-room-content-button:nth-child(3) {
         background-color: #8A0200;
         width: 20%;
+    }
+
+    .fa-angle-double-right {
+        font-size: 15px;
+        margin-left: 10px;
+        transform: translateY(1px);
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+
+        .admin-room-content-button {
+            font-size: 15px;
+            padding: 7px 14px 7px 14px;
+        }
+
+        .admin-room-content-title {
+            font-size: 16px;
+        }
+
+        .admin-room-content-description {
+            height: 130px;
+        }
+
+        .admin-room-content-image {
+            width: 292px;
+            height: 165px;
+        }
+
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+
+        .admin-room-content-description {
+            height: auto;
+        }
+
+        .admin-room-content-image {
+            width: 100%;
+            height: auto;
+        }
+
+    }
+
+    @media(max-width:767px) {
+
+        .admin-room-content-description {
+            height: auto;
+        }
+
+        .admin-room-content-image {
+            width: 100%;
+            height: auto;
+        }
+
     }
 
 </style>

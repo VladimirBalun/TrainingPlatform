@@ -22,18 +22,19 @@
                 <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"></navigation-component>
                 <div v-show="(pageLoaded) && (demoCreatives.length !== 0)">
                     <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
-                                       :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
-                                       :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price">
+                        :id="creative.id" :title="creative.title" :brief_description="creative.brief_description"
+                        :image_url="creative.image_url" :event_date="creative.event_date" :price="creative.price"
+                        :online="creative.online">
                     </content-component>
                 </div>
                 <div v-show="(pageLoaded) && (demoCreatives.length === 0)">
                     <div class="main-page-error-message col-lg-8 col-md-8 col-sm-7 col-xs-12">
-                        По вашему запросу не найдено ни одного объявления...
+                        Объявления не найдены...
                     </div>
                 </div>
             </div>
         </diV>
-        <footer-component></footer-component>
+        <!--<footer-component></footer-component>-->
     </div>
 </template>
 
@@ -73,6 +74,7 @@
                                 "image_url" : creative.image_url,
                                 "event_date" : creative.event_date,
                                 "price" : creative.price,
+                                "online" : creative.online
                             })
                         });
 
@@ -93,6 +95,7 @@
                                 "image_url" : creative.image_url,
                                 "event_date" : creative.event_date,
                                 "price" : creative.price,
+                                "online" : creative.online
                             })
                         });
                     });

@@ -232,7 +232,7 @@
                     document.getElementById("add-creative-modal").scrollTo({ top: 0, behavior: 'smooth' });
                 }
 
-                const creativeResponse = this.creative;
+                const creativeResponse = Object.create(this.creative);
                 if (creativeResponse.country === "Не выбрано") {
                     creativeResponse.country = null
                 }
@@ -252,9 +252,9 @@
                     creativeResponse.site = null;
                 }
 
-                this.$http.post("http://localhost:8080/add_creative", { creative: creativeResponse })
+                this.$http.post("http://mysite.local/trening/application/src/api/creatives/add_creative.php", creativeResponse, { emulateJSON: true })
                     .then(response => {
-                        console.log(response);
+                        console.log(response.body);
                     });
             },
             fillAllModels() {

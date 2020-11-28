@@ -59,10 +59,14 @@
                 <label><input name="sort" type="radio"/></label>Возрастание
                 <label><input name="sort" type="radio"/></label>Убывание
             </p><hr>
-            <label>Цена от:</label>
-            <input v-model="priceFromModel" :disabled="isFreeModel" type="number">
-            <label>Цена до:</label>
-            <input v-model="priceToModel" :disabled="isFreeModel" type="number">
+            <div class="price-wrapper">
+                <label>Цена от:</label>
+                <input v-model="priceFromModel" :disabled="isFreeModel" type="number">
+            </div>
+            <div class="price-wrapper">
+                <label>Цена до:</label>
+                <input v-model="priceToModel" :disabled="isFreeModel" type="number">
+            </div>
             <label class="target-label">Бесплатные:</label>
             <input v-model="isFreeModel" type="checkbox"><hr>
             <div class="wrapper">
@@ -106,7 +110,7 @@
                 citiesModel: [],
                 selectedCityModel: "Не выбрано",
                 priceFromModel: 0,
-                priceToModel: 100000,
+                priceToModel: 1000000,
                 isFreeModel: false
             };
         },
@@ -202,6 +206,16 @@
         padding: 10px 15px 10px 15px;
         font-family: 'Open Sans', sans-serif;
         width: calc(100% - 40px);
+    }
+
+    .price-wrapper {
+        display: inline-block;
+        width: calc(50% - 25px);
+        margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+        width: 100%;
     }
 
     input[type="radio"] {

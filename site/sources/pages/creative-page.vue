@@ -31,7 +31,7 @@
                         :title="creativeTitle" :description="creativeDescription"
                         :country="creativeCountry" :city="creativeCity"
                         :category="creativeCategory" :theme="creativeTheme"
-                        :event_date="creativeEventDate">
+                        :event_date="creativeEventDate" :online="creativeOnline">
                     </creative-information-component>
                     <proposed-creatives-component :id="id"></proposed-creatives-component>
                 </div>
@@ -83,6 +83,7 @@
                 advertiserEmail: "",
                 advertiserPhone: "",
                 advertiserSite: "",
+                creativeOnline: 0
             };
         },
         computed: {
@@ -123,6 +124,8 @@
                         self.creativeCategory = response.body.category;
                         self.creativeTheme = response.body.theme;
                         self.creativeModerationStatus = response.body.moderation_status;
+                        self.creativeOnline = response.body.online;
+                        console.log(self.creativeOnline);
                         self.pageLoaded = true;
                     }, error => {
                         console.log(error);
