@@ -18,8 +18,6 @@
 
 namespace App\Data\Entity {
 
-    use App\Data\Entity\CountryEntity;
-
     class CityEntity {
 
         private $id;
