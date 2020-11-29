@@ -8,8 +8,11 @@
     "build": "webpack"
   },
   "dependencies": {
+    "ajax": "^0.0.4",
+    "bootstrap": "^4.5.3",
     "crypto-js": "^4.0.0",
     "install": "^0.13.0",
+    "jquery": "^3.5.1",
     "moment": "^2.29.1",
     "underscore": "^1.9.1",
     "vue": "^2.6.6",

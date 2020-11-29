@@ -27,7 +27,6 @@
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тип:</span> {{ (online === 0) ? ('Online') : ('Offline') }}</p>
             </div><hr>
             <p class="creative-information-description" v-html="description"></p>
-            <div style="position:relative;overflow:hidden;"><a href="https://yandex.com/maps?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Yandex.Maps</a><a href="https://yandex.com/maps/?ll=38.583678%2C55.221603&utm_medium=mapframe&utm_source=maps&z=7" style="color:#eee;font-size:12px;position:absolute;top:14px;">Yandex.Maps: search for places, addresses, and public transport</a><iframe src="https://yandex.com/map-widget/v1/-/CCezzrd" width="710" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
         </div>
     </div>
 </template>
@@ -50,7 +49,7 @@
     }
 
     .creative-information-block {
-        padding: 12px 20px 20px 20px;
+        padding: 12px 20px 10px 20px;
     }
 
     .creative-information-title {
@@ -61,7 +60,6 @@
     .creative-information-description {
         font-family: 'Open Sans', sans-serif;
         font-size: 17px;
-        margin-bottom: 20px;
     }
 
     .creative-information-meta-data {

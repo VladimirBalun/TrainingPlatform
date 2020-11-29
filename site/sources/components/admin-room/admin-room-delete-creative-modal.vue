@@ -26,7 +26,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p class="modal-body-text">Вы действительно хотите удалить данное объявление безвозвратно?</p>
+                        <p class="modal-body-text">Вы действительно хотите удалить данное объявление?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="modal-button" data-dismiss="modal">Отмена</button>

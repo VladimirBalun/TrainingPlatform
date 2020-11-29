@@ -120,7 +120,7 @@ namespace App\Data\DAO {
 
         public function getCreativeById($id) {
             $database_creative = R::getRow(
-                'SELECT cr.title, cr.description, cr.image_url, cr.event_date, cr.price, 
+                'SELECT cr.title, cr.brief_description, cr.description, cr.image_url, cr.event_date, cr.price, 
                     cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name as country_name,
                     cit.name as city_name, cat.name as category_name, th.name as theme_name, is_online,
                     moderation_status
@@ -136,6 +136,7 @@ namespace App\Data\DAO {
             $creative = new CreativeEntity();
             $creative->setId($database_creative['id']);
             $creative->setTitle($database_creative['title']);
+            $creative->setBriefDescription($database_creative['brief_description']);
             $creative->setDescription($database_creative['description']);
             $creative->setImageUrl($database_creative['image_url']);
             $creative->setEventDate($database_creative['event_date']);

@@ -16,11 +16,11 @@
 
 <template>
     <div>
-        <div class="modal fade" id="add-creative-modal" tabindex="-1" ref="closeButton" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="change-creative-modal" tabindex="-1" ref="closeButton" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Добавление</h5>
+                        <h5 class="modal-title">Изменение</h5>
                         <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close">
                             <i class="fas fa-window-close"></i>
                         </button>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="modal-button" data-dismiss="modal">Отмена</button>
-                        <button type="button" class="modal-button" v-on:click="addCreative">Добавить</button>
+                        <button type="button" class="modal-button" v-on:click="changeCreative">Изменить</button>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
     import * as validation from "../../scripts/validation";
 
     export default {
-        name: "admin-room-add-creative-component",
+        name: "admin-room-change-creative-component",
         data() {
             return {
                 errorMessage: "",
@@ -132,7 +132,7 @@
             };
         },
         methods: {
-            addCreative() {
+            changeCreative() {
                 let creativeForm = {
                     creative: this.creative,
                     creativeValidation: this.creativeValidation
@@ -140,7 +140,7 @@
 
                 this.errorMessage = validation.validateCreativeForm(creativeForm)
                 if (this.errorMessage !== "") {
-                    document.getElementById("add-creative-modal").scrollTo({ top: 0, behavior: 'smooth' });
+                    document.getElementById("change-creative-modal").scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
 
@@ -163,11 +163,6 @@
                 if (creativeResponse.site === "") {
                     creativeResponse.site = null;
                 }
-
-                this.$http.post("http://mysite.local/trening/application/src/api/creatives/add_creative.php", creativeResponse, { emulateJSON: true })
-                    .then(response => {
-                        console.log(response.body);
-                    });
             },
             fillAllModels() {
                 const self = this;
@@ -187,7 +182,7 @@
                     this.creative.city = "Не выбрано";
                     this.$http.get("http://localhost:8080/cities", { params: { country_name: event.target.value } })
                         .then(response => {
-                            self.citiesModel = response.body;
+                          self.citiesModel = response.body;
                         });
                 }
             },
@@ -197,6 +192,25 @@
         },
         created() {
             this.fillAllModels();
+
+            const self = this;
+            this.$root.$on("click-change-creative", (creative) => {
+                console.log(creative);
+                self.creative.title = creative.title;
+                self.creative.briefDescription = creative.briefDescription;
+                self.creative.description = creative.description;
+                self.creative.image = creative.imageURL;
+                self.creative.eventDate = creative.eventDate;
+                self.creative.price = creative.price;
+                self.creative.email = creative.advertiserEmail;
+                self.creative.phone = creative.advertiserPhone;
+                self.creative.site = creative.advertiserSite;
+                self.creative.city = creative.city;
+                self.creative.country = creative.country;
+                self.creative.category = creative.category;
+                self.creative.theme = creative.theme;
+                self.creative.online = creative.online;
+            });
         }
     }
 

@@ -30,6 +30,10 @@ namespace App\Data\Service {
             $this->advertisers_dao = new AdvertisersDAO();
         }
 
+        public function getAdvertiserById($id) {
+            return $this->advertisers_dao->getAdvertiserById($id);
+        }
+
         public function loginAdvertiser($advertiser) {
             return true;
         }

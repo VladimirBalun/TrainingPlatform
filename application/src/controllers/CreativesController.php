@@ -71,36 +71,12 @@ namespace App\Controllers {
             return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
         }
 
-        public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
-            $creatives_from_database = $this->creatives_service->getAdvertiserDemoCreativesByAdvertiserId($advertiser_id);
-            $creatives_for_response = array();
-            foreach ($creatives_from_database as $creative_from_database) {
-                $creative = new class() {
-                    public $id;
-                    public $title;
-                    public $brief_description;
-                    public $image_url;
-                    public $event_date;
-                    public $moderation_status;
-                    public $moderation_text;
-                };
-                $creative->id = $creative_from_database->getId();
-                $creative->title = $creative_from_database->getTitle();
-                $creative->brief_description = $creative_from_database->getBriefDescription();
-                $creative->image_url = $creative_from_database->getImageUrl();
-                $creative->event_date = $creative_from_database->getEventDate();
-                $creative->moderation_status = $creative_from_database->getModerationStatus();
-                $creative->moderation_text = $creative_from_database->getModerationText();
-                array_push($creatives_for_response, $creative);
-            }
-            return json_encode($creatives_for_response, JSON_UNESCAPED_UNICODE);
-        }
-
         public function getCreativeById($id) {
             $creative_from_database = $this->creatives_service->getCreativeById($id);
             $creative_for_response = new class() {
                 public $id;
                 public $title;
+                public $brief_description;
                 public $description;
                 public $image_url;
                 public $event_date;
@@ -118,6 +94,7 @@ namespace App\Controllers {
 
             $creative_for_response->id = $creative_from_database->getId();
             $creative_for_response->title = $creative_from_database->getTitle();
+            $creative_for_response->brief_description = $creative_from_database->getBriefDescription();
             $creative_for_response->description = $creative_from_database->getDescription();
             $creative_for_response->image_url = $creative_from_database->getImageUrl();
             $creative_for_response->event_date = $creative_from_database->getEventDate();

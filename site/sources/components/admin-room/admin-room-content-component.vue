@@ -18,9 +18,12 @@
     <div>
         <div class="admin-room-content-block block">
             <p class="admin-room-content-title">{{ title }}</p>
-            <p class="admin-room-content-description">{{ brief_description }}</p>
-            <img class="admin-room-content-image" :src="image_url">
-            <p class="admin-room-content-moderation">{{ moderation }}</p><hr>
+            <p class="admin-room-content-description">{{ briefDescription }}</p>
+            <img class="admin-room-content-image" :src="imageUrl" alt="advertiser_image">
+            <p class="admin-room-content-moderation"
+                v-bind:class="{ 'overdue-and-failed-moderation-background': (moderationStatus === 2), 'in-moderation-background': (moderationStatus === 1) }">
+                {{ moderation }}
+            </p>
             <div class="admin-room-content-block-inner-wrapper">
                 <router-link target="_blank" :to="'/creative/' + id" class="admin-room-content-button">
                     Подробнее<i class="fas fa-angle-double-right"></i>
@@ -29,26 +32,32 @@
                 <button data-toggle="modal" data-target="#delete-creative-modal" v-on:click="onDeleteCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-trash-alt"></i></button>
             </div>
         </div>
+
+        <button id="trigger-for-change-creative" data-toggle="modal" data-target="#change-creative-modal" ref="btnTriggerChangeCreative"></button>
+        <admin-room-change-creative-modal></admin-room-change-creative-modal>
         <admin-room-delete-creative-modal></admin-room-delete-creative-modal>
     </div>
 </template>
 
 <script>
 
-    import * as protocol from '../../scripts/protocol'
+    import $ from "jquery";
+    import * as protocol from "../../scripts/protocol";
 
-    import adminRoomDeleteCreativeModal from './admin-room-delete-creative-modal';
+    import adminRoomChangeCreativeModal from "./admin-room-change-creative-component";
+    import adminRoomDeleteCreativeModal from "./admin-room-delete-creative-modal";
 
     export default {
         components: {
+            adminRoomChangeCreativeModal,
             adminRoomDeleteCreativeModal
         },
-        props: ["id", "title", "brief_description", "image_url", "event_date", "moderation_status", "moderation_text"],
+        props: ["id", "title", "briefDescription", "imageUrl", "eventDate", "moderationStatus", "moderationText"],
         name: "admin-room-content-component",
         computed: {
             moderation() {
                 let moderation = "";
-                switch (this.moderation_status) {
+                switch (this.moderationStatus) {
                     case protocol.MODERATION_STATUS_IN_PROGRESS: {
                         moderation = "Объявление находится в режими модерации";
                         break;
@@ -58,7 +67,7 @@
                         break;
                     }
                     case protocol.MODERATION_STATUS_FAILED: {
-                        moderation = "Ообъявление не было опубликовано по причине: " + this.moderation_text;
+                        moderation = "Ообъявление не было опубликовано по причине: " + this.moderationText;
                         break;
                     }
                 }
@@ -68,7 +77,32 @@
         },
         methods: {
             onChangeCreativeButtonClick(creativeId) {
-                this.$root.$emit('click-change-creative', creativeId);
+                const self = this;
+                this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
+                    .then(response => {
+                        console.log(response);
+                        let creative = {};
+                        creative.title = response.body.title;
+                        creative.briefDescription = response.body.brief_description;
+                        creative.description = response.body.description;
+                        creative.imageURL = response.body.image_url;
+                        creative.eventDate = response.body.event_date;
+                        creative.price = response.body.price;
+                        creative.advertiserEmail = response.body.email;
+                        creative.advertiserPhone = response.body.phone;
+                        creative.advertiserSite = response.body.site;
+                        creative.city = response.body.city;
+                        creative.country = response.body.country;
+                        creative.category = response.body.category;
+                        creative.theme = response.body.theme;
+                        creative.online = response.body.online;
+
+                        self.$root.$emit('click-change-creative', creative);
+                        self.$refs.btnTriggerChangeCreative.click();
+                    }, error => {
+                        console.log(error);
+
+                    });
             },
             onDeleteCreativeButtonClick(creativeId) {
                 this.$root.$emit('click-delete-creative', creativeId);
@@ -80,8 +114,18 @@
 
 <style scoped>
 
+    .in-moderation-background {
+        color: #228B22;
+        background-color: #e7f6e2;
+    }
+
+    .overdue-and-failed-moderation-background {
+        background-color: #ffcccb;
+        color: #c41e3a;
+    }
+
     .admin-room-content-block {
-        margin-top: 30px;
+        margin-bottom: 10px;
     }
 
     .admin-room-content-title {
@@ -104,7 +148,12 @@
 
     .admin-room-content-moderation {
         font-size: 14px;
-        margin: 20px 20px 0 20px;
+        font-weight: bold;
+        height: 115px;
+        padding: 20px 20px 20px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         font-family: 'Open Sans', sans-serif;
     }
@@ -121,23 +170,24 @@
 
     .admin-room-content-button {
         position: relative;
-        border: none;
+        border: 1px solid #2D71BC;
         outline: none;
         text-align: center;
         margin: 0 5px 0 5px;
         font-size: 16px;
         text-decoration: none;
-        background-color: #2D71BC;
-        color: white;
+        background-color: transparent;
+        color: #2D71BC;
         border-radius: 5px;
-        padding: 7px 27px 7px 27px;
+        padding: 7px 25px 7px 25px;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
     }
 
     .admin-room-content-button:hover {
         text-decoration: none;
-        background-color: #10367B;
+        color: white;
+        background-color: #2D71BC
     }
 
     .admin-room-content-button:nth-child(1) {
@@ -145,19 +195,35 @@
     }
 
     .admin-room-content-button:nth-child(2) {
-        background-color: #e08d3c;
+        border: 1px solid #e08d3c;
+        color: #e08d3c;
         width: 20%
     }
 
+    .admin-room-content-button:nth-child(2):hover {
+        color: white;
+        background-color: #e08d3c;
+    }
+
     .admin-room-content-button:nth-child(3) {
+        border: 1px solid #8A0200;
+        color: #8A0200;
+        width: 20%
+    }
+
+    .admin-room-content-button:nth-child(3):hover {
+        color: white;
         background-color: #8A0200;
-        width: 20%;
     }
 
     .fa-angle-double-right {
-        font-size: 15px;
+        font-size: 14px;
         margin-left: 10px;
         transform: translateY(1px);
+    }
+
+    #trigger-for-change-creative {
+        visibility: hidden;
     }
 
     @media (min-width: 992px) and (max-width: 1199px) {
@@ -196,6 +262,15 @@
     }
 
     @media(max-width:767px) {
+
+        .admin-room-content-block {
+            margin-bottom: -5px;
+        }
+
+        .admin-room-content-button {
+            font-size: 14px;
+            padding: 7px 14px 7px 14px;
+        }
 
         .admin-room-content-description {
             height: auto;

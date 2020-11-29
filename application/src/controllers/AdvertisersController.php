@@ -20,14 +20,52 @@ namespace App\Controllers {
 
     use App\Common\Protocol;
     use App\Data\Service\AdvertisersService;
+    use App\Data\Service\CreativesService;
 
     class AdvertisersController extends Controller {
 
+        private $creatives_service;
         private $advertisers_service;
 
         public function __construct() {
             parent::__construct();
+            $this->creatives_service = new CreativesService();
             $this->advertisers_service = new AdvertisersService();
+        }
+
+        public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {
+            $creatives_from_database = $this->creatives_service->getAdvertiserDemoCreativesByAdvertiserId($advertiser_id);
+            $creatives_for_response = array();
+            foreach ($creatives_from_database as $creative_from_database) {
+                $creative = new class() {
+                    public $id;
+                    public $title;
+                    public $brief_description;
+                    public $image_url;
+                    public $event_date;
+                    public $moderation_status;
+                    public $moderation_text;
+                };
+                $creative->id = $creative_from_database->getId();
+                $creative->title = $creative_from_database->getTitle();
+                $creative->brief_description = $creative_from_database->getBriefDescription();
+                $creative->image_url = $creative_from_database->getImageUrl();
+                $creative->event_date = $creative_from_database->getEventDate();
+                $creative->moderation_status = $creative_from_database->getModerationStatus();
+                $creative->moderation_text = $creative_from_database->getModerationText();
+                array_push($creatives_for_response, $creative);
+            }
+
+            $advertiser_from_database = $this->advertisers_service->getAdvertiserById($advertiser_id);
+
+            $response = new class() {
+                public $creatives;
+                public $advertiser_image_url;
+            };
+
+            $response->creatives = $creatives_for_response;
+            $response->advertiser_image_url = $advertiser_from_database->getImageUrl();
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
         public function loginAdvertiser($advertiser) {

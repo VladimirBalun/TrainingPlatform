@@ -35,6 +35,15 @@ namespace App\Data\DAO {
             );
         }
 
+        public function getAdvertiserById($id) {
+            $database_advertiser = R::getRow(
+                'SELECT image_url FROM advertisers WHERE id = ? LIMIT 1', [$id]);
+
+            $advertiser = new AdvertiserEntity();
+            $advertiser->setImageUrl($database_advertiser['image_url']);
+            return $advertiser;
+        }
+
         public function findAdvertiserByEmailAndByPassword($email, $password) {
             $advertisers = R::getAll(
                 'SELECT id FROM advertisers 

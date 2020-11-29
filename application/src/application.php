@@ -81,7 +81,7 @@ namespace App {
 
     $router->get('/advertiser_demo_creative', function () {
         validateCORSPolicy();
-        $controller = new CreativesController();
+        $controller = new AdvertisersController();
         echo $controller->getAdvertiserDemoCreativesByAdvertiserId($_GET['advertiser_id']);
     });
 

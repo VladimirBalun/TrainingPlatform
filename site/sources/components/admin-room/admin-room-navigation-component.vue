@@ -16,11 +16,20 @@
 
 <template>
     <div class="admin-room-navigation-wrapper">
+        <div class="admin-room-block block hidden-xs">
+            <p class="admin-room-navigation-advertiser-image-wrapper">
+                <img class="admin-room-navigation-advertiser-image" alt="advertiser_img" :src="advertiserImageUrl">
+            </p>
+            <input v-model="advertiserImageUrlModel" class="admin-room-navigation-input" type="text" placeholder="Введите адрес изображения..." maxlength="2083">
+            <button class="admin-room-navigation-button" data-toggle="modal" data-target="#message-modal">Сменить изображение</button>
+        </div>
         <div class="admin-room-block block">
-            <img :src="advertiserImageUrl">
-            <input type="text" placeholder="Введите адрес изображения...">
-            <button class="admin-room-navigation-button">Сменить изображение</button><hr>
             <button class="admin-room-navigation-button" data-toggle="modal" data-target="#add-creative-modal">Добавить объявление</button>
+        </div>
+        <div class="admin-room-block block hidden-xs">
+            <p class="admin-room-navigation-title"><i class="fas fa-comment-dots"></i>Информация</p><hr>
+            <p class="admin-room-navigation-link">По сотрудничеству: <a href="mailto:vladimirbalun@yandex.ru">написать</a></p>
+            <p class="admin-room-navigation-link">По техническим причинам: <a href="mailto:vladimirbalun@yandex.ru">написать</a></p>
         </div>
         <div class="hidden-xs">
             <div class="advertisement-block">
@@ -33,20 +42,63 @@
                 <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
         </div>
+
         <admin-room-add-creative-component></admin-room-add-creative-component>
+        <admin-room-message-component v-bind:title="changeAdvertiserImageUrlResultTitle"
+            v-bind:description="changeAdvertiserImageUrlResultDescription">
+        </admin-room-message-component>
     </div>
 </template>
 
 <script>
 
-    import adminRoomAddCreativeComponent from './admin-room-add-creative-component'
+    import $ from "jquery";
+
+    import adminRoomAddCreativeComponent from "./admin-room-add-creative-component";
+    import adminRoomMessageComponent from "./admin-room-message-component";
 
     export default {
         name: "admin-room-navigation-component",
-        props: "advertiserImageUrl",
+        props: ["id", "advertiserImageUrl"],
         components: {
+            adminRoomMessageComponent,
             adminRoomAddCreativeComponent
         },
+        data() {
+            return {
+                advertiserImageUrlModel: "",
+                changeAdvertiserImageUrlResultTitle: "",
+                changeAdvertiserImageUrlResultDescription: ""
+            };
+        },
+        methods: {
+            changeAdvertiserImageForm() {
+                this.changeAdvertiserImageUrlResultTitle = "";
+                this.changeAdvertiserImageUrlResultDescription = "";
+                if (this.advertiserImageUrlModel === "") {
+                    this.changeAdvertiserImageUrlResultTitle = "Ошибка";
+                    this.changeAdvertiserImageUrlResultDescription = "Адрес изображения не может быть пустым";
+                    return false;
+                }
+
+                const regex = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
+                if (!regex.test(this.advertiserImageUrlModel)) {
+                    this.changeAdvertiserImageUrlResultTitle = "Ошибка";
+                    this.changeAdvertiserImageUrlResultDescription = "Некорректный адрес изображения";
+                    return false;
+                }
+
+                return true;
+            }
+        },
+        created() {
+            const self = this;
+            $('body').on('click','[data-toggle="modal"][data-target="#message-modal"]', () => {
+                if (self.changeAdvertiserImageForm()) {
+
+                }
+            });
+        }
     }
 
 </script>
@@ -94,7 +146,7 @@
         background-color: #10367B;
     }
 
-    input[type="text"] {
+    .admin-room-navigation-input {
         border: none;
         display: block;
         margin: 20px 20px 0 20px;
@@ -104,6 +156,43 @@
         padding: 10px 15px 10px 15px;
         font-family: 'Open Sans', sans-serif;
         width: calc(100% - 40px);
+    }
+
+    .admin-room-navigation-advertiser-image-wrapper {
+        text-align: center;
+    }
+
+    .admin-room-navigation-advertiser-image {
+        margin-top: 20px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+    }
+
+    .fa-comment-dots {
+        font-size: 15px;
+        margin-right: 10px;
+        transform: translateY(-1px);
+    }
+
+    .admin-room-navigation-title {
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 15px 20px 0 20px;
+    }
+
+    .admin-room-navigation-link {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 15px;
+        padding-top: 0;
+        margin: 0 20px 20px 20px;
+    }
+
+    .error-input {
+        border: 2px solid #d92626;
+        background-color: #ffe6e6;
     }
 
     @media(max-width:767px) {
