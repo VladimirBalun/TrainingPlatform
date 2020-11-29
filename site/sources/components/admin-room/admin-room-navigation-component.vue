@@ -21,10 +21,10 @@
                 <img class="admin-room-navigation-advertiser-image" alt="advertiser_img" :src="advertiserImageUrl">
             </p>
             <input v-model="advertiserImageUrlModel" class="admin-room-navigation-input" type="text" placeholder="Введите адрес изображения..." maxlength="2083">
-            <button class="admin-room-navigation-button" data-toggle="modal" data-target="#message-modal">Сменить изображение</button>
+            <button @click="onChangeAdvertiserImageForm" class="admin-room-navigation-button">Сменить изображение</button>
         </div>
         <div class="admin-room-block block">
-            <button class="admin-room-navigation-button" data-toggle="modal" data-target="#add-creative-modal">Добавить объявление</button>
+            <button data-toggle="modal" data-target="#add-creative-modal" class="admin-room-navigation-button">Добавить объявление</button>
         </div>
         <div class="admin-room-block block hidden-xs">
             <p class="admin-room-navigation-title"><i class="fas fa-comment-dots"></i>Информация</p><hr>
@@ -43,6 +43,8 @@
             </div>
         </div>
 
+        <button id="trigger-show-message-modal" data-toggle="modal" data-target="#message-modal" ref="triggerShowMessageModal"></button>
+
         <admin-room-add-creative-component></admin-room-add-creative-component>
         <admin-room-message-component v-bind:title="changeAdvertiserImageUrlResultTitle"
             v-bind:description="changeAdvertiserImageUrlResultDescription">
@@ -53,6 +55,7 @@
 <script>
 
     import $ from "jquery";
+    import * as network from "../../scripts/network";
 
     import adminRoomAddCreativeComponent from "./admin-room-add-creative-component";
     import adminRoomMessageComponent from "./admin-room-message-component";
@@ -72,12 +75,14 @@
             };
         },
         methods: {
-            changeAdvertiserImageForm() {
+            onChangeAdvertiserImageForm() {
+                console.log('Im here');
                 this.changeAdvertiserImageUrlResultTitle = "";
                 this.changeAdvertiserImageUrlResultDescription = "";
                 if (this.advertiserImageUrlModel === "") {
                     this.changeAdvertiserImageUrlResultTitle = "Ошибка";
                     this.changeAdvertiserImageUrlResultDescription = "Адрес изображения не может быть пустым";
+                    this.$refs.triggerShowMessageModal.click();
                     return false;
                 }
 
@@ -85,19 +90,32 @@
                 if (!regex.test(this.advertiserImageUrlModel)) {
                     this.changeAdvertiserImageUrlResultTitle = "Ошибка";
                     this.changeAdvertiserImageUrlResultDescription = "Некорректный адрес изображения";
+                    this.$refs.triggerShowMessageModal.click();
                     return false;
                 }
 
+                const self = this;
+                network.changeAdvertiserImageUrlById(this, this.id, this.advertiserImageUrlModel, result => {
+                    console.log('Response' + result.result);
+                    if (result.result === 1) {
+                        self.changeAdvertiserImageUrlResultTitle = "Успешная операция";
+                        self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя изменено";
+                        self.advertiserImageUrl = self.advertiserImageUrlModel;
+                        self.advertiserImageUrlModel = "";
+                    } else {
+                        self.changeAdvertiserImageUrlResultTitle = "Ошибка";
+                        self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя не было изменено";
+                    }
+                    this.$refs.triggerShowMessageModal.click();
+                }, error => {
+                    self.changeAdvertiserImageUrlResultTitle = "Ошибка";
+                    self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя не было изменено";
+                    this.$refs.triggerShowMessageModal.click();
+                    console.log(error);
+                })
+
                 return true;
             }
-        },
-        created() {
-            const self = this;
-            $('body').on('click','[data-toggle="modal"][data-target="#message-modal"]', () => {
-                if (self.changeAdvertiserImageForm()) {
-
-                }
-            });
         }
     }
 
@@ -193,6 +211,10 @@
     .error-input {
         border: 2px solid #d92626;
         background-color: #ffe6e6;
+    }
+
+    #trigger-show-message-modal {
+        visibility: hidden;
     }
 
     @media(max-width:767px) {

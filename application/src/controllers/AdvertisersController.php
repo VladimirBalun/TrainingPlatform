@@ -68,6 +68,15 @@ namespace App\Controllers {
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
+        public function changeAdvertiserImageUrlById($id, $new_advertiser_image_url) {
+            $response = new class() {
+                public $result;
+            };
+            $response->result = $this->advertisers_service->changeAdvertiserImageUrlById($id, $new_advertiser_image_url);
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
+
+
         public function loginAdvertiser($advertiser) {
             $response = new class() {
                 public $result;

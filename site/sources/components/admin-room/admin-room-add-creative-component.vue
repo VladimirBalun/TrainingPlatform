@@ -87,6 +87,7 @@
 <script>
 
     import _ from "underscore";
+    import * as network from "../../scripts/network";
     import * as validation from "../../scripts/validation";
 
     export default {
@@ -144,39 +145,21 @@
                     return;
                 }
 
-                const creativeResponse = _.clone(this.creative);
-                if (creativeResponse.country === "Не выбрано") {
-                    creativeResponse.country = null
-                }
-                if (creativeResponse.city === "Не выбрано") {
-                    creativeResponse.city = null;
-                }
-                if (creativeResponse.eventDate === "") {
-                    creativeResponse.eventDate = null;
-                }
-                if (creativeResponse.email === "") {
-                    creativeResponse.email = null;
-                }
-                if (creativeResponse.number === "") {
-                    creativeResponse.number = null;
-                }
-                if (creativeResponse.site === "") {
-                    creativeResponse.site = null;
-                }
-
-                this.$http.post("http://mysite.local/trening/application/src/api/creatives/add_creative.php", creativeResponse, { emulateJSON: true })
-                    .then(response => {
-                        console.log(response.body);
-                    });
+                network.addCreativeByAdvertiserId(this, this.id, this.creative, (result) => {
+                    console.log(result);
+                }, error => {
+                    console.log(error);
+                });
             },
             fillAllModels() {
                 const self = this;
-                this.$http.get("http://localhost:8080/meta")
-                    .then(response => {
-                        self.countriesModel = response.body.countries;
-                        self.themesModel = response.body.themes;
-                        self.categoriesModel = response.body.categories;
-                    });
+                network.loadMetaInformation(self, meta => {
+                    self.countriesModel = meta.countries;
+                    self.themesModel = meta.themes;
+                    self.categoriesModel = meta.categories;
+                }, error => {
+                    console.log(error);
+                });
             },
             fillCitiesModelBySelectedCountry(event) {
                 if (event.target.value === "Не выбрано") {
@@ -185,10 +168,11 @@
                 } else {
                     const self = this;
                     this.creative.city = "Не выбрано";
-                    this.$http.get("http://localhost:8080/cities", { params: { country_name: event.target.value } })
-                        .then(response => {
-                            self.citiesModel = response.body;
-                        });
+                    network.loadCitiesByCountryName(self, event.target.value, cities => {
+                        self.citiesModel = cities;
+                    }, error => {
+                        console.log(error);
+                    })
                 }
             },
             onChangeCountryModel(event) {

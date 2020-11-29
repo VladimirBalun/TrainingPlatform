@@ -19,12 +19,12 @@
         <div class="creative-information-block block">
             <p class="creative-information-title">{{ title }}</p><hr>
             <div class="creative-information-meta-block">
-                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Категория:</span> {{ category }}</p>
-                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тема:</span> {{ theme }}</p>
-                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Страна:</span> {{ (country === null) ? ('Не указана') : (country) }}</p>
-                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Город:</span> {{ (city === null) ? ('Не указан') : (city) }}</p>
-                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Дата:</span> {{ (event_date === null) ? ('Не указана') : (event_date) }}</p>
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тип:</span> {{ (online === 0) ? ('Online') : ('Offline') }}</p>
+                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Дата:</span> {{ (eventDate === null) ? ('Не указана') : (eventDate) }}</p>
+                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Город:</span> {{ (city === null) ? ('Не указан') : (city) }}</p>
+                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Страна:</span> {{ (country === null) ? ('Не указана') : (country) }}</p>
+                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тема:</span> {{ theme }}</p>
+                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Категория:</span> {{ category }}</p>
             </div><hr>
             <p class="creative-information-description" v-html="description"></p>
         </div>
@@ -36,7 +36,7 @@
     "use strict";
 
     export default {
-        props: ["title", "description", "category", "theme", "country", "city", "event_date", "online"],
+        props: ["title", "description", "category", "theme", "country", "city", "eventDate", "online"],
         name: "creative-information-component"
     }
 
@@ -64,8 +64,6 @@
 
     .creative-information-meta-data {
         font-size: 16px;
-        display: inline-block;
-        width: 350px;
         font-family: 'Open Sans', sans-serif;
     }
 

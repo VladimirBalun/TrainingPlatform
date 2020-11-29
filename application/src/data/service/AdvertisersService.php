@@ -38,6 +38,10 @@ namespace App\Data\Service {
             return true;
         }
 
+        public function changeAdvertiserImageUrlById($id, $new_advertiser_image_url) {
+            return $this->advertisers_dao->changeAdvertiserImageUrlById($id, $new_advertiser_image_url);
+        }
+
         public function signupAdvertiser($advertiser) {
             if (($advertiser->getUsername() == '') || (strlen($advertiser->getUsername()) > Limits::$USERNAME_MAX_SIZE)) {
                 return Protocol::$SIGNUP_ERROR_INCORRECT_USERNAME;

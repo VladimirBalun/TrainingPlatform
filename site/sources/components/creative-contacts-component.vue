@@ -20,7 +20,7 @@
             <p class="creative-contacts-price-text"><i class="fas fa-tags"></i> {{ price }}₽</p>
         </div>
         <div class="creative-contacts-block block">
-            <img class="creative-contacts-image" :src="image_url" alt="image">
+            <img class="creative-contacts-image" :src="imageUrl" alt="image">
             <p class="creative-contacts-number">{{ phone }}</p>
             <div class="creative-contacts-wrapper">
                 <a :href="site" class="creative-contacts-button">Перейти на сайт</a>
@@ -45,7 +45,7 @@
     "use strict";
 
     export default {
-        props: ["image_url", "email", "site", "phone", "price"],
+        props: ["imageUrl", "email", "site", "phone", "price"],
         name: "creative-contacts-component"
     }
 

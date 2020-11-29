@@ -71,7 +71,6 @@ function checkCreativeFormOnEmpty(creativeForm) {
 }
 
 function checkCreativeFormOnValidInformation(creativeForm) {
-    console.log(creativeForm);
     if (creativeForm.creative.eventDate !== "") {
         if ((new Date()) > (new Date(creativeForm.creative.eventDate))) {
             creativeForm.creativeValidation.eventDate = false;

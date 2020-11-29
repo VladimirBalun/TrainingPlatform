@@ -24,14 +24,14 @@
                         <div class="creative-page-error-block">{{ moderation }}</div>
                     </div>
                     <creative-contacts-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
-                        :image_url="creative.imageURL" :email="creative.advertiserEmail"
+                        :image-url="creative.imageURL" :email="creative.advertiserEmail"
                         :phone="creative.advertiserPhone" :site="creative.advertiserSite" :price="creative.price">
                     </creative-contacts-component>
                     <creative-information-component class="col-lg-8 col-md-8 col-sm-7 col-xs-12"
                         :title="creative.title" :description="creative.description"
                         :country="creative.country" :city="creative.city"
                         :category="creative.category" :theme="creative.theme"
-                        :eventDate="creative.eventDate" :online="creative.online">
+                        :event-date="creative.eventDate" :online="creative.online">
                     </creative-information-component>
                     <proposed-creatives-component :id="id"></proposed-creatives-component>
                 </div>

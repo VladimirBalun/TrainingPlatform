@@ -35,6 +35,13 @@ namespace App\Data\DAO {
             );
         }
 
+        public function changeAdvertiserImageUrlById($id, $new_advertiser_image_url) {
+            return R::exec(
+                'UPDATE advertisers SET image_url = :image_url WHERE id = :id_advertiser',
+                ['id_advertiser' => $id, 'image_url' => $new_advertiser_image_url]
+            );
+        }
+
         public function getAdvertiserById($id) {
             $database_advertiser = R::getRow(
                 'SELECT image_url FROM advertisers WHERE id = ? LIMIT 1', [$id]);
