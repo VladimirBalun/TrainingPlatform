@@ -37,10 +37,28 @@ export const loadCitiesByCountryName = (vueResource, countryName, onSuccessLoadC
         });
 };
 
+export const removeCreativeById = (vueResource, creativeId, onSuccessLoadClb, onFailedLoadClb) => {
+    vueResource.$http.put(scriptAddress + "/application/src/api/creatives/delete_creative_by_id.php", {creative_id: parseInt(creativeId)}, { emulateJSON: true })
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
+
 export const addCreativeByAdvertiserId = (vueResource, advertiserId, creative, onSuccessLoadClb, onFailedLoadClb) => {
     correctCreativeForResponse(creative);
     creative.advertiser_id = advertiserId;
     vueResource.$http.post(scriptAddress + "/application/src/api/creatives/add_creative.php", creative, { emulateJSON: true })
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+}
+
+export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailedLoadClb) => {
+    vueResource.$http.post(scriptAddress + "/application/src/api/creatives/change_creative.php", creative, { emulateJSON: true })
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {
@@ -73,7 +91,7 @@ export const changeAdvertiserImageUrlById = (vueResource, advertiserId, newAdver
     const request = {};
     request.advertiser_id = advertiserId;
     request.new_image_url = newAdvertiserImageUrl;
-    vueResource.$http.put(scriptAddress + "/application/src/api/advertisers/change_advertiser_image.php", request, { emulateJSON: true })
+    vueResource.$http.put(scriptAddress + "/application/src/api/advertisers/change_advertiser_image_by_id.php", request, { emulateJSON: true })
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {

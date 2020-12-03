@@ -44,6 +44,10 @@
                 </div>
             </div>
         </div>
+
+        <admin-room-add-creative-component :advertiser-id="id"></admin-room-add-creative-component>
+        <admin-room-change-creative-modal :advertiser-id="id"></admin-room-change-creative-modal>
+        <admin-room-delete-creative-modal></admin-room-delete-creative-modal>
     </div>
 </template>
 
@@ -54,13 +58,19 @@
     import headerComponent from "../components/header-component";
     import adminRoomContentComponent from "../components/admin-room/admin-room-content-component"
     import adminRoomNavigationComponent from "../components/admin-room/admin-room-navigation-component";
+    import adminRoomAddCreativeComponent from "../components/admin-room/admin-room-add-creative-component";
+    import adminRoomChangeCreativeModal from "../components/admin-room/admin-room-change-creative-component";
+    import adminRoomDeleteCreativeModal from "../components/admin-room/admin-room-delete-creative-modal";
 
     export default {
         name: "admin-room-page",
         components: {
             headerComponent,
             adminRoomContentComponent,
-            adminRoomNavigationComponent
+            adminRoomNavigationComponent,
+            adminRoomAddCreativeComponent,
+            adminRoomChangeCreativeModal,
+            adminRoomDeleteCreativeModal
         },
         data() {
             return {
@@ -114,16 +124,33 @@
 
             }
         },
-        created() {
-            this.fillAdvertiserCreatives();
-
+        mounted() {
             const self = this;
-            this.$root.$on('deleted-creative', (creativeId) => {
-                self.advertiserActiveCreatives = self.advertiserActiveCreatives.filter((creative) => {
+            this.$root.$once('added-creative', (creative) => {
+                const creativeForVisualization = {
+                    id : creative.id,
+                    title : creative.title,
+                    briefDescription : creative.briefDescription,
+                    imageUrl : creative.image,
+                    eventDate : creative.eventDate,
+                };
+                // TODO: need to think about filters
+                self.filteredCreatives.push(creativeForVisualization);
+                self.advertiserCreatives.push(creativeForVisualization);
+            });
+            this.$root.$on('deleted-creative', creativeId => {
+                self.advertiserCreatives = self.advertiserCreatives.filter(creative => {
                     return creative.id !== creativeId;
                 });
-                self.filteredCreatives = self.advertiserActiveCreatives;
+                self.filteredCreatives = self.advertiserCreatives;
             });
+        },
+        beforeDestroy() {
+            this.$root.$off('added-creative');
+            this.$root.$off('deleted-creative');
+        },
+        created() {
+            this.fillAdvertiserCreatives();
         }
     }
 

@@ -20,7 +20,7 @@
             <p class="creative-contacts-price-text"><i class="fas fa-tags"></i> {{ price }}₽</p>
         </div>
         <div class="creative-contacts-block block">
-            <img class="creative-contacts-image" :src="imageUrl" alt="image">
+            <img class="creative-contacts-image" :src="imageUrl" @error="onImageLoadFailure($event)" alt="image">
             <p class="creative-contacts-number">{{ phone }}</p>
             <div class="creative-contacts-wrapper">
                 <a :href="site" class="creative-contacts-button">Перейти на сайт</a>
@@ -29,7 +29,7 @@
                 <a :href="'mailto:' + email" class="creative-contacts-button">Написать сообщение</a>
             </div>
         </div>
-        <div class="hidden-xs">
+        <div class="advertisement-block-wrapper hidden-xs">
             <div class="advertisement-block">
                 <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
@@ -44,9 +44,16 @@
 
     "use strict";
 
+    import * as common from "../scripts/common";
+
     export default {
         props: ["imageUrl", "email", "site", "phone", "price"],
-        name: "creative-contacts-component"
+        name: "creative-contacts-component",
+        methods: {
+            onImageLoadFailure (event) {
+                event.target.src = common.defaultCreativeImage;
+            }
+        }
     }
 
 </script>
@@ -98,6 +105,10 @@
         font-size: 25px;
         font-family: 'Roboto', sans-serif;
         padding: 15px 0 5px 0;
+    }
+
+    .advertisement-block-wrapper {
+        margin-bottom: 30px;
     }
 
     .advertisement-block {

@@ -52,6 +52,10 @@ namespace App\Data\Service {
             return $this->creatives_dao->addCreative($creative);
         }
 
+        public function changeCreative($creative) {
+            return $this->creatives_dao->changeCreative($creative);
+        }
+
         public function removeCreativeById($creative_id) {
             return $this->creatives_dao->removeCreativeById($creative_id);
         }

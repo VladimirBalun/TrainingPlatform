@@ -85,7 +85,8 @@
                     advertiserEmail: "",
                     advertiserPhone: "",
                     advertiserSite: "",
-                    online: 0
+                    online: 0,
+                    moderationStatus: 0
                 }
             };
         },
@@ -94,7 +95,7 @@
                 return this.$route.params.id;
             },
             moderation() {
-                switch (this.creativeModerationStatus) {
+                switch (this.creative.moderationStatus) {
                     case protocol.MODERATION_STATUS_IN_PROGRESS: {
                         return "Данное объявление не было опубликовано и его пока не могут " +
                             "увидеть другие пользователи, так как оно еще находится в режиме модерации...";
@@ -151,13 +152,14 @@
     }
 
     .creative-page-error-block {
-        background-color: #8f1c2a;
+        background-color: #ffcccb;
         margin-bottom: 30px;
         border-radius: 5px;
-        color: white;
+        color: #c41e3a;
         text-align: center;
         font-family: 'Open Sans', sans-serif;
         font-size: 15px;
+        font-weight: bold;
         padding: 20px;
     }
 

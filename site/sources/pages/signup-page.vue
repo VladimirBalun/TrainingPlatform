@@ -21,16 +21,16 @@
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="signup-form block">
                         <p class="signup-link-text"><span class="signup-link active-signup-link">Регистрация</span> / <span class="signup-link">Вход</span></p>
-                        <label for="signup-username"><label class="signup-require-color">*</label> Введите имя пользователя:</label>
+                        <label for="signup-username"><label class="require-color">*</label> Введите имя пользователя:</label>
                         <input class="signup-input" type="text" id="signup-username" maxlength="64"
                             v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
-                        <label for="signup-email"><label class="signup-require-color">*</label> Введите e-mail:</label>
+                        <label for="signup-email"><label class="require-color">*</label> Введите e-mail:</label>
                         <input class="signup-input" type="text" id="signup-email" maxlength="320"
                             v-model="emailModel" v-bind:class="{ 'error-input': !isValidEmail }">
-                        <label for="signup-password"><label class="signup-require-color">*</label> Введите пароль:</label>
+                        <label for="signup-password"><label class="require-color">*</label> Введите пароль:</label>
                         <input class="signup-input" type="password" id="signup-password" maxlength="128"
                             v-model="passwordModel" v-bind:class="{ 'error-input': !isValidPassword }">
-                        <label for="signup-privacy"><label class="signup-require-color">*</label> Принимаю условия политики конфиденциальности</label>
+                        <label for="signup-privacy"><label class="require-color">*</label> Принимаю условия политики конфиденциальности</label>
                         <input type="checkbox" id="signup-privacy">
                         <button @click="onSignupButtonClick">Зарегистрироваться</button><hr>
                         <p class="signup-error-message">{{ errorMessage }}</p>
@@ -236,15 +236,6 @@
         font-size: 16px;
         padding: 10px 15px 10px 15px;
         font-family: 'Open Sans', sans-serif;
-    }
-
-    .signup-require-color {
-        color: #d92626;
-    }
-
-    .error-input {
-        border: 2px solid #d92626;
-        background-color: #ffe6e6;
     }
 
     button {

@@ -81,6 +81,11 @@
                 </div>
             </div>
         </div>
+
+        <button ref="triggerShowMessageModal" class="hidden-trigger-button" data-toggle="modal" data-target="#message-modal"></button>
+
+        <admin-room-message-modal-component v-bind:title="addAdvertiserResultTitle"
+            :description="addAdvertiserResultDescription"></admin-room-message-modal-component>
     </div>
 </template>
 
@@ -90,11 +95,19 @@
     import * as network from "../../scripts/network";
     import * as validation from "../../scripts/validation";
 
+    import adminRoomMessageModalComponent from "./admin-room-message-component";
+
     export default {
         name: "admin-room-add-creative-component",
+        props: ["advertiserId"],
+        components: {
+            adminRoomMessageModalComponent,
+        },
         data() {
             return {
                 errorMessage: "",
+                addAdvertiserResultTitle: "",
+                addAdvertiserResultDescription: "",
                 creative: {
                     id: 0,
                     title: "",
@@ -133,6 +146,22 @@
             };
         },
         methods: {
+            clearCreativeForm() {
+                this.creative.title = "";
+                this.creative.briefDescription = "";
+                this.creative.description = "";
+                this.creative.category = "Не выбрано";
+                this.creative.theme = "Не выбрано";
+                this.creative.country = "Не выбрано";
+                this.creative.city = "Не выбрано";
+                this.creative.eventDate = "";
+                this.creative.image = "";
+                this.creative.email = "";
+                this.creative.site = "";
+                this.creative.number = "";
+                this.creative.price = 0;
+                this.creative.online = true;
+            },
             addCreative() {
                 let creativeForm = {
                     creative: this.creative,
@@ -145,13 +174,30 @@
                     return;
                 }
 
-                network.addCreativeByAdvertiserId(this, this.id, this.creative, (result) => {
+                const self = this;
+                network.addCreativeByAdvertiserId(this, this.advertiserId, _.clone(this.creative), (result) => {
                     console.log(result);
+                    if (result.result === 1) {
+                        self.$refs.closeButton.click();
+                        self.$root.$emit('added-creative', _.clone(self.creative));
+                        self.addAdvertiserResultTitle = "Успешная операция";
+                        self.addAdvertiserResultDescription = "Объявление успешно добавлено";
+                        self.$refs.triggerShowMessageModal.click();
+                        self.clearCreativeForm();
+                    } else {
+                        self.addAdvertiserResultTitle = "Ошибка";
+                        self.addAdvertiserResultDescription = "Объявление не было добавлено";
+                        self.$refs.triggerShowMessageModal.click();
+                    }
                 }, error => {
                     console.log(error);
+                    self.addAdvertiserResultTitle = "Ошибка";
+                    self.addAdvertiserResultDescription = "Объявление не было добавлено";
+                    self.$refs.triggerShowMessageModal.click();
                 });
             },
             fillAllModels() {
+              console.log('Created');
                 const self = this;
                 network.loadMetaInformation(self, meta => {
                     self.countriesModel = meta.countries;

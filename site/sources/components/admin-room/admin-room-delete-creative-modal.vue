@@ -40,6 +40,8 @@
 
 <script>
 
+    import * as network from "../../scripts/network";
+
     export default {
         name: "admin-room-delete-creative-modal",
         data() {
@@ -50,7 +52,19 @@
         methods: {
             onDeleteCreative() {
                 this.$refs.closeButton.click();
-                this.$root.$emit('deleted-creative', this.creativeId);
+
+                const self = this;
+                network.removeCreativeById(this, this.creativeId, result => {
+                    console.log(result);
+                    if (result.result === 1) {
+                        self.$root.$emit('deleted-creative', self.creativeId);
+                    } else {
+                        console.log("Error with deleting creative");
+                    }
+                }, error => {
+                    console.log(error);
+                    console.log("Error with deleting creative");
+                });
             }
         },
         created() {

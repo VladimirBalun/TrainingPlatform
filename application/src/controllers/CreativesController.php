@@ -123,8 +123,20 @@ namespace App\Controllers {
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
+        public function changeCreative($creative) {
+            $response = new class() {
+                public $result;
+            };
+            $response->result = $this->creatives_service->changeCreative($creative);
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
+
         public function removeCreativeById($creative_id) {
-            return $this->creatives_service->removeCreativeById($creative_id);
+            $response = new class() {
+                public $result;
+            };
+            $response->result = $this->creatives_service->removeCreativeById($creative_id);
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
     }

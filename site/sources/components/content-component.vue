@@ -21,7 +21,7 @@
             <i v-show="!advertiserImageWasLoaded" class="fas fa-user-circle"></i>
             <p class="content-title">{{ title }}</p>
             <p class="content-description">{{ briefDescription }}</p>
-            <img alt="creative_image" class="content-image" :src="imageUrl">
+            <img alt="creative_image" @error="onImageLoadFailure($event)" class="content-image" :src="imageUrl">
             <p class="content-date">
                 <i class="fas fa-calendar-alt"></i>{{ (eventDate === null) ? ('Без даты') : (eventDate) }}
                 <label v-show="online" class="content-type"><i class="fas fa-toggle-on"></i>Online</label>
@@ -37,6 +37,8 @@
 
     "use strict";
 
+    import * as common from "../scripts/common";
+
     export default {
         props: ["id", "title", "briefDescription", "imageUrl", "advertiserImageUrl", "eventDate", "price", "online"],
         name: "content-component",
@@ -46,6 +48,9 @@
             };
         },
         methods: {
+            onImageLoadFailure (event) {
+                event.target.src = common.defaultCreativeImage;
+            },
             onAdvertiserImageLoad() {
                 this.advertiserImageWasLoaded = true;
             }

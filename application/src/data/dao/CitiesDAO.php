@@ -28,7 +28,9 @@ namespace App\Data\DAO {
                 'SELECT cit.id, cit.name 
                 FROM cities cit
                 LEFT JOIN countries con ON cit.id_country = con.id
-                WHERE con.name = ?', [$country_name]
+                WHERE con.name = ?
+                ORDER BY cit.name',
+                [$country_name]
             );
 
             $countries = array();

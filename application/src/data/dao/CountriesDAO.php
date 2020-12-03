@@ -25,7 +25,7 @@ namespace App\Data\DAO {
 
         public function getAllCountries() {
             $database_countries = R::getAll(
-                'SELECT id, name FROM countries'
+                'SELECT id, name FROM countries ORDER BY name'
             );
 
             $countries = array();

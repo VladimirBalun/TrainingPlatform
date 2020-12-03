@@ -10,3 +10,16 @@ html {
     background-color: white;
     border: 1px solid #DBDBD8;
 }
+
+.hidden-trigger-button {
+    visibility: hidden;
+}
+
+.require-color {
+    color: #d92626;
+}
+
+.error-input {
+    border: 2px solid #d92626;
+    background-color: #ffe6e6;
+}

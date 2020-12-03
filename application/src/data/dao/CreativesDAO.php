@@ -176,12 +176,51 @@ namespace App\Data\DAO {
 	                price, event_date, is_online, advertiser_site, advertiser_email, advertiser_phone, id_advertiser,
                     id_country, id_city, id_category, id_theme) 
                 VALUES (:title, :briefDescription, :description, :image,
-	                :price, :eventDate, :online, :site, :email, :phone, 1,
+	                :price, :eventDate, :online, :site, :email, :phone, :id_advertiser,
                     (SELECT id FROM countries WHERE name = :country),
 	                (SELECT id FROM cities WHERE name = :city),
 	                (SELECT id FROM categories WHERE name = :category),
-	                (SELECT id FROM themes WHERE name = :theme));  ',
+	                (SELECT id FROM themes WHERE name = :theme))',
                 [
+                    'title' => $creative->getTitle(),
+                    'briefDescription' => $creative->getBriefDescription(),
+                    'description' => $creative->getDescription(),
+                    'category' => $creative->getCategory(),
+                    'theme' => $creative->getTheme(),
+                    'country' => $creative->getCountry(),
+                    'city' => $creative->getCity(),
+                    'eventDate' => $creative->getEventDate(),
+                    'image' => $creative->getImageUrl(),
+                    'email' => $creative->getEmail(),
+                    'site' => $creative->getSite(),
+                    'phone' => $creative->getPhone(),
+                    'price' => $creative->getPrice(),
+                    'online' => $creative->getOnline(),
+                    'id_advertiser' => $creative->getAdvertiser()->getId()
+                ]
+            );
+        }
+
+        public function changeCreative($creative) {
+            return R::exec(
+                'UPDATE creatives SET
+                title = :title, 
+                brief_description = :briefDescription, 
+                description = :description, 
+                image_url = :image, 
+	            price = :price, 
+	            event_date = :eventDate,
+	            is_online = :online, 
+	            advertiser_site = :site, 
+	            advertiser_email = :email, 
+	            advertiser_phone = :phone, 
+                id_country = (SELECT id FROM countries WHERE name = :country), 
+                id_city = (SELECT id FROM cities WHERE name = :city), 
+                id_category = (SELECT id FROM categories WHERE name = :category), 
+                id_theme = (SELECT id FROM themes WHERE name = :theme)
+                WHERE id = :id_creative',
+                [
+                    'id_creative' => $creative->getId(),
                     'title' => $creative->getTitle(),
                     'briefDescription' => $creative->getBriefDescription(),
                     'description' => $creative->getDescription(),
@@ -201,7 +240,7 @@ namespace App\Data\DAO {
         }
 
         public function removeCreativeById($creative_id) {
-            return true;
+            return R::exec('DELETE FROM creatives WHERE id = :id_creative', ['id_creative' => $creative_id]);
         }
 
     }

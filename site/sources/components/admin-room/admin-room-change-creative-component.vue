@@ -92,6 +92,7 @@
 
     export default {
         name: "admin-room-change-creative-component",
+        props: ["advertiserId"],
         data() {
             return {
                 errorMessage: "",
@@ -144,6 +145,27 @@
                     document.getElementById("change-creative-modal").scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
+
+                const self = this;
+                network.changeCreative(this, _.clone(this.creative), (result) => {
+                    console.log(result);
+                    if (result.result === 1) {
+                        self.$refs.closeButton.click();
+                        self.$root.$emit('added-creative', _.clone(self.creative));
+                        self.addAdvertiserResultTitle = "Успешная операция";
+                        self.addAdvertiserResultDescription = "Объявление успешно добавлено";
+                        self.$refs.triggerShowMessageModal.click();
+                    } else {
+                        self.addAdvertiserResultTitle = "Ошибка";
+                        self.addAdvertiserResultDescription = "Объявление не было добавлено";
+                        self.$refs.triggerShowMessageModal.click();
+                    }
+                }, error => {
+                    console.log(error);
+                    self.addAdvertiserResultTitle = "Ошибка";
+                    self.addAdvertiserResultDescription = "Объявление не было добавлено";
+                    self.$refs.triggerShowMessageModal.click();
+                });
             },
             fillAllModels() {
                 const self = this;

@@ -18,7 +18,7 @@
     <div class="admin-room-navigation-wrapper">
         <div class="admin-room-block block hidden-xs">
             <p class="admin-room-navigation-advertiser-image-wrapper">
-                <img class="admin-room-navigation-advertiser-image" alt="advertiser_img" :src="advertiserImageUrl">
+                <img class="admin-room-navigation-advertiser-image" @error="onImageLoadFailure($event)" alt="advertiser_img" :src="advertiserImageUrl">
             </p>
             <input v-model="advertiserImageUrlModel" class="admin-room-navigation-input" type="text" placeholder="Введите адрес изображения..." maxlength="2083">
             <button @click="onChangeAdvertiserImageForm" class="admin-room-navigation-button">Сменить изображение</button>
@@ -43,9 +43,8 @@
             </div>
         </div>
 
-        <button id="trigger-show-message-modal" data-toggle="modal" data-target="#message-modal" ref="triggerShowMessageModal"></button>
+        <button ref="triggerShowMessageModal" class="hidden-trigger-button" data-toggle="modal" data-target="#message-modal"></button>
 
-        <admin-room-add-creative-component></admin-room-add-creative-component>
         <admin-room-message-component v-bind:title="changeAdvertiserImageUrlResultTitle"
             v-bind:description="changeAdvertiserImageUrlResultDescription">
         </admin-room-message-component>
@@ -54,18 +53,16 @@
 
 <script>
 
-    import $ from "jquery";
     import * as network from "../../scripts/network";
 
-    import adminRoomAddCreativeComponent from "./admin-room-add-creative-component";
     import adminRoomMessageComponent from "./admin-room-message-component";
+    import * as common from "../../scripts/common";
 
     export default {
         name: "admin-room-navigation-component",
         props: ["id", "advertiserImageUrl"],
         components: {
-            adminRoomMessageComponent,
-            adminRoomAddCreativeComponent
+            adminRoomMessageComponent
         },
         data() {
             return {
@@ -75,10 +72,10 @@
             };
         },
         methods: {
+            onImageLoadFailure (event) {
+                event.target.src = common.defaultUserImage;
+            },
             onChangeAdvertiserImageForm() {
-                console.log('Im here');
-                this.changeAdvertiserImageUrlResultTitle = "";
-                this.changeAdvertiserImageUrlResultDescription = "";
                 if (this.advertiserImageUrlModel === "") {
                     this.changeAdvertiserImageUrlResultTitle = "Ошибка";
                     this.changeAdvertiserImageUrlResultDescription = "Адрес изображения не может быть пустым";
@@ -96,7 +93,7 @@
 
                 const self = this;
                 network.changeAdvertiserImageUrlById(this, this.id, this.advertiserImageUrlModel, result => {
-                    console.log('Response' + result.result);
+                    console.log(result);
                     if (result.result === 1) {
                         self.changeAdvertiserImageUrlResultTitle = "Успешная операция";
                         self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя изменено";
@@ -113,8 +110,6 @@
                     this.$refs.triggerShowMessageModal.click();
                     console.log(error);
                 })
-
-                return true;
             }
         }
     }
@@ -182,9 +177,9 @@
 
     .admin-room-navigation-advertiser-image {
         margin-top: 20px;
-        width: 100px;
-        height: 100px;
-        border-radius: 50px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
     }
 
     .fa-comment-dots {
@@ -206,15 +201,6 @@
         font-size: 15px;
         padding-top: 0;
         margin: 0 20px 20px 20px;
-    }
-
-    .error-input {
-        border: 2px solid #d92626;
-        background-color: #ffe6e6;
-    }
-
-    #trigger-show-message-modal {
-        visibility: hidden;
     }
 
     @media(max-width:767px) {

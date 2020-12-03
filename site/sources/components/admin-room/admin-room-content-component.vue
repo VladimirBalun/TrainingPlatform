@@ -17,11 +17,13 @@
 <template>
     <div>
         <div class="admin-room-content-block block">
-            <p class="admin-room-content-title">{{ title }}</p>
+            <p class="admin-room-content-title">{{ title }}</p><hr>
             <p class="admin-room-content-description">{{ briefDescription }}</p>
-            <img class="admin-room-content-image" :src="imageUrl" alt="advertiser_image">
+            <img class="admin-room-content-image" :src="imageUrl" @error="onImageLoadFailure($event)" alt="advertiser_image">
             <p class="admin-room-content-moderation"
-                v-bind:class="{ 'overdue-and-failed-moderation-background': (moderationStatus === 2), 'in-moderation-background': (moderationStatus === 1) }">
+                v-bind:class="{ 'overdue-and-failed-moderation-background': (moderationStatus === 2),
+                                'active-background': (moderationStatus === 1),
+                                'in-moderation-background': (moderationStatus === 0)}">
                 {{ moderation }}
             </p>
             <div class="admin-room-content-block-inner-wrapper">
@@ -34,24 +36,15 @@
         </div>
 
         <button id="trigger-for-change-creative" data-toggle="modal" data-target="#change-creative-modal" ref="btnTriggerChangeCreative"></button>
-        <admin-room-change-creative-modal></admin-room-change-creative-modal>
-        <admin-room-delete-creative-modal></admin-room-delete-creative-modal>
     </div>
 </template>
 
 <script>
 
-    import $ from "jquery";
     import * as protocol from "../../scripts/protocol";
-
-    import adminRoomChangeCreativeModal from "./admin-room-change-creative-component";
-    import adminRoomDeleteCreativeModal from "./admin-room-delete-creative-modal";
+    import * as common from "../../scripts/common";
 
     export default {
-        components: {
-            adminRoomChangeCreativeModal,
-            adminRoomDeleteCreativeModal
-        },
         props: ["id", "title", "briefDescription", "imageUrl", "eventDate", "moderationStatus", "moderationText"],
         name: "admin-room-content-component",
         computed: {
@@ -76,6 +69,9 @@
             }
         },
         methods: {
+            onImageLoadFailure (event) {
+                event.target.src = common.defaultCreativeImage;
+            },
             onChangeCreativeButtonClick(creativeId) {
                 const self = this;
                 this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
@@ -101,7 +97,6 @@
                         self.$refs.btnTriggerChangeCreative.click();
                     }, error => {
                         console.log(error);
-
                     });
             },
             onDeleteCreativeButtonClick(creativeId) {
@@ -114,9 +109,19 @@
 
 <style scoped>
 
-    .in-moderation-background {
+    hr {
+        margin: 15px 0 15px 0;
+        padding: 0;
+    }
+
+    .active-background {
         color: #228B22;
         background-color: #e7f6e2;
+    }
+
+    .in-moderation-background {
+        color: #795916;
+        background-color: #fff3db;
     }
 
     .overdue-and-failed-moderation-background {
