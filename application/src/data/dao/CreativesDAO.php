@@ -214,13 +214,14 @@ namespace App\Data\DAO {
 	            advertiser_site = :site, 
 	            advertiser_email = :email, 
 	            advertiser_phone = :phone, 
+	            moderation_status = 0,
                 id_country = (SELECT id FROM countries WHERE name = :country), 
                 id_city = (SELECT id FROM cities WHERE name = :city), 
                 id_category = (SELECT id FROM categories WHERE name = :category), 
                 id_theme = (SELECT id FROM themes WHERE name = :theme)
-                WHERE id = :id_creative',
+                WHERE id = :idCreative',
                 [
-                    'id_creative' => $creative->getId(),
+                    'idCreative' => $creative->getId(),
                     'title' => $creative->getTitle(),
                     'briefDescription' => $creative->getBriefDescription(),
                     'description' => $creative->getDescription(),

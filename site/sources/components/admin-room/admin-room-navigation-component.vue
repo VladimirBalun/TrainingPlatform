@@ -42,52 +42,41 @@
                 <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
         </div>
-
-        <button ref="triggerShowMessageModal" class="hidden-trigger-button" data-toggle="modal" data-target="#message-modal"></button>
-
-        <admin-room-message-component v-bind:title="changeAdvertiserImageUrlResultTitle"
-            v-bind:description="changeAdvertiserImageUrlResultDescription">
-        </admin-room-message-component>
     </div>
 </template>
 
 <script>
 
     import * as network from "../../scripts/network";
-
-    import adminRoomMessageComponent from "./admin-room-message-component";
     import * as common from "../../scripts/common";
 
     export default {
         name: "admin-room-navigation-component",
         props: ["id", "advertiserImageUrl"],
-        components: {
-            adminRoomMessageComponent
-        },
         data() {
             return {
-                advertiserImageUrlModel: "",
-                changeAdvertiserImageUrlResultTitle: "",
-                changeAdvertiserImageUrlResultDescription: ""
+                advertiserImageUrlModel: ""
             };
         },
         methods: {
             onImageLoadFailure (event) {
                 event.target.src = common.defaultUserImage;
             },
+            showMessageModal(title, description) {
+                this.$root.$emit("show-message-modal", {
+                    title: title,
+                    description: description
+                });
+            },
             onChangeAdvertiserImageForm() {
                 if (this.advertiserImageUrlModel === "") {
-                    this.changeAdvertiserImageUrlResultTitle = "Ошибка";
-                    this.changeAdvertiserImageUrlResultDescription = "Адрес изображения не может быть пустым";
-                    this.$refs.triggerShowMessageModal.click();
+                    this.showMessageModal("Ошибка", "Адрес изображения не может быть пустым");
                     return false;
                 }
 
                 const regex = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
                 if (!regex.test(this.advertiserImageUrlModel)) {
-                    this.changeAdvertiserImageUrlResultTitle = "Ошибка";
-                    this.changeAdvertiserImageUrlResultDescription = "Некорректный адрес изображения";
-                    this.$refs.triggerShowMessageModal.click();
+                    this.showMessageModal("Ошибка", "Некорректный адрес изображения");
                     return false;
                 }
 
@@ -95,20 +84,15 @@
                 network.changeAdvertiserImageUrlById(this, this.id, this.advertiserImageUrlModel, result => {
                     console.log(result);
                     if (result.result === 1) {
-                        self.changeAdvertiserImageUrlResultTitle = "Успешная операция";
-                        self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя изменено";
                         self.advertiserImageUrl = self.advertiserImageUrlModel;
                         self.advertiserImageUrlModel = "";
+                        self.showMessageModal("Успешная операция", "Изображение пользователя изменено");
                     } else {
-                        self.changeAdvertiserImageUrlResultTitle = "Ошибка";
-                        self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя не было изменено";
+                        self.showMessageModal("Ошибка", "Изображение пользователя не было изменено");
                     }
-                    this.$refs.triggerShowMessageModal.click();
                 }, error => {
-                    self.changeAdvertiserImageUrlResultTitle = "Ошибка";
-                    self.changeAdvertiserImageUrlResultDescription = "Изображение пользователя не было изменено";
-                    this.$refs.triggerShowMessageModal.click();
                     console.log(error);
+                    self.showMessageModal("Ошибка", "Изображение пользователя не было изменено");
                 })
             }
         }

@@ -74,10 +74,12 @@
             },
             onChangeCreativeButtonClick(creativeId) {
                 const self = this;
+
                 this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
                     .then(response => {
                         console.log(response);
                         let creative = {};
+                        creative.id = self.id;
                         creative.title = response.body.title;
                         creative.briefDescription = response.body.brief_description;
                         creative.description = response.body.description;

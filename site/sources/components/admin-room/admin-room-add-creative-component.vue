@@ -33,7 +33,7 @@
                         <input class="model-input" v-model="creative.title" v-bind:class="{ 'error-input': !creativeValidation.title }" type="text" id="creative-title">
                         <label for="creative-brief-description"><label class="require-color">*</label> Введите краткое описание:</label>
                         <textarea class="model-input" v-model="creative.briefDescription" v-bind:class="{ 'error-input': !creativeValidation.briefDescription }" id="creative-brief-description"/>
-                        <label for="creative-description"><label class="require-color">*</label> Введите описание (можно использовать HTML разметку вместе с картинками, ссылками, таблицами и стилями для улучшения визуальных качеств текста):</label>
+                      <label for="creative-description"><label class="require-color">*</label> Введите описание (можно использовать <a href="https://paulradzkov.com/2014/markdown_cheatsheet/">MarkDown разметку</a> вместе с картинками, ссылками и таблицами улучшения визуальных качеств текста):</label>
                         <textarea class="model-input" v-model="creative.description" v-bind:class="{ 'error-input': !creativeValidation.description }" id="creative-description"/>
                         <label for="creative-category"><label class="require-color">*</label> Выберите категорию:</label>
                         <select v-model="creative.category" class="model-input" v-bind:class="{ 'error-input': !creativeValidation.category }" id="creative-category">
@@ -66,7 +66,7 @@
                         <input v-model="creative.email" v-bind:class="{ 'error-input': !creativeValidation.email }" class="model-input" type="text" id="creative-email" maxlength="320">
                         <label for="creative-site">Введите адрес сайта (если необходимо):</label>
                         <input v-model="creative.site" v-bind:class="{ 'error-input': !creativeValidation.site }"  class="model-input" type="text" id="creative-site" maxlength="2083">
-                        <label for="creative-price"><label class="require-color">*</label> Введите цену:</label>
+                        <label for="creative-price"><label class="require-color">*</label> Введите цену (пока что только в рублях):</label>
                         <input v-bind:class="{ 'error-input': !creativeValidation.price }" v-model="creative.price" class="model-input" type="number" id="creative-price">
                         <label for="navigation-type-off-onl"><label class="require-color">*</label> Выберите тип:</label>
                         <p id="navigation-type-off-onl" class="target-label">
@@ -81,11 +81,6 @@
                 </div>
             </div>
         </div>
-
-        <button ref="triggerShowMessageModal" class="hidden-trigger-button" data-toggle="modal" data-target="#message-modal"></button>
-
-        <admin-room-message-modal-component v-bind:title="addAdvertiserResultTitle"
-            :description="addAdvertiserResultDescription"></admin-room-message-modal-component>
     </div>
 </template>
 
@@ -95,14 +90,9 @@
     import * as network from "../../scripts/network";
     import * as validation from "../../scripts/validation";
 
-    import adminRoomMessageModalComponent from "./admin-room-message-component";
-
     export default {
         name: "admin-room-add-creative-component",
         props: ["advertiserId"],
-        components: {
-            adminRoomMessageModalComponent,
-        },
         data() {
             return {
                 errorMessage: "",
@@ -162,6 +152,12 @@
                 this.creative.price = 0;
                 this.creative.online = true;
             },
+            showMessageModal(title, description) {
+                this.$root.$emit("show-message-modal", {
+                    title: title,
+                    description: description
+                });
+            },
             addCreative() {
                 let creativeForm = {
                     creative: this.creative,
@@ -177,27 +173,21 @@
                 const self = this;
                 network.addCreativeByAdvertiserId(this, this.advertiserId, _.clone(this.creative), (result) => {
                     console.log(result);
+                    self.$refs.closeButton.click();
                     if (result.result === 1) {
-                        self.$refs.closeButton.click();
+                        self.showMessageModal("Успешная операция", "Объявление успешно добавлено");
                         self.$root.$emit('added-creative', _.clone(self.creative));
-                        self.addAdvertiserResultTitle = "Успешная операция";
-                        self.addAdvertiserResultDescription = "Объявление успешно добавлено";
-                        self.$refs.triggerShowMessageModal.click();
                         self.clearCreativeForm();
                     } else {
-                        self.addAdvertiserResultTitle = "Ошибка";
-                        self.addAdvertiserResultDescription = "Объявление не было добавлено";
-                        self.$refs.triggerShowMessageModal.click();
+                        self.showMessageModal("Ошибка", "Объявление не было добавлено");
                     }
                 }, error => {
                     console.log(error);
-                    self.addAdvertiserResultTitle = "Ошибка";
-                    self.addAdvertiserResultDescription = "Объявление не было добавлено";
-                    self.$refs.triggerShowMessageModal.click();
+                    self.$refs.closeButton.click();
+                    self.showMessageModal("Ошибка", "Объявление не было добавлено");
                 });
             },
             fillAllModels() {
-              console.log('Created');
                 const self = this;
                 network.loadMetaInformation(self, meta => {
                     self.countriesModel = meta.countries;

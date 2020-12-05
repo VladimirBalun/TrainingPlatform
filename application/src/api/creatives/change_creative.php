@@ -31,21 +31,21 @@ header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEA
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     parse_str(file_get_contents('php://input'),$put_vars);
     $creative = new CreativeEntity();
-    $creative->setId((int)$_POST['id']);
-    $creative->setTitle($_POST['title']);
-    $creative->setBriefDescription($_POST['briefDescription']);
-    $creative->setDescription($_POST['description']);
-    $creative->setCategory($_POST['category']);
-    $creative->setTheme($_POST['theme']);
-    $creative->setCountry($_POST['country']);
-    $creative->setCity($_POST['city']);
-    $creative->setEventDate($_POST['eventDate']);
-    $creative->setImageUrl($_POST['image']);
-    $creative->setEmail($_POST['email']);
-    $creative->setSite($_POST['site']);
-    $creative->setPhone($_POST['number']);
-    $creative->setPrice((int)$_POST['price']);
-    $creative->setOnline((bool)$_POST['online']);
+    $creative->setId((int)$put_vars['id']);
+    $creative->setTitle($put_vars['title']);
+    $creative->setBriefDescription($put_vars['briefDescription']);
+    $creative->setDescription($put_vars['description']);
+    $creative->setCategory($put_vars['category']);
+    $creative->setTheme($put_vars['theme']);
+    $creative->setCountry($put_vars['country']);
+    $creative->setCity($put_vars['city']);
+    $creative->setEventDate($put_vars['eventDate']);
+    $creative->setImageUrl($put_vars['image']);
+    $creative->setEmail($put_vars['email']);
+    $creative->setSite($put_vars['site']);
+    $creative->setPhone($put_vars['number']);
+    $creative->setPrice((int)$put_vars['price']);
+    $creative->setOnline((bool)$put_vars['online']);
 
     $controller = new CreativesController();
     echo $controller->changeCreative($creative);

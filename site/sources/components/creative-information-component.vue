@@ -48,6 +48,10 @@
         margin: 10px 0 15px 0;
     }
 
+    .creative-information-block-wrapper {
+        margin-bottom: 30px;
+    }
+
     .creative-information-block {
         padding: 12px 20px 10px 20px;
     }

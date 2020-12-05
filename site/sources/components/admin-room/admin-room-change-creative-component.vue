@@ -33,7 +33,7 @@
                         <input class="model-input" v-model="creative.title" v-bind:class="{ 'error-input': !creativeValidation.title }" type="text" id="creative-title">
                         <label for="creative-brief-description"><label class="require-color">*</label> Введите краткое описание:</label>
                         <textarea class="model-input" v-model="creative.briefDescription" v-bind:class="{ 'error-input': !creativeValidation.briefDescription }" id="creative-brief-description"/>
-                        <label for="creative-description"><label class="require-color">*</label> Введите описание (можно использовать HTML разметку вместе с картинками, ссылками, таблицами и стилями для улучшения визуальных качеств текста):</label>
+                        <label for="creative-description"><label class="require-color">*</label> Введите описание (можно использовать <a href="https://paulradzkov.com/2014/markdown_cheatsheet/">MarkDown разметку</a> вместе с картинками, ссылками и таблицами для улучшения визуальных качеств текста):</label>
                         <textarea class="model-input" v-model="creative.description" v-bind:class="{ 'error-input': !creativeValidation.description }" id="creative-description"/>
                         <label for="creative-category"><label class="require-color">*</label> Выберите категорию:</label>
                         <select v-model="creative.category" class="model-input" v-bind:class="{ 'error-input': !creativeValidation.category }" id="creative-category">
@@ -66,7 +66,7 @@
                         <input v-model="creative.email" v-bind:class="{ 'error-input': !creativeValidation.email }" class="model-input" type="text" id="creative-email" maxlength="320">
                         <label for="creative-site">Введите адрес сайта (если необходимо):</label>
                         <input v-model="creative.site" v-bind:class="{ 'error-input': !creativeValidation.site }"  class="model-input" type="text" id="creative-site" maxlength="2083">
-                        <label for="creative-price"><label class="require-color">*</label> Введите цену:</label>
+                        <label for="creative-price"><label class="require-color">*</label> Введите цену (пока что только в рублях):</label>
                         <input v-bind:class="{ 'error-input': !creativeValidation.price }" v-model="creative.price" class="model-input" type="number" id="creative-price">
                         <label for="navigation-type-off-onl"><label class="require-color">*</label> Выберите тип:</label>
                         <p id="navigation-type-off-onl" class="target-label">
@@ -113,6 +113,7 @@
                     price: 0,
                     online: true
                 },
+                initialCreative: {},
                 creativeValidation: {
                     title: true,
                     briefDescription: true,
@@ -134,11 +135,23 @@
             };
         },
         methods: {
+            showMessageModal(title, description) {
+                this.$root.$emit("show-message-modal", {
+                    title: title,
+                    description: description
+                });
+            },
             changeCreative() {
                 let creativeForm = {
                     creative: this.creative,
                     creativeValidation: this.creativeValidation
                 };
+
+                if (_.isMatch(this.initialCreative, this.creative)) {
+                    this.$refs.closeButton.click();
+                    this.showMessageModal("Ошибка", "Не было внесено никаких правок в объявление для его изменения");
+                    return;
+                }
 
                 this.errorMessage = validation.validateCreativeForm(creativeForm)
                 if (this.errorMessage !== "") {
@@ -149,22 +162,17 @@
                 const self = this;
                 network.changeCreative(this, _.clone(this.creative), (result) => {
                     console.log(result);
+                    self.$refs.closeButton.click();
                     if (result.result === 1) {
-                        self.$refs.closeButton.click();
-                        self.$root.$emit('added-creative', _.clone(self.creative));
-                        self.addAdvertiserResultTitle = "Успешная операция";
-                        self.addAdvertiserResultDescription = "Объявление успешно добавлено";
-                        self.$refs.triggerShowMessageModal.click();
+                        self.showMessageModal("Успешная операция", "Объявление успешно добавлено");
+                        self.$root.$emit('changed-creative', _.clone(self.creative));
                     } else {
-                        self.addAdvertiserResultTitle = "Ошибка";
-                        self.addAdvertiserResultDescription = "Объявление не было добавлено";
-                        self.$refs.triggerShowMessageModal.click();
+                        self.showMessageModal("Ошибка", "Объявление не было изменено");
                     }
                 }, error => {
                     console.log(error);
-                    self.addAdvertiserResultTitle = "Ошибка";
-                    self.addAdvertiserResultDescription = "Объявление не было добавлено";
-                    self.$refs.triggerShowMessageModal.click();
+                    self.$refs.closeButton.click();
+                    self.showMessageModal("Ошибка", "Объявление не было изменено");
                 });
             },
             fillAllModels() {
@@ -200,6 +208,7 @@
 
             const self = this;
             this.$root.$on("click-change-creative", (creative) => {
+                self.creative.id = creative.id;
                 self.creative.title = creative.title;
                 self.creative.briefDescription = creative.briefDescription;
                 self.creative.description = creative.description;
@@ -214,6 +223,7 @@
                 self.creative.category = creative.category;
                 self.creative.theme = creative.theme;
                 self.creative.online = creative.online;
+                self.initialCreative = _.clone(self.creative);
             });
         }
     }

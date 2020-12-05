@@ -58,8 +58,9 @@ export const addCreativeByAdvertiserId = (vueResource, advertiserId, creative, o
 }
 
 export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailedLoadClb) => {
-    vueResource.$http.post(scriptAddress + "/application/src/api/creatives/change_creative.php", creative, { emulateJSON: true })
+    vueResource.$http.put(scriptAddress + "/application/src/api/creatives/change_creative.php", creative, { emulateJSON: true })
         .then(response => {
+            console.log(response);
             onSuccessLoadClb(response.body);
         }, error => {
             onFailedLoadClb(error);

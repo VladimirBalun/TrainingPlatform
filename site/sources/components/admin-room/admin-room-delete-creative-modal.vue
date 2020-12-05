@@ -50,20 +50,29 @@
             };
         },
         methods: {
+            showMessageModal(title, description) {
+                this.$root.$emit("show-message-modal", {
+                    title: title,
+                    description: description
+                });
+            },
             onDeleteCreative() {
                 this.$refs.closeButton.click();
 
                 const self = this;
                 network.removeCreativeById(this, this.creativeId, result => {
                     console.log(result);
+                    self.$refs.closeButton.click();
                     if (result.result === 1) {
                         self.$root.$emit('deleted-creative', self.creativeId);
+                        self.showMessageModal("Успешная операция", "Объявление удалено");
                     } else {
-                        console.log("Error with deleting creative");
+                        self.showMessageModal("Ошибка", "Объявление не было удалено");
                     }
                 }, error => {
                     console.log(error);
-                    console.log("Error with deleting creative");
+                    self.$refs.closeButton.click();
+                    self.showMessageModal("Ошибка", "Объявление не было удалено");
                 });
             }
         },

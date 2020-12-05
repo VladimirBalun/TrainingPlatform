@@ -48,6 +48,9 @@
         <admin-room-add-creative-component :advertiser-id="id"></admin-room-add-creative-component>
         <admin-room-change-creative-modal :advertiser-id="id"></admin-room-change-creative-modal>
         <admin-room-delete-creative-modal></admin-room-delete-creative-modal>
+        <admin-room-message-component v-bind:title="modalMessageTitle" v-bind:description="modalMessageDescription"></admin-room-message-component>
+
+        <button ref="triggerShowMessageModal" class="hidden-trigger-button" data-toggle="modal" data-target="#message-modal"></button>
     </div>
 </template>
 
@@ -61,6 +64,7 @@
     import adminRoomAddCreativeComponent from "../components/admin-room/admin-room-add-creative-component";
     import adminRoomChangeCreativeModal from "../components/admin-room/admin-room-change-creative-component";
     import adminRoomDeleteCreativeModal from "../components/admin-room/admin-room-delete-creative-modal";
+    import adminRoomMessageComponent from "../components/admin-room/admin-room-message-component";
 
     export default {
         name: "admin-room-page",
@@ -70,10 +74,13 @@
             adminRoomNavigationComponent,
             adminRoomAddCreativeComponent,
             adminRoomChangeCreativeModal,
-            adminRoomDeleteCreativeModal
+            adminRoomDeleteCreativeModal,
+            adminRoomMessageComponent
         },
         data() {
             return {
+                modalMessageTitle: "",
+                modalMessageDescription: "",
                 advertiserImageUrl: "",
                 advertiserCreatives: [],
                 filteredCreatives: []
@@ -92,7 +99,6 @@
                         console.log(response);
                         self.advertiserImageUrl = response.body.advertiser_image_url;
                         response.body.creatives.forEach(creative => {
-                            console.log(creative.moderation_status);
                             self.filteredCreatives.push({
                                 id : creative.id,
                                 title : creative.title,
@@ -121,12 +127,13 @@
                 });
             },
             onOverdueFilterButtonClick() {
-
+                // TODO
             }
         },
         mounted() {
             const self = this;
-            this.$root.$once('added-creative', (creative) => {
+
+            this.$root.$on("added-creative", (creative) => {
                 const creativeForVisualization = {
                     id : creative.id,
                     title : creative.title,
@@ -138,16 +145,30 @@
                 self.filteredCreatives.push(creativeForVisualization);
                 self.advertiserCreatives.push(creativeForVisualization);
             });
-            this.$root.$on('deleted-creative', creativeId => {
+
+            this.$root.$on("changed-creative", creative => {
+                console.log("Changed creative");
+            });
+
+            this.$root.$on("deleted-creative", creativeId => {
+                // TODO: need to think about filters
                 self.advertiserCreatives = self.advertiserCreatives.filter(creative => {
                     return creative.id !== creativeId;
                 });
                 self.filteredCreatives = self.advertiserCreatives;
             });
+
+            this.$root.$on("show-message-modal", messageData => {
+                self.modalMessageTitle = messageData.title;
+                self.modalMessageDescription = messageData.description;
+                self.$refs.triggerShowMessageModal.click();
+            });
         },
         beforeDestroy() {
-            this.$root.$off('added-creative');
-            this.$root.$off('deleted-creative');
+            this.$root.$off("added-creative");
+            this.$root.$off("changed-creative");
+            this.$root.$off("deleted-creative");
+            this.$root.$off("show-message-modal");
         },
         created() {
             this.fillAdvertiserCreatives();
