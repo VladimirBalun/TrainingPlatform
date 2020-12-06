@@ -16,7 +16,7 @@
 
 <template>
     <div class="admin-room-navigation-wrapper">
-        <div class="admin-room-block block hidden-xs">
+        <div class="admin-room-block block">
             <p class="admin-room-navigation-advertiser-image-wrapper">
                 <img class="admin-room-navigation-advertiser-image" @error="onImageLoadFailure($event)" alt="advertiser_img" :src="advertiserImageUrl">
             </p>
@@ -77,7 +77,7 @@
                 }
 
                 const self = this;
-                network.changeAdvertiserImageUrlById(this, this.id, this.advertiserImageUrlModel, result => {
+                network.changeAdvertiserImageUrlById(this, this.id, this.advertiserImageUrlModel.trim(), result => {
                     console.log(result);
                     if (result.result === 1) {
                         self.advertiserImageUrl = self.advertiserImageUrlModel;

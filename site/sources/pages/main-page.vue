@@ -84,7 +84,7 @@
             },
             fillCreativesByTitlePattern(titlePattern) {
                 const self = this;
-                this.$http.get("http://localhost:8080/search_demo_creatives", { params: { title_pattern: encodeURI(titlePattern) } })
+                this.$http.get("http://localhost:8080/search_demo_creatives", { params: { title_pattern: encodeURI(titlePattern.trim()) } })
                     .then(response => {
                         self.demoCreatives = [];
                         console.log(response);

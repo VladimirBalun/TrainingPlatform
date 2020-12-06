@@ -94,4 +94,12 @@
 
     }
 
+    @media(max-width:767px) {
+
+        .proposed-creatives-title {
+            margin-top: 15px;
+        }
+
+    }
+
 </style>

@@ -80,7 +80,7 @@ function checkCreativeFormOnEmpty(creativeForm) {
 
 function checkCreativeFormOnValidInformation(creativeForm) {
     if (creativeForm.creative.eventDate !== "") {
-        if ((new Date()) > (new Date(creativeForm.creative.eventDate))) {
+        if (!validateCreativeEventDate(creativeForm.creative.eventDate)) {
             creativeForm.creativeValidation.eventDate = false;
             return "Невозможно указать дату события в прошлом";
         }

@@ -27,7 +27,7 @@
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тема:</span> {{ theme }}</p>
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Категория:</span> {{ category }}</p>
             </div><hr>
-            <p class="creative-information-description" v-html="description"></p>
+            <vue-markdown class="creative-information-description" :source="description"></vue-markdown>
         </div>
     </div>
 </template>
@@ -38,9 +38,14 @@
 
     import * as common from "../scripts/common";
 
+    import VueMarkdown from 'vue-markdown';
+
     export default {
         props: ["title", "description", "category", "theme", "country", "city", "eventDate", "online", "advertiserImageUrl"],
         name: "creative-information-component",
+        components: {
+            VueMarkdown
+        },
         methods: {
             onProfileImageLoadFailure (event) {
                 event.target.src = common.defaultUserImage;

@@ -228,7 +228,7 @@ namespace App\Data\DAO {
                 id_city = (SELECT id FROM cities WHERE name = :city), 
                 id_category = (SELECT id FROM categories WHERE name = :category), 
                 id_theme = (SELECT id FROM themes WHERE name = :theme),
-                last_action_date = CURDATE(),
+                last_action_date = CURDATE()
                 WHERE id = :idCreative',
                 [
                     'idCreative' => $creative->getId(),

@@ -21,11 +21,11 @@
         </div>
         <div class="creative-contacts-block block">
             <img class="creative-contacts-image" :src="imageUrl" @error="onImageLoadFailure($event)" alt="image">
-            <p class="creative-contacts-number">{{ phone }}</p>
-            <div class="creative-contacts-wrapper">
+            <p class="creative-contacts-number" v-show="(phone !== null) && (phone !== '')">{{ phone }}</p>
+            <div class="creative-contacts-wrapper" v-show="(site !== null) && (site !== '')">
                 <a :href="site" class="creative-contacts-button">Перейти на сайт</a>
             </div>
-            <div class="creative-contacts-wrapper">
+            <div class="creative-contacts-wrapper" v-show="(email !== null) && (email !== '')">
                 <a :href="'mailto:' + email" class="creative-contacts-button">Написать сообщение</a>
             </div>
         </div>

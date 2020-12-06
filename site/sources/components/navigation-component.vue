@@ -38,37 +38,37 @@
                 <option>Не выбрано</option>
                 <option v-for="country in countriesModel">{{ country }}</option>
             </select>
-            <label for="navigation-city">Город:</label>
-            <select v-model="selectedCityModel" :disabled="selectedCountryModel === 'Не выбрано'" id="navigation-city">
-                <option>Не выбрано</option>
-                <option v-for="city in citiesModel">{{ city }}</option>
-            </select><hr>
+            <div v-show="selectedCountryModel !== 'Не выбрано'">
+                <label for="navigation-city">Город:</label>
+                <select v-model="selectedCityModel" id="navigation-city">
+                    <option>Не выбрано</option>
+                    <option v-for="city in citiesModel">{{ city }}</option>
+                </select>
+            </div><hr>
             <label for="navigation-type-off-onl">Тип:</label>
-            <p id="navigation-type-off-onl" class="target-label">
-                <label><input name="dzen" type="radio"/></label>Онлайн
-                <label><input name="dzen" type="radio"/></label>Оффлайн
-            </p><hr>
+            <select id="navigation-type-off-onl">
+                <option>Не выбрано</option>
+                <option>Online</option>
+                <option>Offline</option>
+            </select>
             <label for="navigation-sort">Сортировка:</label>
             <select id="navigation-sort">
                 <option>Не выбрано</option>
-                <option>По дате</option>
-                <option>По цене</option>
-                <option>По названию</option>
-            </select>
-            <p class="target-label">
-                <label><input name="sort" type="radio"/></label>Возрастание
-                <label><input name="sort" type="radio"/></label>Убывание
-            </p><hr>
+                <option>По дате (возрастание)</option>
+                <option>По дате (убывание)</option>
+                <option>По цене (возрастание)</option>
+                <option>По цене (убывание)</option>
+                <option>По названию (возрастание)</option>
+                <option>По названию (убывание)</option>
+            </select><hr>
             <div class="price-wrapper">
                 <label>Цена от:</label>
-                <input v-model="priceFromModel" :disabled="isFreeModel" type="number">
+                <input v-model="priceFromModel" type="number">
             </div>
             <div class="price-wrapper">
                 <label>Цена до:</label>
-                <input v-model="priceToModel" :disabled="isFreeModel" type="number">
-            </div>
-            <label class="target-label">Бесплатные:</label>
-            <input v-model="isFreeModel" type="checkbox"><hr>
+                <input v-model="priceToModel" type="number">
+            </div><hr>
             <div class="wrapper">
                 <button class="navigation-button">Применить</button>
             </div>
@@ -100,7 +100,6 @@
                 selectedCityModel: "Не выбрано",
                 priceFromModel: 0,
                 priceToModel: 1000000,
-                isFreeModel: false
             };
         },
         methods: {
@@ -144,7 +143,7 @@
 
     hr {
         padding-top: 0;
-        margin: 15px 0 20px 0;
+        margin: 0 0 20px 0;
         color: #DBDBD8;
     }
 
@@ -180,7 +179,7 @@
         padding: 10px 15px 10px 15px;
         border-radius: 5px;
         font-size: 16px;
-        margin: 0 20px 10px 20px;
+        margin: 0 20px 20px 20px;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
     }
@@ -188,7 +187,7 @@
     input[type="text"], input[type="number"] {
         border: none;
         display: block;
-        margin: 0 20px 0 20px;
+        margin: 0 20px 20px 20px;
         border-radius: 5px;
         background-color: #EEF3F8;
         font-size: 16px;
@@ -200,7 +199,6 @@
     .price-wrapper {
         display: inline-block;
         width: calc(50% - 25px);
-        margin-bottom: 10px;
     }
 
     input[type="number"] {
@@ -228,19 +226,19 @@
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
         font-size: 20px;
-        padding: 15px 20px 0 20px;
+        padding: 15px 20px 7px 20px;
     }
 
     .navigation-button {
         position: relative;
         width: calc(100% - 40px);
-        margin: 20px;
+        margin: 0 20px 20px 20px;
         font-size: 16px;
         background-color: #2D71BC;
         color: white;
         border: none;
         border-radius: 5px;
-        padding: 10px 10px 10px 10px;
+        padding: 8px 10px 8px 10px;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
     }
@@ -248,20 +246,6 @@
     .navigation-button:hover {
         outline: none;
         background-color: #193777;
-    }
-
-    #navigation-type, #navigation-city {
-        margin-bottom: 23px;
-    }
-
-    .advertisement-block {
-        margin-bottom: 30px;
-    }
-
-    .advertisement-image {
-        position: relative;
-        width: 100%;
-        border-radius: 5px;
     }
 
     @media(max-width:767px) {

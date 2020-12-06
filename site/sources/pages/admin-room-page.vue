@@ -112,6 +112,20 @@
             }
         },
         methods: {
+            sortCreatives() {
+                if (this.activeFilterState === this.filterState.allCreatives) {
+                    this.filteredCreatives.sort((lhs, rhs) => {
+                        if ((lhs.moderationStatus < rhs.moderationStatus) ||
+                            (!validation.validateCreativeEventDate(rhs.moderationStatus))) {
+                            return -1;
+                        } else if (lhs.moderationStatus > rhs.moderationStatus) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                }
+            },
             fillAdvertiserCreatives() {
                 const self = this;
                 this.$http.get("http://localhost:8080/advertiser_demo_creative", { params: { advertiser_id: self.id } })
@@ -130,11 +144,13 @@
                             });
                         });
                         self.advertiserCreatives = self.filteredCreatives;
+                        self.sortCreatives();
                     });
             },
             onAllFilterButtonClick() {
                 this.activeFilterState = this.filterState.allCreatives;
                 this.filteredCreatives = this.advertiserCreatives;
+                self.sortCreatives();
             },
             onInModerationFilterButtonClick() {
                 this.activeFilterState = this.filterState.inModerationCreatives;
@@ -143,6 +159,7 @@
                         (creative.moderationStatus === protocol.MODERATION_STATUS_FAILED)) &&
                         (validation.validateCreativeEventDate(creative.eventDate));
                 });
+                self.sortCreatives();
             },
             onActiveFilterButtonClick() {
                 this.activeFilterState = this.filterState.activeCreative;
@@ -150,12 +167,14 @@
                     return (creative.moderationStatus === protocol.MODERATION_STATUS_SUCCESS) &&
                         (validation.validateCreativeEventDate(creative.eventDate));
                 });
+                self.sortCreatives();
             },
             onOverdueFilterButtonClick() {
                 this.activeFilterState = this.filterState.overdueCreatives;
                 this.filteredCreatives = this.advertiserCreatives.filter((creative) => {
                     return (!validation.validateCreativeEventDate(creative.eventDate));
                 });
+                self.sortCreatives();
             }
         },
         mounted() {
@@ -168,6 +187,7 @@
                     briefDescription : creative.briefDescription,
                     imageUrl : creative.image,
                     eventDate : creative.eventDate,
+                    moderationStatus: protocol.MODERATION_STATUS_IN_PROGRESS
                 };
 
                 self.advertiserCreatives.push(creativeForVisualization);
@@ -184,6 +204,7 @@
                         creative.briefDescription = changedCreative.briefDescription;
                         creative.imageUrl = changedCreative.image;
                         creative.eventDate = changedCreative.eventDate;
+                        creative.moderationStatus = protocol.MODERATION_STATUS_IN_PROGRESS;
                     }
                 });
                 self.advertiserCreatives.forEach(creative => {
@@ -192,6 +213,7 @@
                         creative.briefDescription = changedCreative.briefDescription;
                         creative.imageUrl = changedCreative.image;
                         creative.eventDate = changedCreative.eventDate;
+                        creative.moderationStatus = protocol.MODERATION_STATUS_IN_PROGRESS;
                     }
                 });
             });
@@ -211,12 +233,17 @@
                 self.modalMessageDescription = messageData.description;
                 self.$refs.triggerShowMessageModal.click();
             });
+
+            this.$root.$on("clicked-mobile-menu-button", messageData => {
+                alert("clicked");
+            });
         },
         beforeDestroy() {
             this.$root.$off("added-creative");
             this.$root.$off("changed-creative");
             this.$root.$off("deleted-creative");
             this.$root.$off("show-message-modal");
+            this.$root.$off("clicked-mobile-menu-button");
         },
         created() {
             this.fillAdvertiserCreatives();
@@ -233,7 +260,7 @@
     }
 
     .admin-room-creative-type-inner-buttons-block {
-        padding: 0 15px 15px 20px;
+        padding: 0 15px 10px 15px;
         display: flex;
     }
 
@@ -304,7 +331,7 @@
     @media (min-width: 768px) and (max-width: 991px) {
 
         .admin-room-creative-type-inner-buttons-block {
-            padding: 0 15px 15px 20px;
+            padding: 0 15px 10px 20px;
             display: inherit;
         }
 
@@ -337,7 +364,7 @@
         }
 
         .admin-room-creative-type-inner-buttons-block {
-            padding: 0 15px 15px 20px;
+            padding: 0 15px 10px 15px;
             display: inherit;
         }
 

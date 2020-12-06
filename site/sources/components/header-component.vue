@@ -26,7 +26,7 @@
                     </div>
                     <div class="hidden-lg hidden-md hidden-sm col-xs-2">
                         <div class="mobile-filters-menu">
-                            <i class="fas fa-bars"></i>
+                            <button @click="onClickMobileMenuButton" class="header-button"><i class="fas fa-bars"></i></button>
                         </div>
                     </div>
                     <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-10">
@@ -42,7 +42,18 @@
 
     "use strict";
 
-    export default {};
+    export default {
+        computed: {
+            location() {
+                return window.location.hash;
+            }
+        },
+        methods: {
+            onClickMobileMenuButton() {
+                this.$root.$emit("clicked-mobile-menu-button");
+            }
+        }
+    };
 
 </script>
 
@@ -88,12 +99,19 @@
         background-color: white;
     }
 
+    .header-button {
+        outline: none;
+        border: none;
+        background-color: transparent;
+        padding-left: 0;
+    }
+
     @media(max-width:767px) {
 
         .mobile-filters-menu {
             color: white;
             font-size: 23px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .header-link {

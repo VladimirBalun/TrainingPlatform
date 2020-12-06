@@ -34,8 +34,8 @@
                         :event-date="creative.eventDate" :online="creative.online"
                         :advertiser-image-url="creative.advertiserImageUrl">
                     </creative-information-component>
-                    <proposed-creatives-component :id="id"></proposed-creatives-component>
                     <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
+                    <proposed-creatives-component v-show="moderation === ''" :id="id"></proposed-creatives-component>
                 </div>
                 <div v-show="(pageLoaded) && ((creative.title === null) || (creative.description === null))">
                     <div class="creative-page-error-message col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -60,6 +60,7 @@
     import advertisementComponent from "../components/advertisement-component";
 
     import * as protocol from '../scripts/protocol'
+    import * as validation from "../scripts/validation";
 
     export default {
         name: "creative-page",
@@ -100,18 +101,26 @@
                 return this.$route.params.id;
             },
             moderation() {
+                let moderationText = "";
                 switch (this.creative.moderationStatus) {
                     case protocol.MODERATION_STATUS_IN_PROGRESS: {
-                        return "Данное объявление не было опубликовано и его пока не могут " +
+                        moderationText = "Данное объявление не было опубликовано и его пока не могут " +
                             "увидеть другие пользователи, так как оно еще находится в режиме модерации...";
+                        break;
                     }
                     case protocol.MODERATION_STATUS_FAILED: {
-                        return "Данное объявление не было опубликовано и его пока не могут " +
+                        moderationText = "Данное объявление не было опубликовано и его пока не могут " +
                             "увидеть другие пользователи, так как оно не прошло модерацию...";
+                        break;
                     }
                 }
 
-                return "";
+                if (!validation.validateCreativeEventDate(this.creative.eventDate)) {
+                    moderationText = "Данное объявление не опубликовано и его не могут увидеть другие пользователи, " +
+                        "так как дата события уже прошла...";
+                }
+
+                return  moderationText;
             }
         },
         methods: {
