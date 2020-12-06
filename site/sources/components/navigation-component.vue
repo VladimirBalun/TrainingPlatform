@@ -73,23 +73,7 @@
                 <button class="navigation-button">Применить</button>
             </div>
         </div>
-        <div class="hidden-xs">
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-        </div>
+        <advertisement-component class="hidden-xs"></advertisement-component>
     </div>
 </template>
 
@@ -97,9 +81,14 @@
 
     "use strict";
 
+    import advertisementComponent from "../components/advertisement-component";
+
     export default {
         name: "navigation-component",
         emits: ["search-creatives-button-clicked"],
+        components: {
+            advertisementComponent
+        },
         data() {
             return {
                 searchCreativesPatternModel: "",

@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $creative->setTheme($_POST['theme']);
     $creative->setCountry($_POST['country']);
     $creative->setCity($_POST['city']);
-    $creative->setEventDate($_POST['eventDate']);
+    $creative->setEventDate((!empty($_POST['eventDate']) ? ($_POST['eventDate']) : (null)));
     $creative->setImageUrl($_POST['image']);
     $creative->setEmail($_POST['email']);
     $creative->setSite($_POST['site']);

@@ -17,8 +17,7 @@
 <template>
     <div class="content-wrapper">
         <div class="content block">
-            <img class="advertiser-image" v-show="advertiserImageWasLoaded" alt="advertiser_image" :src="advertiserImageUrl" @load="onAdvertiserImageLoad">
-            <i v-show="!advertiserImageWasLoaded" class="fas fa-user-circle"></i>
+            <img class="advertiser-image" alt="image" @error="onProfileImageLoadFailure($event)" :src="advertiserImageUrl">
             <p class="content-title">{{ title }}</p>
             <p class="content-description">{{ briefDescription }}</p>
             <img alt="creative_image" @error="onImageLoadFailure($event)" class="content-image" :src="imageUrl">
@@ -42,17 +41,12 @@
     export default {
         props: ["id", "title", "briefDescription", "imageUrl", "advertiserImageUrl", "eventDate", "price", "online"],
         name: "content-component",
-        data() {
-            return {
-                advertiserImageWasLoaded: false
-            };
-        },
         methods: {
+            onProfileImageLoadFailure (event) {
+                event.target.src = common.defaultUserImage;
+            },
             onImageLoadFailure (event) {
                 event.target.src = common.defaultCreativeImage;
-            },
-            onAdvertiserImageLoad() {
-                this.advertiserImageWasLoaded = true;
             }
         }
     }
@@ -77,13 +71,6 @@
         border-radius: 50%;
         float: left;
         margin: 20px 20px 0 20px;
-    }
-
-    .fa-user-circle {
-        margin: 20px 20px 0 20px;
-        font-size: 45px;
-        float: left;
-        color: #2D71BC;
     }
 
     .content-title {

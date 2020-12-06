@@ -29,14 +29,7 @@
                 <a :href="'mailto:' + email" class="creative-contacts-button">Написать сообщение</a>
             </div>
         </div>
-        <div class="advertisement-block-wrapper hidden-xs">
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-        </div>
+        <advertisement-component class="hidden-xs"></advertisement-component>
     </div>
 </template>
 
@@ -46,9 +39,14 @@
 
     import * as common from "../scripts/common";
 
+    import advertisementComponent from "./advertisement-component";
+
     export default {
         props: ["imageUrl", "email", "site", "phone", "price"],
         name: "creative-contacts-component",
+        components: {
+            advertisementComponent
+        },
         methods: {
             onImageLoadFailure (event) {
                 event.target.src = common.defaultCreativeImage;
@@ -105,20 +103,6 @@
         font-size: 25px;
         font-family: 'Roboto', sans-serif;
         padding: 15px 0 5px 0;
-    }
-
-    .advertisement-block-wrapper {
-        margin-bottom: 30px;
-    }
-
-    .advertisement-block {
-        margin-top: 30px;
-    }
-
-    .advertisement-image {
-        position: relative;
-        width: 100%;
-        border-radius: 5px;
     }
 
     .fa-tags {

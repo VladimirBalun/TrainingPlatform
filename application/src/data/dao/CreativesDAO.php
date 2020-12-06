@@ -34,7 +34,8 @@ namespace App\Data\DAO {
                         cr.price, cr.is_online, ad.image_url as advertiser_image_url
                     FROM creatives cr
                     LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id                    
-                    WHERE moderation_status != 0'
+                    WHERE moderation_status != 0 AND cr.event_date >= CURDATE()
+                    ORDER BY last_action_date'
             );
 
             return $this->fillDemoCreativesFromDatabase($database_creatives);
@@ -46,7 +47,8 @@ namespace App\Data\DAO {
                     cr.price, cr.is_online, ad.image_url as advertiser_image_url
                 FROM creatives cr
                 LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
-                WHERE title LIKE ? AND moderation_status != 0',
+                WHERE title LIKE ? AND moderation_status != 0 AND cr.event_date >= CURDATE()
+                ORDER BY last_action_date',
                 ['%' . $title_pattern . '%']
             );
 
@@ -64,7 +66,8 @@ namespace App\Data\DAO {
                     cr.price, cr.is_online, ad.image_url as advertiser_image_url
                 FROM creatives cr
                 LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
-                WHERE cr.id != :id_creative AND moderation_status != 0
+                WHERE cr.id != :id_creative AND moderation_status != 0 AND cr.event_date >= CURDATE()
+                ORDER BY last_action_date
                 LIMIT :count_creatives',
                 ['id_creative' => $creative_id, 'count_creatives' => $count]
             );
@@ -123,12 +126,13 @@ namespace App\Data\DAO {
                 'SELECT cr.title, cr.brief_description, cr.description, cr.image_url, cr.event_date, cr.price, 
                     cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name as country_name,
                     cit.name as city_name, cat.name as category_name, th.name as theme_name, is_online,
-                    moderation_status
+                    moderation_status, ad.image_url as advertiser_image_url
                 FROM creatives cr
                 LEFT JOIN countries coun ON cr.id_country = coun.id
                 LEFT JOIN cities cit ON cr.id_city = cit.id
                 LEFT JOIN categories cat ON cr.id_category = cat.id
                 LEFT JOIN themes th ON cr.id_theme = th.id
+                LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
                 WHERE cr.id = ?
                 LIMIT 1', [$id]
             );
@@ -146,6 +150,10 @@ namespace App\Data\DAO {
             $creative->setPhone($database_creative['advertiser_phone']);
             $creative->setOnline($database_creative['is_online']);
             $creative->setModerationStatus((int)$database_creative['moderation_status']);
+
+            $advertiser = new AdvertiserEntity();
+            $advertiser->setImageUrl($database_creative['advertiser_image_url']);
+            $creative->setAdvertiser($advertiser);
 
             $category = new EventCategoryEntity();
             $category->setName($database_creative['category_name']);
@@ -174,13 +182,14 @@ namespace App\Data\DAO {
             return R::exec(
                 'INSERT INTO creatives(title, brief_description, description, image_url, 
 	                price, event_date, is_online, advertiser_site, advertiser_email, advertiser_phone, id_advertiser,
-                    id_country, id_city, id_category, id_theme) 
+                    id_country, id_city, id_category, id_theme, last_action_date) 
                 VALUES (:title, :briefDescription, :description, :image,
 	                :price, :eventDate, :online, :site, :email, :phone, :id_advertiser,
                     (SELECT id FROM countries WHERE name = :country),
 	                (SELECT id FROM cities WHERE name = :city),
 	                (SELECT id FROM categories WHERE name = :category),
-	                (SELECT id FROM themes WHERE name = :theme))',
+	                (SELECT id FROM themes WHERE name = :theme),
+	                CURDATE())',
                 [
                     'title' => $creative->getTitle(),
                     'briefDescription' => $creative->getBriefDescription(),
@@ -218,7 +227,8 @@ namespace App\Data\DAO {
                 id_country = (SELECT id FROM countries WHERE name = :country), 
                 id_city = (SELECT id FROM cities WHERE name = :city), 
                 id_category = (SELECT id FROM categories WHERE name = :category), 
-                id_theme = (SELECT id FROM themes WHERE name = :theme)
+                id_theme = (SELECT id FROM themes WHERE name = :theme),
+                last_action_date = CURDATE(),
                 WHERE id = :idCreative',
                 [
                     'idCreative' => $creative->getId(),

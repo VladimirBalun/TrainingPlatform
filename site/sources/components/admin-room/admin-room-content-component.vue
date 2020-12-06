@@ -21,7 +21,7 @@
             <p class="admin-room-content-description">{{ briefDescription }}</p>
             <img class="admin-room-content-image" :src="imageUrl" @error="onImageLoadFailure($event)" alt="advertiser_image">
             <p class="admin-room-content-moderation"
-                v-bind:class="{ 'overdue-and-failed-moderation-background': (moderationStatus === 2),
+                v-bind:class="{ 'overdue-and-failed-moderation-background': ((moderationStatus === 2) || (moderationStatus === 3)),
                                 'active-background': (moderationStatus === 1),
                                 'in-moderation-background': (moderationStatus === 0)}">
                 {{ moderation }}
@@ -43,6 +43,7 @@
 
     import * as protocol from "../../scripts/protocol";
     import * as common from "../../scripts/common";
+    import * as validation from "../../scripts/validation";
 
     export default {
         props: ["id", "title", "briefDescription", "imageUrl", "eventDate", "moderationStatus", "moderationText"],
@@ -60,9 +61,15 @@
                         break;
                     }
                     case protocol.MODERATION_STATUS_FAILED: {
-                        moderation = "Ообъявление не было опубликовано по причине: " + this.moderationText;
+                        moderation = "Объявление не прошло модерацию по причине: " + this.moderationText + " (но вы можете его исправить)";
                         break;
                     }
+                }
+
+                const MODERATION_STATUS_OVERDUE_CREATIVE = 3;
+                if (!validation.validateCreativeEventDate(this.eventDate)) {
+                    this.moderationStatus = MODERATION_STATUS_OVERDUE_CREATIVE;
+                    moderation = "Объявление просрочено, так как дата события уже прошла (но вы можете изменить дату события снова или убрать совсем)";
                 }
 
                 return moderation;

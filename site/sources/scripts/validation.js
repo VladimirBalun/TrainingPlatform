@@ -16,6 +16,14 @@
 
 "use strict";
 
+export const validateCreativeEventDate = (eventDate) => {
+    const current = new Date();
+    const event = new Date(eventDate);
+    current.setHours(0,0, 0, 0);
+    event.setHours(0,0, 0, 0);
+    return (current <= event) || (eventDate === null);
+};
+
 export const validateCreativeForm = (creativeForm) => {
     creativeForm.creativeValidation.city = true;
     creativeForm.creativeValidation.briefDescription = true;

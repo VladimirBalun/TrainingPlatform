@@ -135,8 +135,9 @@
             };
         },
         methods: {
-            showMessageModal(title, description) {
+            showMessageModal(type, title, description) {
                 this.$root.$emit("show-message-modal", {
+                    type: type,
                     title: title,
                     description: description
                 });
@@ -149,7 +150,7 @@
 
                 if (_.isMatch(this.initialCreative, this.creative)) {
                     this.$refs.closeButton.click();
-                    this.showMessageModal("Ошибка", "Не было внесено никаких правок в объявление для его изменения");
+                    this.showMessageModal("error", "Ошибка", "Не было внесено никаких правок в объявление для его изменения");
                     return;
                 }
 
@@ -164,15 +165,16 @@
                     console.log(result);
                     self.$refs.closeButton.click();
                     if (result.result === 1) {
-                        self.showMessageModal("Успешная операция", "Объявление успешно добавлено");
+                        self.showMessageModal("info", "Успешная операция", "Объявление успешно добавлено, оно сразу" +
+                            "же появится на сайте, как только пройдет модерацию");
                         self.$root.$emit('changed-creative', _.clone(self.creative));
                     } else {
-                        self.showMessageModal("Ошибка", "Объявление не было изменено");
+                        self.showMessageModal("error", "Ошибка", "Объявление не было изменено");
                     }
                 }, error => {
                     console.log(error);
                     self.$refs.closeButton.click();
-                    self.showMessageModal("Ошибка", "Объявление не было изменено");
+                    self.showMessageModal("error", "Ошибка", "Объявление не было изменено");
                 });
             },
             fillAllModels() {

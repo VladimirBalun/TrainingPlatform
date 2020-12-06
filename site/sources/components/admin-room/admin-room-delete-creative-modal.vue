@@ -50,8 +50,9 @@
             };
         },
         methods: {
-            showMessageModal(title, description) {
+            showMessageModal(type, title, description) {
                 this.$root.$emit("show-message-modal", {
+                    type: type,
                     title: title,
                     description: description
                 });
@@ -65,14 +66,14 @@
                     self.$refs.closeButton.click();
                     if (result.result === 1) {
                         self.$root.$emit('deleted-creative', self.creativeId);
-                        self.showMessageModal("Успешная операция", "Объявление удалено");
+                        self.showMessageModal("info", "Успешная операция", "Объявление удалено");
                     } else {
-                        self.showMessageModal("Ошибка", "Объявление не было удалено");
+                        self.showMessageModal("error", "Ошибка", "Объявление не было удалено");
                     }
                 }, error => {
                     console.log(error);
                     self.$refs.closeButton.click();
-                    self.showMessageModal("Ошибка", "Объявление не было удалено");
+                    self.showMessageModal("error", "Ошибка", "Объявление не было удалено");
                 });
             }
         },

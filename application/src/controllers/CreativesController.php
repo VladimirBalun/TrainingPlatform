@@ -90,6 +90,7 @@ namespace App\Controllers {
                 public $city;
                 public $online;
                 public $moderation_status;
+                public $advertiser_image_url;
             };
 
             $creative_for_response->id = $creative_from_database->getId();
@@ -104,6 +105,7 @@ namespace App\Controllers {
             $creative_for_response->site = $creative_from_database->getSite();
             $creative_for_response->online = $creative_from_database->getOnline();
             $creative_for_response->moderation_status = $creative_from_database->getModerationStatus();
+            $creative_for_response->advertiser_image_url = $creative_from_database->getAdvertiser()->getImageUrl();
             $creative_for_response->category = $creative_from_database->getCategory()->getName();
             $creative_for_response->theme = $creative_from_database->getTheme()->getName();
             if ($creative_from_database->getCountry() != null) {

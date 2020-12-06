@@ -31,9 +31,11 @@
                         :title="creative.title" :description="creative.description"
                         :country="creative.country" :city="creative.city"
                         :category="creative.category" :theme="creative.theme"
-                        :event-date="creative.eventDate" :online="creative.online">
+                        :event-date="creative.eventDate" :online="creative.online"
+                        :advertiser-image-url="creative.advertiserImageUrl">
                     </creative-information-component>
                     <proposed-creatives-component :id="id"></proposed-creatives-component>
+                    <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
                 </div>
                 <div v-show="(pageLoaded) && ((creative.title === null) || (creative.description === null))">
                     <div class="creative-page-error-message col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -55,6 +57,7 @@
     import creativeContactsComponent from "../components/creative-contacts-component";
     import creativeInformationComponent from "../components/creative-information-component";
     import proposedCreativesComponent from "../components/proposed-creatives-component";
+    import advertisementComponent from "../components/advertisement-component";
 
     import * as protocol from '../scripts/protocol'
 
@@ -65,7 +68,8 @@
             footerComponent,
             creativeContactsComponent,
             creativeInformationComponent,
-            proposedCreativesComponent
+            proposedCreativesComponent,
+            advertisementComponent
         },
         data() {
             return {
@@ -86,7 +90,8 @@
                     advertiserPhone: "",
                     advertiserSite: "",
                     online: 0,
-                    moderationStatus: 0
+                    moderationStatus: 0,
+                    advertiserImageUrl: ""
                 }
             };
         },
@@ -129,6 +134,7 @@
                         self.creative.theme = response.body.theme;
                         self.creative.moderationStatus = response.body.moderation_status;
                         self.creative.online = response.body.online;
+                        self.creative.advertiserImageUrl = response.body.advertiser_image_url;
 
                         document.title = self.creative.title;
                         self.pageLoaded = true;

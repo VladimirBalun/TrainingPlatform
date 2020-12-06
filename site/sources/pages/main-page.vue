@@ -26,6 +26,7 @@
                         :imageUrl="creative.imageUrl" :eventDate="creative.eventDate" :price="creative.price"
                         :online="creative.online" :advertiserImageUrl="creative.advertiserImageUrl">
                     </content-component>
+                    <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
                 </div>
                 <div v-show="(pageLoaded) && (demoCreatives.length === 0)">
                     <div class="main-page-error-message col-lg-8 col-md-8 col-sm-7 col-xs-12">
@@ -44,12 +45,14 @@
     import headerComponent from "../components/header-component";
     import contentComponent from "../components/content-component";
     import navigationComponent from "../components/navigation-component.vue";
+    import advertisementComponent from "../components/advertisement-component";
 
     export default {
         components: {
             headerComponent,
             contentComponent,
-            navigationComponent
+            navigationComponent,
+            advertisementComponent
         },
         data() {
             return {

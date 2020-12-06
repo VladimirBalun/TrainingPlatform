@@ -25,18 +25,25 @@
                     <div class="admin-room-creative-type-buttons-block block">
                         <p class="admin-room-creative-type-buttons-block-title"><i class="fas fa-filter"></i>Фильтры объявлений</p><hr>
                         <div class="admin-room-creative-type-inner-buttons-block">
-                            <button @click="onAllFilterButtonClick" class="admin-room-filter-button">Все</button>
-                            <button @click="onInModerationFilterButtonClick" class="admin-room-filter-button">В модерации</button>
-                            <button @click="onActiveFilterButtonClick" class="admin-room-filter-button">Aктивные</button>
-                            <button @click="onOverdueFilterButtonClick" class="admin-room-filter-button">Просроченные</button>
+                            <button class="admin-room-filter-button" @click="onAllFilterButtonClick"
+                                v-bind:class="{ 'admin-room-active-filter-button': activeFilterState === filterState.allCreatives }">Все</button>
+                            <button class="admin-room-filter-button" @click="onInModerationFilterButtonClick"
+                                v-bind:class="{ 'admin-room-active-filter-button': activeFilterState === filterState.inModerationCreatives }">В модерации</button>
+                            <button class="admin-room-filter-button" @click="onActiveFilterButtonClick"
+                                v-bind:class="{ 'admin-room-active-filter-button': activeFilterState === filterState.activeCreative }">Aктивные</button>
+                            <button class="admin-room-filter-button" @click="onOverdueFilterButtonClick"
+                                v-bind:class="{ 'admin-room-active-filter-button': activeFilterState === filterState.overdueCreatives }">Просроченные</button>
                         </div>
                     </div>
                 </div>
-                <admin-room-content-component v-for="creative in filteredCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
-                    :id="creative.id" :title="creative.title" :imageUrl="creative.imageUrl" :eventDate="creative.eventDate"
-                    :moderationStatus="creative.moderationStatus" :moderationText="creative.moderationText"
-                    :briefDescription="creative.briefDescription">
-                </admin-room-content-component>
+                <div v-show="filteredCreatives.length !== 0">
+                    <admin-room-content-component v-for="creative in filteredCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
+                        :id="creative.id" :title="creative.title" :imageUrl="creative.imageUrl" :eventDate="creative.eventDate"
+                        :moderationStatus="creative.moderationStatus" :moderationText="creative.moderationText"
+                        :briefDescription="creative.briefDescription">
+                    </admin-room-content-component>
+                    <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
+                </div>
                 <div v-show="filteredCreatives.length === 0">
                     <div class="admin-room-error-message col-lg-8 col-md-8 col-sm-7 col-xs-12">
                         Объявления отсутствуют...
@@ -48,7 +55,9 @@
         <admin-room-add-creative-component :advertiser-id="id"></admin-room-add-creative-component>
         <admin-room-change-creative-modal :advertiser-id="id"></admin-room-change-creative-modal>
         <admin-room-delete-creative-modal></admin-room-delete-creative-modal>
-        <admin-room-message-component v-bind:title="modalMessageTitle" v-bind:description="modalMessageDescription"></admin-room-message-component>
+        <admin-room-message-component v-bind:title="modalMessageTitle"
+            v-bind:description="modalMessageDescription" :type="modalMessageType">
+        </admin-room-message-component>
 
         <button ref="triggerShowMessageModal" class="hidden-trigger-button" data-toggle="modal" data-target="#message-modal"></button>
     </div>
@@ -57,6 +66,7 @@
 <script>
 
     import * as protocol from '../scripts/protocol'
+    import * as validation from "../scripts/validation";
 
     import headerComponent from "../components/header-component";
     import adminRoomContentComponent from "../components/admin-room/admin-room-content-component"
@@ -65,6 +75,7 @@
     import adminRoomChangeCreativeModal from "../components/admin-room/admin-room-change-creative-component";
     import adminRoomDeleteCreativeModal from "../components/admin-room/admin-room-delete-creative-modal";
     import adminRoomMessageComponent from "../components/admin-room/admin-room-message-component";
+    import advertisementComponent from "../components/advertisement-component";
 
     export default {
         name: "admin-room-page",
@@ -75,10 +86,19 @@
             adminRoomAddCreativeComponent,
             adminRoomChangeCreativeModal,
             adminRoomDeleteCreativeModal,
-            adminRoomMessageComponent
+            adminRoomMessageComponent,
+            advertisementComponent
         },
         data() {
             return {
+                filterState: {
+                    allCreatives: 0,
+                    inModerationCreatives: 1,
+                    activeCreative: 2,
+                    overdueCreatives: 3
+                },
+                activeFilterState: 0,
+                modalMessageType: "",
                 modalMessageTitle: "",
                 modalMessageDescription: "",
                 advertiserImageUrl: "",
@@ -113,21 +133,29 @@
                     });
             },
             onAllFilterButtonClick() {
+                this.activeFilterState = this.filterState.allCreatives;
                 this.filteredCreatives = this.advertiserCreatives;
             },
             onInModerationFilterButtonClick() {
+                this.activeFilterState = this.filterState.inModerationCreatives;
                 this.filteredCreatives = this.advertiserCreatives.filter((creative) => {
-                    return (creative.moderationStatus === protocol.MODERATION_STATUS_IN_PROGRESS) ||
-                        (creative.moderationStatus === protocol.MODERATION_STATUS_FAILED);
+                    return ((creative.moderationStatus === protocol.MODERATION_STATUS_IN_PROGRESS) ||
+                        (creative.moderationStatus === protocol.MODERATION_STATUS_FAILED)) &&
+                        (validation.validateCreativeEventDate(creative.eventDate));
                 });
             },
             onActiveFilterButtonClick() {
+                this.activeFilterState = this.filterState.activeCreative;
                 this.filteredCreatives = this.advertiserCreatives.filter((creative) => {
-                    return (creative.moderationStatus === protocol.MODERATION_STATUS_SUCCESS);
+                    return (creative.moderationStatus === protocol.MODERATION_STATUS_SUCCESS) &&
+                        (validation.validateCreativeEventDate(creative.eventDate));
                 });
             },
             onOverdueFilterButtonClick() {
-                // TODO
+                this.activeFilterState = this.filterState.overdueCreatives;
+                this.filteredCreatives = this.advertiserCreatives.filter((creative) => {
+                    return (!validation.validateCreativeEventDate(creative.eventDate));
+                });
             }
         },
         mounted() {
@@ -141,24 +169,44 @@
                     imageUrl : creative.image,
                     eventDate : creative.eventDate,
                 };
-                // TODO: need to think about filters
-                self.filteredCreatives.push(creativeForVisualization);
+
                 self.advertiserCreatives.push(creativeForVisualization);
+                if ((self.activeFilterState === self.filterState.inModerationCreatives) ||
+                    (self.activeFilterState === self.filterState.allCreatives)) {
+                    self.filteredCreatives.push(creativeForVisualization);
+                }
             });
 
-            this.$root.$on("changed-creative", creative => {
-                console.log("Changed creative");
+            this.$root.$on("changed-creative", changedCreative => {
+                self.filteredCreatives.forEach(creative => {
+                    if (changedCreative.id === creative.id) {
+                        creative.title = changedCreative.title;
+                        creative.briefDescription = changedCreative.briefDescription;
+                        creative.imageUrl = changedCreative.image;
+                        creative.eventDate = changedCreative.eventDate;
+                    }
+                });
+                self.advertiserCreatives.forEach(creative => {
+                    if (changedCreative.id === creative.id) {
+                        creative.title = changedCreative.title;
+                        creative.briefDescription = changedCreative.briefDescription;
+                        creative.imageUrl = changedCreative.image;
+                        creative.eventDate = changedCreative.eventDate;
+                    }
+                });
             });
 
             this.$root.$on("deleted-creative", creativeId => {
-                // TODO: need to think about filters
                 self.advertiserCreatives = self.advertiserCreatives.filter(creative => {
                     return creative.id !== creativeId;
                 });
-                self.filteredCreatives = self.advertiserCreatives;
+                self.filteredCreatives = self.filteredCreatives.filter(creative => {
+                    return creative.id !== creativeId;
+                });
             });
 
             this.$root.$on("show-message-modal", messageData => {
+                self.modalMessageType = messageData.type;
                 self.modalMessageTitle = messageData.title;
                 self.modalMessageDescription = messageData.description;
                 self.$refs.triggerShowMessageModal.click();
@@ -172,6 +220,7 @@
         },
         created() {
             this.fillAdvertiserCreatives();
+            document.title = "Комната администратора";
         }
     }
 
@@ -214,6 +263,11 @@
         background-color: transparent;
         transition: .3s;
         margin: 0 5px 10px 5px;
+    }
+
+    .admin-room-active-filter-button {
+        background-color: #2D71BC;
+        color: white;
     }
 
     .admin-room-filter-button:hover {

@@ -17,6 +17,7 @@
 <template>
     <div class="creative-information-block-wrapper">
         <div class="creative-information-block block">
+            <img class="advertiser-image" alt="image" @error="onProfileImageLoadFailure($event)" :src="advertiserImageUrl">
             <p class="creative-information-title">{{ title }}</p><hr>
             <div class="creative-information-meta-block">
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тип:</span> {{ (online === 0) ? ('Online') : ('Offline') }}</p>
@@ -35,9 +36,16 @@
 
     "use strict";
 
+    import * as common from "../scripts/common";
+
     export default {
-        props: ["title", "description", "category", "theme", "country", "city", "eventDate", "online"],
-        name: "creative-information-component"
+        props: ["title", "description", "category", "theme", "country", "city", "eventDate", "online", "advertiserImageUrl"],
+        name: "creative-information-component",
+        methods: {
+            onProfileImageLoadFailure (event) {
+                event.target.src = common.defaultUserImage;
+            }
+        }
     }
 
 </script>
@@ -45,7 +53,7 @@
 <style scoped>
 
     hr {
-        margin: 10px 0 15px 0;
+        margin: 15px 0 15px 0;
     }
 
     .creative-information-block-wrapper {
@@ -56,9 +64,21 @@
         padding: 12px 20px 10px 20px;
     }
 
+    .advertiser-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        float: left;
+        margin: 5px 20px 0 0;
+    }
+
     .creative-information-title {
         font-family: 'Roboto', sans-serif;
-        font-size: 27px;
+        font-size: 24px;
+        height: 70px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
     }
 
     .creative-information-description {
@@ -91,6 +111,15 @@
     }
 
     @media(max-width:767px) {
+
+        .creative-information-title {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .creative-information-block-wrapper {
+            margin-bottom: 15px;
+        }
 
         .creative-information-meta-data {
             width: 100%;

@@ -31,17 +31,7 @@
             <p class="admin-room-navigation-link">По сотрудничеству: <a href="mailto:vladimirbalun@yandex.ru">написать</a></p>
             <p class="admin-room-navigation-link">По техническим причинам: <a href="mailto:vladimirbalun@yandex.ru">написать</a></p>
         </div>
-        <div class="hidden-xs">
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-            <div class="advertisement-block">
-                <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
-            </div>
-        </div>
+        <advertisement-component class="hidden-xs"></advertisement-component>
     </div>
 </template>
 
@@ -50,9 +40,14 @@
     import * as network from "../../scripts/network";
     import * as common from "../../scripts/common";
 
+    import advertisementComponent from "../advertisement-component";
+
     export default {
         name: "admin-room-navigation-component",
         props: ["id", "advertiserImageUrl"],
+        components: {
+            advertisementComponent
+        },
         data() {
             return {
                 advertiserImageUrlModel: ""
@@ -62,21 +57,22 @@
             onImageLoadFailure (event) {
                 event.target.src = common.defaultUserImage;
             },
-            showMessageModal(title, description) {
+            showMessageModal(type, title, description) {
                 this.$root.$emit("show-message-modal", {
+                    type: type,
                     title: title,
                     description: description
                 });
             },
             onChangeAdvertiserImageForm() {
                 if (this.advertiserImageUrlModel === "") {
-                    this.showMessageModal("Ошибка", "Адрес изображения не может быть пустым");
+                    this.showMessageModal("error","Ошибка", "Адрес изображения не может быть пустым");
                     return false;
                 }
 
                 const regex = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
                 if (!regex.test(this.advertiserImageUrlModel)) {
-                    this.showMessageModal("Ошибка", "Некорректный адрес изображения");
+                    this.showMessageModal("error","Ошибка", "Некорректный адрес изображения");
                     return false;
                 }
 
@@ -86,13 +82,13 @@
                     if (result.result === 1) {
                         self.advertiserImageUrl = self.advertiserImageUrlModel;
                         self.advertiserImageUrlModel = "";
-                        self.showMessageModal("Успешная операция", "Изображение пользователя изменено");
+                        self.showMessageModal("info","Успешная операция", "Изображение пользователя изменено");
                     } else {
-                        self.showMessageModal("Ошибка", "Изображение пользователя не было изменено");
+                        self.showMessageModal("error","Ошибка", "Изображение пользователя не было изменено");
                     }
                 }, error => {
                     console.log(error);
-                    self.showMessageModal("Ошибка", "Изображение пользователя не было изменено");
+                    self.showMessageModal("error","Ошибка", "Изображение пользователя не было изменено");
                 })
             }
         }

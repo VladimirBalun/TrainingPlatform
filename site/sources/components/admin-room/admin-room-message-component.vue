@@ -21,15 +21,15 @@
               <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ title }}</h5>
-                        <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="modal-close-button" v-bind:class="{'modal-error-close-button' : type === 'error'}" data-dismiss="modal" aria-label="Close">
                             <i class="fas fa-window-close"></i>
                         </button>
                     </div>
                     <div class="modal-body">
                         <p class="modal-body-text">{{ description }}</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="modal-button" data-dismiss="modal">Ок</button>
+                    <div class="modal-footer" v-bind:class="{'modal-error-footer' : type === 'error'}">
+                        <button type="button" class="modal-button" v-bind:class="{'modal-error-button' : type === 'error'}" data-dismiss="modal">Ок</button>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
 
     export default {
         name: "admin-room-message-component",
-        props: ["title", "description"]
+        props: ["title", "description", "type"]
     }
 
 </script>
@@ -56,6 +56,10 @@
         color: #10367B;
         font-size: 25px;
         float: right;
+    }
+
+    .modal-error-close-button {
+        color: #c41e3a;
     }
 
     .modal-title {
@@ -89,10 +93,24 @@
         color: #439EDC;
     }
 
+    .modal-error-button {
+        color: white;
+        border: 1px solid white;
+    }
+
+    .modal-error-button:hover {
+        border: 1px solid #ffcccb;
+        color: #ffcccb;
+    }
+
     .modal-footer {
         padding-top: 15px;
         padding-bottom: 15px;
         background-color: #10367B;
+    }
+
+    .modal-error-footer {
+        background-color: #c41e3a;
     }
 
 </style>

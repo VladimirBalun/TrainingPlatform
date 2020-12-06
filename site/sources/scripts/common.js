@@ -16,8 +16,7 @@
 
 "use strict";
 
-//https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103597_1280.png
 //https://www.pinclipart.com/picdir/big/164-1640714_user-symbol-interface-contact-phone-set-add-sign.png
 
-export const defaultUserImage = "https://mir-s3-cdn-cf.behance.net/project_modules/fs/5e227329363657.55ef8df90a1ca.png";
+export const defaultUserImage = "https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103597_1280.png";
 export const defaultCreativeImage = "https://sails-crm.com/media/blog/teasers/post4_qzXRJSw.jpg";
