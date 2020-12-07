@@ -2,6 +2,7 @@ body,
 html {
     padding: 0;
     margin: 0;
+    height: 100%;
     background: #F3F2EF;
 }
 
@@ -22,4 +23,9 @@ html {
 .error-input {
     border: 2px solid #d92626;
     background-color: #ffe6e6;
+}
+
+#app {
+    position: relative;
+    height: 100%;
 }

@@ -176,9 +176,9 @@
         color: black;
         display: block;
         width: calc(100% - 40px);
-        padding: 10px 15px 10px 15px;
+        padding: 12px 15px 12px 15px;
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 15px;
         margin: 0 20px 20px 20px;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
@@ -190,8 +190,8 @@
         margin: 0 20px 20px 20px;
         border-radius: 5px;
         background-color: #EEF3F8;
-        font-size: 16px;
-        padding: 10px 15px 10px 15px;
+        font-size: 15px;
+        padding: 12px 15px 12px 15px;
         font-family: 'Open Sans', sans-serif;
         width: calc(100% - 40px);
     }
@@ -203,16 +203,6 @@
 
     input[type="number"] {
         width: 100%;
-    }
-
-    input[type="radio"] {
-        padding: 5px;
-    }
-
-    .target-label {
-        color: black;
-        font-size: 16px;
-        font-family: 'Open Sans', sans-serif;
     }
 
     .fa-search, .fa-filter {

@@ -16,6 +16,10 @@
 
 "use strict";
 
+export const validateSignupForm = (signupForm) => {
+
+};
+
 export const validateCreativeEventDate = (eventDate) => {
     const current = new Date();
     const event = new Date(eventDate);

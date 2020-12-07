@@ -206,6 +206,17 @@
             height: auto;
         }
 
+        .content-price {
+            font-size: 20px;
+            padding: 5px 0 8px 20px;
+        }
+
+        .content-button {
+            margin: 0 20px 20px 10px;
+            font-size: 15px;
+            padding: 7px 22px 7px 22px;
+        }
+
     }
 
 </style>

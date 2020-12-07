@@ -88,7 +88,8 @@
 
     .creative-information-description {
         font-family: 'Open Sans', sans-serif;
-        font-size: 17px;
+        font-size: 16px;
+        color: #696969;
     }
 
     .creative-information-meta-data {

@@ -15,26 +15,34 @@
 -->
 
 <template>
-    <div>
+    <div class="page">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="signup-form block">
-                        <p class="signup-link-text"><span class="signup-link active-signup-link">Регистрация</span> / <span class="signup-link">Вход</span></p>
-                        <label for="signup-username"><label class="require-color">*</label> Введите имя пользователя:</label>
-                        <input class="signup-input" type="text" id="signup-username" maxlength="64"
-                            v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
-                        <label for="signup-email"><label class="require-color">*</label> Введите e-mail:</label>
-                        <input class="signup-input" type="text" id="signup-email" maxlength="320"
-                            v-model="emailModel" v-bind:class="{ 'error-input': !isValidEmail }">
-                        <label for="signup-password"><label class="require-color">*</label> Введите пароль:</label>
-                        <input class="signup-input" type="password" id="signup-password" maxlength="128"
-                            v-model="passwordModel" v-bind:class="{ 'error-input': !isValidPassword }">
-                        <label for="signup-privacy"><label class="require-color">*</label> Принимаю условия политики конфиденциальности</label>
+                        <p class="signup-title">Регистрация</p>
+                        <p class="signup-error-message" v-show="errorMessage !== ''">{{ errorMessage }}</p>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input class="signup-input" type="text" id="signup-username" maxlength="64" placeholder="Введите имя пользователя"
+                                 v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input class="signup-input" type="text" id="signup-email" maxlength="320" placeholder="Введите e-mail"
+                                v-model="emailModel" v-bind:class="{ 'error-input': !isValidEmail }">
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input class="signup-input" type="password" id="signup-password" maxlength="128" placeholder="Введите пароль"
+                                v-model="passwordModel" v-bind:class="{ 'error-input': !isValidPassword }">
+                        </div>
                         <input type="checkbox" id="signup-privacy">
-                        <button @click="onSignupButtonClick">Зарегистрироваться</button><hr>
-                        <p class="signup-error-message">{{ errorMessage }}</p>
-                        <p class="signup-login"></p>
+                        <label for="signup-privacy">Принимаю условия <a href="">политики конфиденциальности</a></label>
+                        <button @click="onSignupButtonClick">Зарегистрироваться</button>
+                        <p class="signup-login">
+                            <label>Уже есть аккаунт? <a href="">Авторизация</a></label>
+                        </p>
                     </form>
                 </div>
             </div>
@@ -96,8 +104,7 @@
                     this.isValidUsername = true;
                 } else {
                     this.isValidUsername = false;
-                    this.errorMessage = "Неверное имя пользователя, " +
-                        "допустимо использование только латинских букв с цифрами, например advertiser123"
+                    this.errorMessage = "Некорректное имя пользователя";
                     return false;
                 }
 
@@ -106,7 +113,7 @@
                     this.isValidEmail = true;
                 } else {
                     this.isValidEmail = false;
-                    this.errorMessage = "Неверный e-mail, e-mail должен иметь стандартный вид, например advertiser@ad.ru"
+                    this.errorMessage = "Некорректный e-mail";
                     return false;
                 }
 
@@ -166,7 +173,7 @@
                                 self.isValidUsername = false;
                                 self.isValidEmail = false;
                                 self.isValidPassword = false;
-                                self.errorMessage = "Пользователь не был зарегистрирован из-за неизвестно ошибки, " +
+                                self.errorMessage = "Пользователь не был зарегистрирован из-за неизвестной ошибки, " +
                                     "попробуйте повторить вашу попытку позже...";
                                 break;
                             }
@@ -187,62 +194,66 @@
 
 <style scoped>
 
-    hr {
-        margin-top: 60px;
+    .page {
+        height: 100%;
+        position: relative;
+        background-color: #363636;
+        display: flex;
+        align-items: center;
     }
 
-    .signup-form {
-        margin-top: 70px;
-        background-color: #2a2f51;
-        padding: 70px 80px 80px 80px;
-    }
-
-    .signup-link-text {
-        color: white;
-        font-size: 27px;
+    .signup-title {
+        text-align: center;
         font-family: 'Roboto', sans-serif;
+        font-size: 25px;
         margin-bottom: 30px;
     }
 
-    .signup-link:hover {
-        color: #365afa;
-    }
-
-    .signup-link {
-        cursor: pointer;
-        transition: .3s;
-    }
-
-    .active-signup-link {
-        padding-bottom: 7px;
-        border-bottom: 3px solid #365afa;
+    .signup-form {
+       padding: 60px 100px 50px 100px;
     }
 
     label {
+        display: inline;
         font-weight: normal;
         font-family: 'Open Sans', sans-serif;
-        font-size: 14px;
-        color: white;
-        margin-top: 10px;
+        font-size: 13px;
+        color: #808080;
+    }
+
+    input[type="checkbox"] {
+        transform: translateY(1px);
     }
 
     .signup-input  {
-        outline: none;
         border: none;
         width: 100%;
         display: block;
         border-radius: 5px;
         background-color: #EEF3F8;
-        font-size: 16px;
-        padding: 10px 15px 10px 15px;
+        font-size: 14px;
+        padding: 13px 15px 13px 43px;
         font-family: 'Open Sans', sans-serif;
+        margin-bottom: 10px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .fas {
+        position: absolute;
+        top: 14px;
+        left: 15px;
+        font-size: 18px;
+        color: #C0C0C0;
     }
 
     button {
         width: 100%;
         font-size: 16px;
         margin-top: 10px;
-        background-color: #365afa;
+        background-color: #2D71BC;
         color: white;
         border: none;
         border-radius: 5px;
@@ -256,12 +267,25 @@
         background-color: #193777;
     }
 
+    .signup-login {
+        margin-top: 30px;
+        text-align: center;
+    }
+
     .signup-error-message {
         font-family: 'Open Sans', sans-serif;
         text-align: center;
         color: #d92626;
-        font-size: 15px;
+        font-size: 14px;
+        padding: 13px 15px 13px 15px;
+        background-color: #ffe6e6;
+        border-radius: 5px;
         margin-top: 20px;
+    }
+
+    .error-input {
+        border: 2px solid #d92626;
+        background-color: #ffe6e6;
     }
 
     @media(max-width:767px) {

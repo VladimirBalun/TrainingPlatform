@@ -15,7 +15,7 @@
 -->
 
 <template>
-    <div>
+    <div class="page">
         <header-component></header-component>
         <div class="container">
             <div class="row">
@@ -254,6 +254,11 @@
 </script>
 
 <style scoped>
+
+    .page {
+        position: relative;
+        height: 100%;
+    }
 
     .admin-room-creative-type-buttons-block {
         margin: 30px 0 30px 0;
