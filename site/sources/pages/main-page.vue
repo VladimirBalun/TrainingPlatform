@@ -35,6 +35,10 @@
                 </div>
             </div>
         </diV>
+
+        <mobile-filters-component></mobile-filters-component>
+
+        <button ref="triggerMobileFiltersModal" class="hidden-trigger-button" data-toggle="modal" data-target="#mobile-filters-modal"></button>
     </div>
 </template>
 
@@ -46,13 +50,15 @@
     import contentComponent from "../components/content-component";
     import navigationComponent from "../components/navigation-component.vue";
     import advertisementComponent from "../components/advertisement-component";
+    import mobileFiltersComponent from "../components/mobile-filters-component";
 
     export default {
         components: {
             headerComponent,
             contentComponent,
             navigationComponent,
-            advertisementComponent
+            advertisementComponent,
+            mobileFiltersComponent
         },
         data() {
             return {
@@ -105,10 +111,18 @@
         },
         created() {
             this.fillDemoCreatives();
+
             const self = this;
             this.$root.$on("search-creatives-button-clicked", (titlePattern) => {
                 self.fillCreativesByTitlePattern(titlePattern);
-            })
+            });
+            this.$root.$on("clicked-mobile-menu-button", () => {
+                self.$refs.triggerMobileFiltersModal.click();
+            });
+        },
+        beforeDestroy() {
+            this.$root.$off("search-creatives-button-clicked");
+            this.$root.$off("clicked-mobile-menu-button");
         }
     };
 

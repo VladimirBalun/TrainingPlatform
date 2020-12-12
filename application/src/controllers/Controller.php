@@ -19,12 +19,18 @@
 namespace App\Controllers {
 
     use RedBeanPHP\R;
+    use App\Common\Utils;
     use App\Common\Database;
 
     class Controller {
 
         public function __construct() {
-            R::setup(Database::$access['dsn'], Database::$access['user'], Database::$access['pass']);
+            if (Utils::isTestEnvironment()) {
+                R::setup(Database::$test_access['dsn'], Database::$test_access['user'], Database::$test_access['pass']);
+            } else {
+                R::setup(Database::$production_access['dsn'], Database::$production_access['user'], Database::$production_access['pass']);
+            }
+
             R::freeze(true);
         }
 

@@ -156,7 +156,7 @@
 
                 this.errorMessage = validation.validateCreativeForm(creativeForm)
                 if (this.errorMessage !== "") {
-                    document.getElementById("change-creative-modal").scrollTo({ top: 0, behavior: 'smooth' });
+                    document.getElementById("change-creative-page-modal").scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
 
@@ -167,7 +167,7 @@
                     if (result.result === 1) {
                         self.showMessageModal("info", "Успешная операция", "Объявление успешно добавлено, оно сразу" +
                             "же появится на сайте, как только пройдет модерацию");
-                        self.$root.$emit('changed-creative', _.clone(self.creative));
+                        self.$root.$emit('changed-creative-page', _.clone(self.creative));
                     } else {
                         self.showMessageModal("error", "Ошибка", "Объявление не было изменено");
                     }
@@ -209,7 +209,7 @@
             this.fillAllModels();
 
             const self = this;
-            this.$root.$on("click-change-creative", (creative) => {
+            this.$root.$on("click-change-creative-page", (creative) => {
                 self.creative.id = creative.id;
                 self.creative.title = creative.title;
                 self.creative.briefDescription = creative.briefDescription;

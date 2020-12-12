@@ -167,7 +167,7 @@
 
                 this.errorMessage = validation.validateCreativeForm(creativeForm)
                 if (this.errorMessage !== "") {
-                    document.getElementById("add-creative-modal").scrollTo({ top: 0, behavior: 'smooth' });
+                    document.getElementById("add-creative-page-modal").scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
 
@@ -178,7 +178,7 @@
                     if (result.result === 1) {
                         self.showMessageModal("info", "Успешная операция", "Объявление успешно добавлено, оно сразу" +
                             "же появится на сайте, как только пройдет модерацию");
-                        self.$root.$emit('added-creative', _.clone(self.creative));
+                        self.$root.$emit('added-creative-page', _.clone(self.creative));
                         self.clearCreativeForm();
                     } else {
                         self.showMessageModal("error", "Ошибка", "Объявление не было добавлено");

@@ -65,7 +65,7 @@
                     console.log(result);
                     self.$refs.closeButton.click();
                     if (result.result === 1) {
-                        self.$root.$emit('deleted-creative', self.creativeId);
+                        self.$root.$emit('deleted-creative-page', self.creativeId);
                         self.showMessageModal("info", "Успешная операция", "Объявление удалено");
                     } else {
                         self.showMessageModal("error", "Ошибка", "Объявление не было удалено");
@@ -79,7 +79,7 @@
         },
         created() {
             const self = this;
-            this.$root.$on('click-delete-creative', (creativeId) => {
+            this.$root.$on('click-delete-creative-page', (creativeId) => {
                 self.creativeId = creativeId;
             });
         }

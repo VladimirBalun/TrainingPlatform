@@ -34,7 +34,7 @@ const router = new VueRouter({
             component: mainPage
         },
         {
-            path: "/creative/:id",
+            path: "/creative-page/:id",
             component: creativePage
         },
         {

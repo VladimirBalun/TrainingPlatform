@@ -36,7 +36,7 @@
 
     "use strict";
 
-    import * as common from "../scripts/common";
+    import * as common from "../../scripts/common";
 
     import VueMarkdown from 'vue-markdown';
 

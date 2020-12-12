@@ -35,7 +35,7 @@
                         :advertiser-image-url="creative.advertiserImageUrl">
                     </creative-information-component>
                     <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
-                    <proposed-creatives-component v-show="moderation === ''" :id="id"></proposed-creatives-component>
+                    <creative-proposed-creatives-component v-show="moderation === ''" :id="id"></creative-proposed-creatives-component>
                 </div>
                 <div v-show="(pageLoaded) && ((creative.title === null) || (creative.description === null))">
                     <div class="creative-page-error-message col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -44,6 +44,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
 </template>
@@ -54,9 +55,9 @@
 
     import headerComponent from "../components/header-component";
     import footerComponent from "../components/footer-component";
-    import creativeContactsComponent from "../components/creative-contacts-component";
-    import creativeInformationComponent from "../components/creative-information-component";
-    import proposedCreativesComponent from "../components/proposed-creatives-component";
+    import creativeContactsComponent from "../components/creative-page/creative-contacts-component";
+    import creativeInformationComponent from "../components/creative-page/creative-information-component";
+    import creativeProposedCreativesComponent from "../components/creative-page/creative-proposed-creatives-component";
     import advertisementComponent from "../components/advertisement-component";
 
     import * as protocol from '../scripts/protocol'
@@ -69,7 +70,7 @@
             footerComponent,
             creativeContactsComponent,
             creativeInformationComponent,
-            proposedCreativesComponent,
+            creativeProposedCreativesComponent,
             advertisementComponent
         },
         data() {
@@ -145,7 +146,7 @@
                         self.creative.online = response.body.online;
                         self.creative.advertiserImageUrl = response.body.advertiser_image_url;
 
-                        document.title = self.creative.title;
+                        document.title = "Trainster - " + self.creative.title;
                         self.pageLoaded = true;
                     }, error => {
                         console.log(error);

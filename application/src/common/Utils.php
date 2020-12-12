@@ -1,9 +1,11 @@
+<?php
+
 /*
  * Copyright 2018 Vladimir Balun
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -14,10 +16,14 @@
  * limitations under the License.
  */
 
-"use strict";
+namespace App\Common {
 
-//https://www.pinclipart.com/picdir/big/164-1640714_user-symbol-interface-contact-phone-set-add-sign.png
-//https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103597_1280.png
+    class Utils {
 
-export const defaultUserImage = "http://mysite.local/trening/site/sources/assets/images/user_logo.png";
-export const defaultCreativeImage = "http://mysite.local/trening/site/sources/assets/images/default_creative_image.png";
+        static function isTestEnvironment() {
+            return $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
+        }
+
+    }
+
+}

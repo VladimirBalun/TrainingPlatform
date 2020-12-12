@@ -16,17 +16,20 @@
  * limitations under the License.
  */
 
+use App\Common\Utils;
 use App\Controllers\CreativesController;
 use App\Data\Entity\AdvertiserEntity;
 use App\Data\Entity\CreativeEntity;
 
 require_once '../../../vendor/autoload.php';
 
-header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Max-Age: 86400');
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+if (Utils::isTestEnvironment()) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $creative = new CreativeEntity();

@@ -17,7 +17,17 @@
 "use strict";
 
 const restAddress = "http://localhost:8080";
-const scriptAddress = "http://mysite.local/trening";
+const scriptAddress = "http://mysite.local/trening/application/src/";
+
+function getServerAddress() {
+    if (process.env.PRODUCTION_MODE) {
+        return "";
+    } else if (process.env.DEVELOPMENT_MODE) {
+        return "http://mysite.local/trening/application/src/";
+    } else {
+        throw "Unknown environment mode. You need to use PRODUCTION_MODE or DEVELOPMENT_MODE";
+    }
+}
 
 export const loadMetaInformation = (vueResource, onSuccessLoadClb, onFailedLoadClb) => {
     vueResource.$http.get(restAddress + "/meta")
@@ -38,7 +48,7 @@ export const loadCitiesByCountryName = (vueResource, countryName, onSuccessLoadC
 };
 
 export const removeCreativeById = (vueResource, creativeId, onSuccessLoadClb, onFailedLoadClb) => {
-    vueResource.$http.put(scriptAddress + "/application/src/api/creatives/delete_creative_by_id.php", {creative_id: parseInt(creativeId)}, { emulateJSON: true })
+    vueResource.$http.put(scriptAddress + "api/creatives/delete_creative_by_id.php", {creative_id: parseInt(creativeId)}, { emulateJSON: true })
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {
@@ -49,7 +59,7 @@ export const removeCreativeById = (vueResource, creativeId, onSuccessLoadClb, on
 export const addCreativeByAdvertiserId = (vueResource, advertiserId, creative, onSuccessLoadClb, onFailedLoadClb) => {
     correctCreativeForResponse(creative);
     creative.advertiser_id = advertiserId;
-    vueResource.$http.post(scriptAddress + "/application/src/api/creatives/add_creative.php", creative, { emulateJSON: true })
+    vueResource.$http.post(scriptAddress + "api/creatives/add_creative.php", creative, { emulateJSON: true })
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {
@@ -58,7 +68,7 @@ export const addCreativeByAdvertiserId = (vueResource, advertiserId, creative, o
 }
 
 export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailedLoadClb) => {
-    vueResource.$http.put(scriptAddress + "/application/src/api/creatives/change_creative.php", creative, { emulateJSON: true })
+    vueResource.$http.put(scriptAddress + "api/creatives/change_creative.php", creative, { emulateJSON: true })
         .then(response => {
             console.log(response);
             onSuccessLoadClb(response.body);
@@ -92,7 +102,7 @@ export const changeAdvertiserImageUrlById = (vueResource, advertiserId, newAdver
     const request = {};
     request.advertiser_id = advertiserId;
     request.new_image_url = newAdvertiserImageUrl;
-    vueResource.$http.put(scriptAddress + "/application/src/api/advertisers/change_advertiser_image_by_id.php", request, { emulateJSON: true })
+    vueResource.$http.put(scriptAddress + "api/advertisers/change_advertiser_image_by_id.php", request, { emulateJSON: true })
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {

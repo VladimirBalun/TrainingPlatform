@@ -20,28 +20,31 @@
             <div class="row">
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="signup-form block">
+                        <p class="signup-logo-wrapper">
+                            <img class="signup-logo" alt="logo" src="http://mysite.local/trening/site/sources/assets/images/logo.png">
+                        </p>
                         <p class="signup-title">Регистрация</p>
                         <p class="signup-error-message" v-show="errorMessage !== ''">{{ errorMessage }}</p>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
                             <input class="signup-input" type="text" id="signup-username" maxlength="64" placeholder="Введите имя пользователя"
-                                 v-model="usernameModel" v-bind:class="{ 'error-input': !isValidUsername }">
+                                 v-model="model.username" v-bind:class="{ 'error-input': !validation.username }">
                         </div>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
                             <input class="signup-input" type="text" id="signup-email" maxlength="320" placeholder="Введите e-mail"
-                                v-model="emailModel" v-bind:class="{ 'error-input': !isValidEmail }">
+                                v-model="model.email" v-bind:class="{ 'error-input': !validation.email }">
                         </div>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
                             <input class="signup-input" type="password" id="signup-password" maxlength="128" placeholder="Введите пароль"
-                                v-model="passwordModel" v-bind:class="{ 'error-input': !isValidPassword }">
+                                v-model="model.password" v-bind:class="{ 'error-input': !validation.password }">
                         </div>
-                        <input type="checkbox" id="signup-privacy">
+                        <input type="checkbox" id="signup-privacy" v-model="model.privacyPolicy">
                         <label for="signup-privacy">Принимаю условия <a href="">политики конфиденциальности</a></label>
-                        <button @click="onSignupButtonClick">Зарегистрироваться</button>
+                        <button @click="onSignupButtonClick" :disabled="signupInProgress">Зарегистрироваться</button>
                         <p class="signup-login">
-                            <label>Уже есть аккаунт? <a href="">Авторизация</a></label>
+                            <label>Уже есть аккаунт? <router-link to="/login" class="header-link">Авторизация</router-link></label>
                         </p>
                     </form>
                 </div>
@@ -56,88 +59,47 @@
 
     import MD5 from "crypto-js/md5";
     import * as protocol from '../scripts/protocol'
+    import * as validation from "../scripts/validation";
 
     export default {
         name: "signup-page",
         data() {
             return {
-                usernameModel: "",
-                emailModel: "",
-                passwordModel: "",
-                isValidUsername: true,
-                isValidEmail: true,
-                isValidPassword: true,
+                model: {
+                    username: "",
+                    email: "",
+                    password: "",
+                    privacyPolicy: false
+                },
+                validation: {
+                    username: true,
+                    email: true,
+                    password: true,
+                    privacyPolicy: true
+                },
+                signupInProgress: false,
                 errorMessage: ""
             };
         },
         methods: {
-            checkFormOnEmpty() {
-                if (this.usernameModel !== "") {
-                    this.isValidUsername = true;
-                } else {
-                    this.isValidUsername = false;
-                    this.errorMessage = "Имя пользователя не может быть пустым"
-                    return false;
-                }
-
-                if (this.emailModel !== "") {
-                    this.isValidEmail = true;
-                } else {
-                    this.isValidEmail = false;
-                    this.errorMessage = "E-mail не может быть пустым"
-                    return false;
-                }
-
-                if (this.passwordModel !== "") {
-                    this.isValidPassword = true;
-                } else {
-                    this.isValidPassword = false;
-                    this.errorMessage = "Пароль не может быть пустым";
-                    return false;
-                }
-
-                return true;
-            },
-            checkFormValidation() {
-                const regexForUsername = /^[a-zA-Z0-9]+$/;
-                if (regexForUsername.test(String(this.usernameModel).toLowerCase())) {
-                    this.isValidUsername = true;
-                } else {
-                    this.isValidUsername = false;
-                    this.errorMessage = "Некорректное имя пользователя";
-                    return false;
-                }
-
-                const regexForEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if (regexForEmail.test(String(this.emailModel).toLowerCase())) {
-                    this.isValidEmail = true;
-                } else {
-                    this.isValidEmail = false;
-                    this.errorMessage = "Некорректный e-mail";
-                    return false;
-                }
-
-                return true;
-            },
             onSignupButtonClick() {
-                this.errorMessage = "";
-                this.usernameModel = this.usernameModel.trim();
-                this.emailModel = this.emailModel.trim();
-                this.passwordModel = this.passwordModel.trim();
+                let signupForm = {
+                    model: this.model,
+                    validation: this.validation
+                };
 
-                if (!this.checkFormOnEmpty()) {
-                    return;
-                }
-                if (!this.checkFormValidation()) {
+                this.errorMessage = validation.validateSignupForm(signupForm)
+                if (this.errorMessage !== "") {
                     return;
                 }
 
                 const self = this;
+                this.signupInProgress = true;
                 this.$http.post("http://localhost:8080/advertisers_signup",
                     {
-                              username: self.usernameModel,
-                              email: self.emailModel,
-                              password: MD5(self.passwordModel)
+                              username: self.model.username,
+                              email: self.model.email,
+                              password: MD5(self.model.password)
                           })
                     .then(response => {
                         console.log(response);
@@ -148,38 +110,40 @@
                                 break;
                             }
                             case protocol.SIGNUP_ERROR_USERNAME_EXISTS: {
-                                self.isValidUsername = false;
+                                self.validation.username = false;
                                 self.errorMessage = "Пользователь с таким именем уже существует";
                                 break;
                             }
                             case protocol.SIGNUP_ERROR_EMAIL_EXISTS: {
-                                self.isValidEmail = false;
+                                self.validation.email = false;
                                 self.errorMessage = "Пользователь с таким e-mail уже существует";
                                 break;
                             }
                             case protocol.SIGNUP_ERROR_INCORRECT_USERNAME:
-                                self.isValidUsername = false;
+                                self.validation.username = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован, некорректное имя пользователя";
                                 break;
                             case protocol.SIGNUP_ERROR_INCORRECT_EMAIL:
-                                self.isValidEmail = false;
+                                self.validation.email = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован, некорректный e-mail";
                                 break;
                             case protocol.SIGNUP_ERROR_INCORRECT_PASSWORD:
-                                self.isValidEmail = false;
+                                self.validation.password = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован, некорректный пароль";
                                 break;
                             case protocol.SIGNUP_ERROR_UNKNOWN: {
-                                self.isValidUsername = false;
-                                self.isValidEmail = false;
-                                self.isValidPassword = false;
+                                self.validation.username = false;
+                                self.validation.email = false;
+                                self.validation.password = false;
                                 self.errorMessage = "Пользователь не был зарегистрирован из-за неизвестной ошибки, " +
                                     "попробуйте повторить вашу попытку позже...";
                                 break;
                             }
                         }
+                        self.signupInProgress = false;
                     }, error => {
                         console.log(error);
+                        self.signupInProgress = false;
                         self.isValidUsername = false;
                         self.isValidEmail = false;
                         self.isValidPassword = false;
@@ -200,6 +164,16 @@
         background-color: #363636;
         display: flex;
         align-items: center;
+    }
+
+    .signup-logo-wrapper {
+        text-align: center;
+    }
+
+    .signup-logo {
+        width: 140px;
+        margin-bottom: 20px;
+        height: auto;
     }
 
     .signup-title {

@@ -18,7 +18,6 @@
 
 namespace App\Controllers {
 
-    use App\Common\Protocol;
     use App\Data\Service\AdvertisersService;
     use App\Data\Service\CreativesService;
 
@@ -73,30 +72,6 @@ namespace App\Controllers {
                 public $result;
             };
             $response->result = $this->advertisers_service->changeAdvertiserImageUrlById($id, $new_advertiser_image_url);
-            return json_encode($response, JSON_UNESCAPED_UNICODE);
-        }
-
-
-        public function loginAdvertiser($advertiser) {
-            $response = new class() {
-                public $result;
-            };
-            $response->result = $this->advertisers_service->loginAdvertiser($advertiser);
-            if ($response->result == Protocol::$LOGIN_SUCCESS) {
-                $one_month_tls = time() + 60 * 60 * 24 * 30;
-                setcookie('username', $advertiser->getUsername(), $one_month_tls, '/', null, null, true); // httponly !!!
-                setcookie('hash', $advertiser->getHash(), $one_month_tls, '/', null, null, true); // httponly !!!
-            }
-
-            return json_encode($response, JSON_UNESCAPED_UNICODE);
-        }
-
-        public function signupAdvertiser($advertiser) {
-            $response = new class() {
-                public $result;
-            };
-
-            $response->result = $this->advertisers_service->signupAdvertiser($advertiser);
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 

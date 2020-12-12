@@ -29,7 +29,7 @@
 
 <script>
 
-    import contentComponent from "../components/content-component";
+    import contentComponent from "../content-component";
 
     export default {
         name: "proposed-creatives-component",

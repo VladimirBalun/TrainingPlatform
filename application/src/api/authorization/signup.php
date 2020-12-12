@@ -16,17 +16,19 @@
  * limitations under the License.
  */
 
-namespace App\Common {
+use App\Common\Utils;
+use App\Controllers\AuthorizationController;
 
-    class Database {
-        public static $test_access = [
-            'dsn' => 'mysql:host=127.0.0.1;dbname=trainig;charset=utf8',
-            'user' => 'root',
-            'pass' => '1234'
-        ];
-        public static $production_access = [
+require_once '../../../vendor/autoload.php';
 
-        ];
-    }
+if (Utils::isTestEnvironment()) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');
+    header("Access-Control-Allow-Methods: GET, PUT, POST, OPTIONS");
+    header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+}
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $controller = new AuthorizationController();
 }

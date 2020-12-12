@@ -69,12 +69,12 @@
     import * as validation from "../scripts/validation";
 
     import headerComponent from "../components/header-component";
-    import adminRoomContentComponent from "../components/admin-room/admin-room-content-component"
-    import adminRoomNavigationComponent from "../components/admin-room/admin-room-navigation-component";
-    import adminRoomAddCreativeComponent from "../components/admin-room/admin-room-add-creative-component";
-    import adminRoomChangeCreativeModal from "../components/admin-room/admin-room-change-creative-component";
-    import adminRoomDeleteCreativeModal from "../components/admin-room/admin-room-delete-creative-modal";
-    import adminRoomMessageComponent from "../components/admin-room/admin-room-message-component";
+    import adminRoomContentComponent from "../components/admin-room-page/admin-room-content-component"
+    import adminRoomNavigationComponent from "../components/admin-room-page/admin-room-navigation-component";
+    import adminRoomAddCreativeComponent from "../components/admin-room-page/admin-room-add-creative-component";
+    import adminRoomChangeCreativeModal from "../components/admin-room-page/admin-room-change-creative-component";
+    import adminRoomDeleteCreativeModal from "../components/admin-room-page/admin-room-delete-creative-modal";
+    import adminRoomMessageComponent from "../components/admin-room-page/admin-room-message-component";
     import advertisementComponent from "../components/advertisement-component";
 
     export default {
@@ -180,7 +180,7 @@
         mounted() {
             const self = this;
 
-            this.$root.$on("added-creative", (creative) => {
+            this.$root.$on("added-creative-page", (creative) => {
                 const creativeForVisualization = {
                     id : creative.id,
                     title : creative.title,
@@ -197,7 +197,7 @@
                 }
             });
 
-            this.$root.$on("changed-creative", changedCreative => {
+            this.$root.$on("changed-creative-page", changedCreative => {
                 self.filteredCreatives.forEach(creative => {
                     if (changedCreative.id === creative.id) {
                         creative.title = changedCreative.title;
@@ -218,7 +218,7 @@
                 });
             });
 
-            this.$root.$on("deleted-creative", creativeId => {
+            this.$root.$on("deleted-creative-page", creativeId => {
                 self.advertiserCreatives = self.advertiserCreatives.filter(creative => {
                     return creative.id !== creativeId;
                 });
@@ -239,15 +239,15 @@
             });
         },
         beforeDestroy() {
-            this.$root.$off("added-creative");
-            this.$root.$off("changed-creative");
-            this.$root.$off("deleted-creative");
+            this.$root.$off("added-creative-page");
+            this.$root.$off("changed-creative-page");
+            this.$root.$off("deleted-creative-page");
             this.$root.$off("show-message-modal");
             this.$root.$off("clicked-mobile-menu-button");
         },
         created() {
             this.fillAdvertiserCreatives();
-            document.title = "Комната администратора";
+            document.title = "Trainster - Комната администратора";
         }
     }
 

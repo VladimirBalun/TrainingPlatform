@@ -37,9 +37,9 @@
 
     "use strict";
 
-    import * as common from "../scripts/common";
+    import * as common from "../../scripts/common";
 
-    import advertisementComponent from "./advertisement-component";
+    import advertisementComponent from "../advertisement-component";
 
     export default {
         props: ["imageUrl", "email", "site", "phone", "price"],

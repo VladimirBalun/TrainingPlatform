@@ -16,9 +16,97 @@
 
 "use strict";
 
-export const validateSignupForm = (signupForm) => {
+export const validateLoginForm = (loginForm) => {
+    loginForm.validation.email = true;
+    loginForm.validation.password = true;
 
+    let errorMessage = checkSignupFormOnEmpty(loginForm);
+    if (errorMessage !== "") {
+        return errorMessage;
+    }
+
+    errorMessage = checkSignUpFormOnValidInformation(loginForm);
+    if (errorMessage !== ""){
+        return errorMessage;
+    }
+
+    return "";
 };
+
+function checkLoginFormOnEmpty(loginForm) {
+    if (loginForm.model.email === "") {
+        loginForm.validation.email = false;
+        return "E-mail не может быть пустым"
+    }
+    if (loginForm.model.password === "") {
+        loginForm.validation.password = false;
+        return "Пароль не может быть пустым";
+    }
+
+    return "";
+}
+
+function checkLoginFormOnValidInformation(loginForm) {
+    if (!validateEmail(loginForm.model.email)) {
+        loginForm.validation.email = false;
+        return "Некорректный e-mail адрес";
+    }
+
+    return "";
+}
+
+export const validateSignupForm = (signupForm) => {
+    signupForm.validation.username = true;
+    signupForm.validation.email = true;
+    signupForm.validation.password = true;
+    signupForm.validation.privacyPolicy = true;
+
+    let errorMessage = checkSignupFormOnEmpty(signupForm);
+    if (errorMessage !== "") {
+        return errorMessage;
+    }
+
+    errorMessage = checkSignUpFormOnValidInformation(signupForm);
+    if (errorMessage !== ""){
+        return errorMessage;
+    }
+
+    return "";
+};
+
+function checkSignupFormOnEmpty(signupForm) {
+    if (signupForm.model.username === "") {
+        signupForm.validation.username = false;
+        return "Имя пользователя не может быть пустым"
+    }
+    if (signupForm.model.email === "") {
+        signupForm.validation.email = false;
+        return "E-mail не может быть пустым"
+    }
+    if (signupForm.model.password === "") {
+        signupForm.validation.password = false;
+        return "Пароль не может быть пустым";
+    }
+    if (signupForm.model.privacyPolicy === false) {
+        signupForm.validation.privacyPolicy = false;
+        return "Необходимо принять политику конфиденциальности";
+    }
+
+    return "";
+}
+
+function checkSignUpFormOnValidInformation(signupForm) {
+    if (!validateUsername(signupForm.model.username)) {
+        signupForm.validation.username = false;
+        return "Некорректное имя пользователя";
+    }
+    if (!validateEmail(signupForm.model.email)) {
+        signupForm.validation.email = false;
+        return "Некорректный e-mail адрес";
+    }
+
+    return "";
+}
 
 export const validateCreativeEventDate = (eventDate) => {
     const current = new Date();
@@ -90,22 +178,19 @@ function checkCreativeFormOnValidInformation(creativeForm) {
         }
     }
     if (creativeForm.creative.email !== "") {
-        const regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!regex.test(creativeForm.creative.email)) {
+        if (!validateEmail(creativeForm.creative.email)) {
             creativeForm.creativeValidation.email = false;
             return "Некорректный e-mail адрес";
         }
     }
     if (creativeForm.creative.image !== "") {
-        const regex = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
-        if (!regex.test(creativeForm.creative.image)) {
+        if (!validateLinkAddress(creativeForm.creative.image)) {
             creativeForm.creativeValidation.image = false;
             return "Некорректный адрес изображения";
         }
     }
     if (creativeForm.creative.site !== "") {
-        const regex = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
-        if (!regex.test(creativeForm.creative.site)) {
+        if (!validateLinkAddress(creativeForm.creative.site)) {
             creativeForm.creativeValidation.site = false;
             return "Некорректный адрес сайта";
         }
@@ -113,3 +198,18 @@ function checkCreativeFormOnValidInformation(creativeForm) {
 
     return "";
 }
+
+export const validateUsername = (username) => {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(username);
+};
+
+export const validateEmail = (email) => {
+    const regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    return regex.test(email);
+};
+
+export const validateLinkAddress = (address) => {
+    const regex = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
+    return regex.test(address);
+};

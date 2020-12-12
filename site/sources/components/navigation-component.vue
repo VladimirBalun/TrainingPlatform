@@ -16,11 +16,7 @@
 
 <template>
     <div class="navigation-wrapper">
-        <div class="search-block block">
-           <p class="navigation-title"><i class="fas fa-search"></i>Поиск</p><hr>
-           <input type="text" v-model="searchCreativesPatternModel" placeholder="Введите название...">
-           <button v-on:click="onSearchCreativesButtonClick" class="navigation-button">Искать</button>
-        </div>
+        <search-component></search-component>
         <div class="navigation block hidden-xs">
             <p class="navigation-title"><i class="fas fa-filter"></i>Фильтры</p><hr>
             <label for="navigation-categoty">Категория:</label>
@@ -81,12 +77,14 @@
 
     "use strict";
 
+    import searchComponent from "../components/search-component";
     import advertisementComponent from "../components/advertisement-component";
 
     export default {
         name: "navigation-component",
         emits: ["search-creatives-button-clicked"],
         components: {
+            searchComponent,
             advertisementComponent
         },
         data() {
@@ -159,11 +157,6 @@
         position: relative;
     }
 
-    .search-block {
-        margin-bottom: 30px;
-        border-radius: 5px;
-    }
-
     .navigation {
         border-radius: 5px;
         background-color: white;
@@ -205,14 +198,13 @@
         width: 100%;
     }
 
-    .fa-search, .fa-filter {
+    .fa-filter {
         font-size: 15px;
         margin-right: 10px;
         transform: translateY(-1px);
     }
 
     .navigation-title {
-        color: black;
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
         font-size: 20px;
@@ -239,10 +231,6 @@
     }
 
     @media(max-width:767px) {
-
-        .search-block {
-            margin-bottom: 15px;
-        }
 
         .navigation-wrapper {
             height: auto;

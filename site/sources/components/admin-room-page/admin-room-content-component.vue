@@ -27,7 +27,7 @@
                 {{ moderation }}
             </p>
             <div class="admin-room-content-block-inner-wrapper">
-                <router-link target="_blank" :to="'/creative/' + id" class="admin-room-content-button">
+                <router-link target="_blank" :to="'/creative-page/' + id" class="admin-room-content-button">
                     Подробнее<i class="fas fa-angle-double-right"></i>
                 </router-link>
                 <button v-on:click="onChangeCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-pencil-alt"></i></button>
@@ -102,14 +102,14 @@
                         creative.theme = response.body.theme;
                         creative.online = response.body.online;
 
-                        self.$root.$emit('click-change-creative', creative);
+                        self.$root.$emit('click-change-creative-page', creative);
                         self.$refs.btnTriggerChangeCreative.click();
                     }, error => {
                         console.log(error);
                     });
             },
             onDeleteCreativeButtonClick(creativeId) {
-                this.$root.$emit('click-delete-creative', creativeId);
+                this.$root.$emit('click-delete-creative-page', creativeId);
             }
         }
     }
