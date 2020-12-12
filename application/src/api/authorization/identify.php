@@ -18,7 +18,6 @@
 
 use App\Common\Utils;
 use App\Controllers\AuthorizationController;
-use App\Data\Entity\AdvertiserEntity;
 
 require_once '../../../vendor/autoload.php';
 
@@ -29,13 +28,7 @@ if (Utils::isTestEnvironment()) {
     header("Access-Control-Allow-Methods: GET, PUT, POST, OPTIONS");
     header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $advertiser = new AdvertiserEntity();
-    $advertiser->setUsername($_POST['username']);
-    $advertiser->setEmail($_POST['email']);
-    $advertiser->setPassword($_POST['password']);
-
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $controller = new AuthorizationController();
-    echo $controller->signupAdvertiser($advertiser);
+    echo $controller->identifyAdvertiser();
 }

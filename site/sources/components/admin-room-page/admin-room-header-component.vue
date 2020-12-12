@@ -16,21 +16,21 @@
 
 <template>
     <header>
-      <div class="container">
-          <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
-                  <div class="header-title-wrapper">
-                      <router-link to="/" class="header-title">Trainster</router-link>
-                  </div>
-                  </div>
-                  <div class="hidden-lg hidden-md hidden-sm col-xs-2">
-                      <div class="mobile-filters-menu">
-                          <button @click="onClickMobileMenuButton" class="header-button"><i class="fas fa-bars"></i></button>
-                      </div>
-                  </div>
-                  <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-10">
-                      <router-link to="/signup" class="header-link">{{ buttonText }}</router-link>
-                  </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                    <div class="header-title-wrapper">
+                        <router-link to="/" class="header-title">Trainster</router-link>
+                    </div>
+                </div>
+                <div class="hidden-lg hidden-md hidden-sm col-xs-2">
+                    <div class="mobile-filters-menu">
+                        <button @click="onClickHomeButton" class="header-button"><i class="fas fa-home"></i></button>
+                    </div>
+                </div>
+                <div class="header-link-wrapper col-lg-6 col-md-6 col-sm-6 col-xs-10">
+                    <button class="header-link" @click="onClickLogoutButton">Выйти</button>
+                </div>
             </div>
         </div>
     </header>
@@ -40,19 +40,21 @@
 
     "use strict";
 
+    import * as network from "../../scripts/network"
+
     export default {
-        computed: {
-            buttonText() {
-                if ((document.cookie.indexOf("trainster_id=") !== -1) && (document.cookie.indexOf("trainster_hash=") !== -1)) {
-                    return "Комната администратора";
-                } else {
-                    return "Подать объявление";
-                }
-            }
-        },
         methods: {
-            onClickMobileMenuButton() {
-                this.$root.$emit("clicked-mobile-menu-button");
+            onClickHomeButton() {
+                this.$router.push("/");
+            },
+            onClickLogoutButton() {
+                network.logoutAdvertiser(this, response => {
+                    console.log(response);
+                    this.$router.push("/");
+                }, error => {
+                    console.log(error);
+                    this.$router.push("/");
+                });
             }
         },
     };
@@ -83,6 +85,7 @@
     }
 
     .header-link {
+        outline: none;
         border-radius: 5px;
         color: white;
         margin-top: 10px;

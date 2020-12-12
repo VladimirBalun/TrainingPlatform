@@ -25,7 +25,17 @@ import signupPage from "../pages/signup-page";
 import loginPage from "../pages/login-page";
 import adminRoomPage from "../pages/admin-room-page"
 
+import * as network from "./network";
+
 Vue.use(VueRouter);
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+    }
+}
 
 const router = new VueRouter({
     routes: [
@@ -39,15 +49,56 @@ const router = new VueRouter({
         },
         {
             path: "/signup",
-            component: signupPage
+            component: signupPage,
+            beforeEnter: (to, from, next) => {
+                if ((document.cookie.indexOf("trainster_id=") !== -1) || (document.cookie.indexOf("trainster_hash=") !== -1)) {
+                    network.identifyAdvertiser(response => {
+                        console.log(response.result);
+                        if (response.result) {
+                            next("/admin_room/" + getCookie("trainster_id"));
+                        } else {
+                            next();
+                        }
+                    }, error => {
+                        console.log(error);
+                        next();
+                    });
+                } else {
+                    next();
+                }
+            }
         },
         {
             path: "/login",
-            component: loginPage
+            component: loginPage,
+            beforeEnter: (to, from, next) => {
+                if ((document.cookie.indexOf("trainster_id=") !== -1) || (document.cookie.indexOf("trainster_hash=") !== -1)) {
+                    network.identifyAdvertiser(response => {
+                        console.log(response.result);
+                        if (response.result) {
+                            next("/admin_room/" + getCookie("trainster_id"));
+                        } else {
+                            next();
+                        }
+                    }, error => {
+                        console.log(error);
+                        next();
+                    });
+                } else {
+                    next();
+                }
+            }
         },
         {
             path: "/admin_room/:id",
-            component: adminRoomPage
+            component: adminRoomPage,
+            beforeEnter: (to, from, next) => {
+                if ((document.cookie.indexOf("trainster_id=") === -1) || (document.cookie.indexOf("trainster_hash=") === -1)) {
+                    next("/signup");
+                } else {
+                    next();
+                }
+            }
         }
     ]
 });

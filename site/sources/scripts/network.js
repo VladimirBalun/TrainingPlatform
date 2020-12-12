@@ -16,6 +16,10 @@
 
 "use strict";
 
+import $ from "jquery";
+import MD5 from "crypto-js/md5";
+
+
 const restAddress = "http://localhost:8080";
 const scriptAddress = "http://mysite.local/trening/application/src/";
 
@@ -28,6 +32,46 @@ function getServerAddress() {
         throw "Unknown environment mode. You need to use PRODUCTION_MODE or DEVELOPMENT_MODE";
     }
 }
+
+export const identifyAdvertiser = (onSuccessLoadClb, onFailedLoadClb) => {
+    $.get(scriptAddress + "api/authorization/identify.php", response => {
+        onSuccessLoadClb(JSON.parse(response));
+    }).fail(error => {
+        onFailedLoadClb(JSON.parse(error));
+    });
+};
+
+export const signupAdvertiser = (vueResource, advertiser, onSuccessLoadClb, onFailedLoadClb) => {
+    advertiser.username = advertiser.username.trim();
+    advertiser.email = advertiser.email.trim();
+    advertiser.password = MD5(advertiser.password.trim()).toString();
+    vueResource.$http.post(scriptAddress + "api/authorization/signup.php", advertiser, { emulateJSON: true })
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
+
+export const loginAdvertiser = (vueResource, advertiser, onSuccessLoadClb, onFailedLoadClb) => {
+    advertiser.email = advertiser.email.trim();
+    advertiser.password = MD5(advertiser.password.trim()).toString();
+    vueResource.$http.post(scriptAddress + "api/authorization/login.php", advertiser, { emulateJSON: true })
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
+
+export const logoutAdvertiser = (vueResource,onSuccessLoadClb, onFailedLoadClb) => {
+    vueResource.$http.post(scriptAddress + "api/authorization/logout.php")
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
 
 export const loadMetaInformation = (vueResource, onSuccessLoadClb, onFailedLoadClb) => {
     vueResource.$http.get(restAddress + "/meta")

@@ -17,15 +17,17 @@
 "use strict";
 
 import Vue from "vue";
+import VueCookies from 'vue-cookies';
 import VueResource from "vue-resource";
 
 import store from "./scripts/store";
 import router from "./scripts/router";
 
 Vue.use(VueResource);
+Vue.use(VueCookies);
 
 const vue = new Vue({
     el : "#app",
     store,
     router
-})();
+});

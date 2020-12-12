@@ -34,6 +34,7 @@ namespace App\Common {
         public static $SIGNUP_ERROR_INCORRECT_EMAIL = 4;
         public static $SIGNUP_ERROR_INCORRECT_PASSWORD = 5;
         public static $SIGNUP_ERROR_UNKNOWN = 6;
+        public static $SIGNUP_NEED_LOGIN = 7;
 
         // Login
         public static $LOGIN_SUCCESS = 0;
@@ -51,7 +52,6 @@ namespace App\Common {
         public static $FILTER_ONLINE_OR_OFFLINE_NONE = 0;
         public static $FILTER_OFFLINE = 1;
         public static $FILTER_ONLINE = 2;
-
         public static $SORTING_NONE = 0;
         public static $SORTING_BY_DATE_ASC = 1;
         public static $SORTING_BY_DATE_DESC = 2;

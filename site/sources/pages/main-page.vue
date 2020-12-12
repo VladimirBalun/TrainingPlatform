@@ -37,7 +37,6 @@
         </diV>
 
         <mobile-filters-component></mobile-filters-component>
-
         <button ref="triggerMobileFiltersModal" class="hidden-trigger-button" data-toggle="modal" data-target="#mobile-filters-modal"></button>
     </div>
 </template>
@@ -114,7 +113,7 @@
 
             const self = this;
             this.$root.$on("search-creatives-button-clicked", (titlePattern) => {
-                self.fillCreativesByTitlePattern(titlePattern);
+                self.fillCreativesByTitlePattern(titlePattern.trim());
             });
             this.$root.$on("clicked-mobile-menu-button", () => {
                 self.$refs.triggerMobileFiltersModal.click();

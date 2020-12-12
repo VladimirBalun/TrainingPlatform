@@ -18,38 +18,79 @@
 
 namespace App\Controllers {
 
-    use App\Common\Protocol;
+    use App\Data\Service\AdvertisersService;
     use App\Data\Service\AuthorizationService;
 
     class AuthorizationController extends Controller {
 
+        private $advertisers_service;
         private $authorization_service;
 
         public function __construct() {
             parent::__construct();
+            $this->advertisers_service = new AdvertisersService();
             $this->authorization_service = new AuthorizationService();
         }
 
-        public function loginAdvertiser($advertiser) {
+        public function identifyAdvertiser() {
             $response = new class() {
                 public $result;
             };
-            $response->result = $this->authorization_service->loginAdvertiser($advertiser);
-            if ($response->result == Protocol::$LOGIN_SUCCESS) {
-                $one_month_tts = time() + 60 * 60 * 24 * 30;
-                setcookie('username', $advertiser->getUsername(), $one_month_tts, '/', null, null, true); // httponly !!!
-                setcookie('hash', $advertiser->getHash(), $one_month_tts, '/', null, null, true); // httponly !!!
+
+            if (isset($_COOKIE['trainster_id']) and isset($_COOKIE['trainster_hash'])) {
+                $response->result = $this->authorization_service->identifyAdvertiser($_COOKIE['trainster_id'], $_COOKIE['trainster_hash']);
+            } else {
+                $response->result = false;
             }
 
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 
-        public function signupAdvertiser($advertiser) {
+        public function loginAdvertiser($advertiser) {
+            $response = new class() {
+                public $status;
+                public $advertiser_id;
+            };
+
+            $login_result = $this->authorization_service->loginAdvertiser($advertiser);
+            if (isset($login_result['id']) and isset($login_result['hash'])) {
+                $one_month_ttl = time() + 60 * 60 * 24 * 30;
+                setcookie('trainster_id', $login_result['id'], $one_month_ttl, "/");
+                setcookie('trainster_hash', $login_result['hash'], $one_month_ttl, "/");
+            }
+
+            $response->status = $login_result['status'];
+            $response->advertiser_id = $login_result['id'];
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
+
+        public function logoutAdvertiser() {
+            $one_month_tts = time() + 60 * 60 * 24 * 30;
+            setcookie("trainster_id", "", time() - $one_month_tts, "/");
+            setcookie("trainster_hash", "", time() - $one_month_tts, "/");
+
             $response = new class() {
                 public $result;
             };
+            $response->result = true;
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
 
-            $response->result = $this->authorization_service->signupAdvertiser($advertiser);
+        public function signupAdvertiser($advertiser) {
+            $response = new class() {
+                public $status;
+                public $advertiser_id;
+            };
+
+            $signup_result = $this->authorization_service->signupAdvertiser($advertiser);
+            if (isset($signup_result['id']) and isset($signup_result['hash'])) {
+                $one_month_ttl = time() + 60 * 60 * 24 * 30;
+                setcookie('trainster_id', $signup_result['id'], $one_month_ttl, "/");
+                setcookie('trainster_hash', $signup_result['hash'], $one_month_ttl, "/");
+            }
+
+            $response->status = $signup_result['status'];
+            $response->advertiser_id = $signup_result['id'];
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 

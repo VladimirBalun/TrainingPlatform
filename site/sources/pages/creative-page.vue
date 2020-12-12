@@ -16,7 +16,7 @@
 
 <template>
     <div>
-        <header-component></header-component>
+        <creative-header-component></creative-header-component>
         <div class="creative-page container">
             <div class="row">
                 <div v-show="(pageLoaded) && (creative.title !== null) && (creative.description !== null)">
@@ -53,7 +53,7 @@
 
     "use strict";
 
-    import headerComponent from "../components/header-component";
+    import creativeHeaderComponent from "../components/creative-page/creative-header-component";
     import footerComponent from "../components/footer-component";
     import creativeContactsComponent from "../components/creative-page/creative-contacts-component";
     import creativeInformationComponent from "../components/creative-page/creative-information-component";
@@ -66,7 +66,7 @@
     export default {
         name: "creative-page",
         components: {
-            headerComponent,
+            creativeHeaderComponent,
             footerComponent,
             creativeContactsComponent,
             creativeInformationComponent,

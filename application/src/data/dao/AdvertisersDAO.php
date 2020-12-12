@@ -25,7 +25,7 @@ namespace App\Data\DAO {
 
         public function addAdvertiser($advertiser) {
             return R::exec(
-                'INSERT INTO avertisers(username, email, password) 
+                'INSERT INTO advertisers(username, email, password) 
                 VALUES(:username, :email, :password)',
                 [
                     'username' => $advertiser->getUsername(),
@@ -35,11 +35,27 @@ namespace App\Data\DAO {
             );
         }
 
+        public function changeAdvertiserHashById($new_hash, $id) {
+            return R::exec(
+                'UPDATE advertisers SET hash = :new_hash WHERE id = :id_advertiser',
+                ['id_advertiser' => $id, 'new_hash' => $new_hash]
+            );
+        }
+
         public function changeAdvertiserImageUrlById($id, $new_advertiser_image_url) {
             return R::exec(
                 'UPDATE advertisers SET image_url = :image_url WHERE id = :id_advertiser',
                 ['id_advertiser' => $id, 'image_url' => $new_advertiser_image_url]
             );
+        }
+
+        public function getAdvertiserByUsername($username) {
+            $database_advertiser = R::getRow(
+                'SELECT id FROM advertisers WHERE username = ? LIMIT 1', [$username]);
+
+            $advertiser = new AdvertiserEntity();
+            $advertiser->setId($database_advertiser['id']);
+            return $advertiser;
         }
 
         public function getAdvertiserById($id) {
@@ -51,22 +67,34 @@ namespace App\Data\DAO {
             return $advertiser;
         }
 
-        public function findAdvertiserByEmailAndByPassword($email, $password) {
-            $advertisers = R::getAll(
+        public function getAdvertiserByEmailAndByPassword($email, $password) {
+            $database_advertiser = R::getRow(
                 'SELECT id FROM advertisers 
-                WHERE email = :email AND password = :password',
+                WHERE email = :email AND password = :password LIMIT 1',
                 ['email' => $email, 'password' => $password]);
-            return !empty($advertisers);
+
+            $advertiser = new AdvertiserEntity();
+            if (!empty($database_advertiser)) {
+                $advertiser->setId($database_advertiser['id']);
+            }
+            return $advertiser;
+        }
+
+        public function findAdvertiserByIdAndByHash($id, $hash) {
+            $database_advertiser = R::getRow('SELECT id FROM advertisers 
+                WHERE id = :id_advertiser AND hash = :hash LIMIT 1',
+                ['id_advertiser' => $id, 'hash' => $hash]);
+            return !empty($database_advertiser);
         }
 
         public function findAdvertiserByUsername($username) {
-            $advertisers = R::getAll('SELECT id FROM advertisers WHERE username = ?', [$username]);
-            return !empty($advertisers);
+            $database_advertiser = R::getRow('SELECT id FROM advertisers WHERE username = ? LIMIT 1', [$username]);
+            return !empty($database_advertiser);
         }
 
         public function findAdvertiserByEmail($email) {
-            $advertisers = R::getAll('SELECT id FROM advertisers WHERE email = ?', [$email]);
-            return !empty($advertisers);
+            $database_advertiser = R::getRow('SELECT id FROM advertisers WHERE email = ? LIMIT 1', [$email]);
+            return !empty($database_advertiser);
         }
 
     }

@@ -18,6 +18,7 @@
 
 use App\Common\Utils;
 use App\Controllers\AuthorizationController;
+use App\Data\Entity\AdvertiserEntity;
 
 require_once '../../../vendor/autoload.php';
 
@@ -30,5 +31,11 @@ if (Utils::isTestEnvironment()) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $advertiser = new AdvertiserEntity();
+    $advertiser->setEmail($_POST['email']);
+    $advertiser->setPassword($_POST['password']);
+
+    echo var_dump($advertiser);
     $controller = new AuthorizationController();
+    echo $controller->loginAdvertiser($advertiser);
 }

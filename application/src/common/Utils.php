@@ -24,6 +24,10 @@ namespace App\Common {
             return $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
         }
 
+        static function generateMD5() {
+            return md5(uniqid());
+        }
+
     }
 
 }

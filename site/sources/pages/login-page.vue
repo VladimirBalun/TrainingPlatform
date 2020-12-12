@@ -50,8 +50,10 @@
 
     "use strict";
 
-    import MD5 from "crypto-js/md5";
-    import * as protocol from '../scripts/protocol'
+
+    import _ from "underscore"
+    import * as network from "../scripts/network";
+    import * as protocol from '../scripts/protocol';
     import * as validation from "../scripts/validation";
 
     export default {
@@ -71,60 +73,47 @@
           };
       },
       methods: {
-      onLoginButtonClick() {
-          let loginForm = {
-              model: this.model,
-              validation: this.validation
-          };
+          onLoginButtonClick() {
+              let loginForm = {
+                  model: this.model,
+                  validation: this.validation
+              };
 
-          this.errorMessage = validation.validateLoginForm(loginForm)
-          if (this.errorMessage !== "") {
-              return;
-          }
+              this.errorMessage = validation.validateLoginForm(loginForm)
+              if (this.errorMessage !== "") {
+                  return;
+              }
 
-          const self = this;
-          this.loginInProgress = true;
-          this.$http.post("http://localhost:8080/advertisers_login",
-              {
-                  username: self.model.username,
-                  email: self.model.email,
-                  password: MD5(self.model.password)
-              })
-              .then(response => {
+              const self = this;
+              this.loginInProgress = true;
+              network.loginAdvertiser(this, _.clone(this.model), response => {
                   console.log(response);
                   const status = response.status;
                   switch (status) {
-                      case protocol.SIGNUP_SUCCESS: {
-                          alert("Успешная регистрация");
+                      case protocol.LOGIN_SUCCESS: {
+                          self.$router.push('/admin_room/' + response.advertiser_id);
                           break;
                       }
-                      case protocol.SIGNUP_ERROR_USERNAME_EXISTS: {
-                          self.validation.username = false;
-                          self.errorMessage = "Пользователь с таким именем уже существует";
-                          break;
-                      }
-                      case protocol.SIGNUP_ERROR_EMAIL_EXISTS: {
+                      case protocol.LOGIN_ERROR_INCORRECT_EMAIL: {
                           self.validation.email = false;
-                          self.errorMessage = "Пользователь с таким e-mail уже существует";
+                          self.errorMessage = "Некорректный e-mail";
                           break;
                       }
-                      case protocol.SIGNUP_ERROR_INCORRECT_USERNAME:
-                          self.validation.username = false;
-                          self.errorMessage = "Пользователь не был зарегистрирован, некорректное имя пользователя";
-                          break;
-                      case protocol.SIGNUP_ERROR_INCORRECT_EMAIL:
-                          self.validation.email = false;
-                          self.errorMessage = "Пользователь не был зарегистрирован, некорректный e-mail";
-                          break;
-                      case protocol.SIGNUP_ERROR_INCORRECT_PASSWORD:
+                      case protocol.LOGIN_ERROR_INCORRECT_PASSWORD: {
                           self.validation.password = false;
-                          self.errorMessage = "Пользователь не был зарегистрирован, некорректный пароль";
+                          self.errorMessage = "Некорректный пароль";
                           break;
-                      case protocol.SIGNUP_ERROR_UNKNOWN: {
-                          self.validation.username = false;
+                      }
+                      case protocol.LOGIN_ERROR_INCORRECT_EMAIL_OR_PASSWORD: {
                           self.validation.email = false;
                           self.validation.password = false;
-                          self.errorMessage = "Пользователь не был зарегистрирован из-за неизвестной ошибки, " +
+                          self.errorMessage = "Неверный e-mail или пароль";
+                          break;
+                      }
+                      default: {
+                          self.validation.email = false;
+                          self.validation.password = false;
+                          self.errorMessage = "Пользователь не был авторизован из-за неизвестной ошибки, " +
                               "попробуйте повторить вашу попытку позже...";
                           break;
                       }
@@ -133,15 +122,14 @@
               }, error => {
                   console.log(error);
                   self.loginInProgress = false;
-                  self.isValidUsername = false;
-                  self.isValidEmail = false;
-                  self.isValidPassword = false;
-                  self.errorMessage = "Пользователь не был зарегистрирован возможно из-за ошибки, " +
+                  self.validation.email = false;
+                  self.validation.password = false;
+                  self.errorMessage = "Пользователь не был авторизован, возможно из-за ошибки, " +
                       "связанной с сетевым соединением, попробуйте повторить вашу попытку позже...";
               });
+            }
         }
     }
-}
 
 </script>
 
@@ -153,6 +141,10 @@
         background-color: #363636;
         display: flex;
         align-items: center;
+    }
+
+    .container {
+        background-color: #363636;
     }
 
     .login-logo-wrapper {
@@ -174,6 +166,7 @@
 
     .login-form {
         padding: 60px 100px 50px 100px;
+        margin-bottom: 15px;
     }
 
     label {
@@ -255,6 +248,10 @@
         .login-form {
             margin-top: 15px;
             padding: 70px 30px 70px 30px;
+        }
+
+        .page {
+            display: block;
         }
 
     }

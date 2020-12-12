@@ -17,7 +17,7 @@
 <template>
     <div>
         <div v-show="proposedDemoCreatives.length >= 3">
-            <p class="proposed-creatives-title col-lg-12 col-md-12 col-sm-12 col-xs-12">Похожие объявления</p>
+            <p class="proposed-creatives-title col-lg-12 col-md-12 col-sm-12 col-xs-12">Другие объявления</p>
             <content-component v-for="creative in proposedDemoCreatives" class="proposed-creatives-block col-lg-4 col-md-4 col-sm-6 col-xs-12"
                                :id="creative.id" :title="creative.title" :briefDescription="creative.briefDescription"
                                :imageUrl="creative.imageUrl" :eventDate="creative.eventDate" :price="creative.price"

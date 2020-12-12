@@ -16,6 +16,10 @@
 
 "use strict";
 
+export const validateCookies = () => {
+    return (document.cookie.indexOf("trainster_id=") !== -1) && (document.cookie.indexOf("trainster_hash=") !== -1);
+}
+
 export const validateLoginForm = (loginForm) => {
     loginForm.validation.email = true;
     loginForm.validation.password = true;

@@ -16,7 +16,7 @@
 
 <template>
     <div class="page">
-        <header-component></header-component>
+        <admin-room-header-component></admin-room-header-component>
         <div class="container">
             <div class="row">
                 <admin-room-navigation-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
@@ -68,7 +68,7 @@
     import * as protocol from '../scripts/protocol'
     import * as validation from "../scripts/validation";
 
-    import headerComponent from "../components/header-component";
+    import adminRoomHeaderComponent from "../components/admin-room-page/admin-room-header-component";
     import adminRoomContentComponent from "../components/admin-room-page/admin-room-content-component"
     import adminRoomNavigationComponent from "../components/admin-room-page/admin-room-navigation-component";
     import adminRoomAddCreativeComponent from "../components/admin-room-page/admin-room-add-creative-component";
@@ -80,7 +80,7 @@
     export default {
         name: "admin-room-page",
         components: {
-            headerComponent,
+            adminRoomHeaderComponent,
             adminRoomContentComponent,
             adminRoomNavigationComponent,
             adminRoomAddCreativeComponent,

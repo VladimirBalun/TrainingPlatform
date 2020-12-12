@@ -53,9 +53,9 @@
 
     @media(max-width:767px) {
 
-      .advertisement-block {
-          margin: 0 0 15px 0;
-      }
+        .advertisement-block {
+            margin: 0 0 15px 0;
+        }
 
     }
 

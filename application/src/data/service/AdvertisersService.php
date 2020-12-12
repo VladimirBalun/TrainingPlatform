@@ -32,7 +32,6 @@ namespace App\Data\Service {
             return $this->advertisers_dao->getAdvertiserById($id);
         }
 
-
         public function changeAdvertiserImageUrlById($id, $new_advertiser_image_url) {
             return $this->advertisers_dao->changeAdvertiserImageUrlById($id, $new_advertiser_image_url);
         }

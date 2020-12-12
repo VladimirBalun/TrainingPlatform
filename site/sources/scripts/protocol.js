@@ -33,6 +33,7 @@ export const SIGNUP_ERROR_INCORRECT_USERNAME = 3;
 export const SIGNUP_ERROR_INCORRECT_EMAIL = 4;
 export const SIGNUP_ERROR_INCORRECT_PASSWORD = 5;
 export const SIGNUP_ERROR_UNKNOWN = 6;
+export const SIGNUP_NEED_LOGIN = 6;
 
 export const LOGIN_SUCCESS = 0;
 export const LOGIN_ERROR_INCORRECT_EMAIL = 1;
