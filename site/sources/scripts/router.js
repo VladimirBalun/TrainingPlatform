@@ -37,6 +37,22 @@ function getCookie(name) {
     }
 }
 
+function onAuthorizationFormForward(onAuthorized, onNotAuthorized) {
+    if ((document.cookie.indexOf("trainster_id=") !== -1) || (document.cookie.indexOf("trainster_hash=") !== -1)) {
+        network.identifyAdvertiser(response => {
+            if (response.result) {
+                onAuthorized("/admin_room/" + getCookie("trainster_id"));
+            } else {
+                onNotAuthorized();
+            }
+        }, error => {
+            onNotAuthorized();
+        });
+    } else {
+        onNotAuthorized();
+    }
+}
+
 const router = new VueRouter({
     routes: [
         {
@@ -44,49 +60,29 @@ const router = new VueRouter({
             component: mainPage
         },
         {
-            path: "/creative-page/:id",
+            path: "/creative/:id",
             component: creativePage
         },
         {
             path: "/signup",
             component: signupPage,
             beforeEnter: (to, from, next) => {
-                if ((document.cookie.indexOf("trainster_id=") !== -1) || (document.cookie.indexOf("trainster_hash=") !== -1)) {
-                    network.identifyAdvertiser(response => {
-                        console.log(response.result);
-                        if (response.result) {
-                            next("/admin_room/" + getCookie("trainster_id"));
-                        } else {
-                            next();
-                        }
-                    }, error => {
-                        console.log(error);
-                        next();
-                    });
-                } else {
+                onAuthorizationFormForward((address) => {
+                    next(address);
+                }, () => {
                     next();
-                }
+                });
             }
         },
         {
             path: "/login",
             component: loginPage,
             beforeEnter: (to, from, next) => {
-                if ((document.cookie.indexOf("trainster_id=") !== -1) || (document.cookie.indexOf("trainster_hash=") !== -1)) {
-                    network.identifyAdvertiser(response => {
-                        console.log(response.result);
-                        if (response.result) {
-                            next("/admin_room/" + getCookie("trainster_id"));
-                        } else {
-                            next();
-                        }
-                    }, error => {
-                        console.log(error);
-                        next();
-                    });
-                } else {
+                onAuthorizationFormForward((address) => {
+                    next(address);
+                }, () => {
                     next();
-                }
+                });
             }
         },
         {

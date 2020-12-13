@@ -111,6 +111,15 @@
                 }, error => {
                     console.log(error);
                 });
+            },
+            fillCreativesByFilter(filter) {
+                const self = this;
+                network.loadDemoCreativesWithFilters(this, filter, response => {
+                    console.log(response);
+
+                }, error => {
+                    console.log(error);
+                });
             }
         },
         created() {
@@ -118,10 +127,13 @@
 
             const self = this;
             this.$root.$on("search-creatives-button-clicked", (titlePattern) => {
-                self.fillCreativesByTitlePattern(titlePattern.trim());
+                self.fillCreativesByTitlePattern(titlePattern);
+            });
+            this.$root.$on("filter-creatives-button-clicked", (filter) => {
+                self.fillCreativesByFilter(filter);
             });
             this.$root.$on("clicked-mobile-menu-button", () => {
-                self.$refs.triggerMobileFiltersModal.click();
+                //self.$refs.triggerMobileFiltersModal.click();
             });
         },
         beforeDestroy() {

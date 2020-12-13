@@ -20,12 +20,12 @@
         <div class="navigation block hidden-xs">
             <p class="navigation-title"><i class="fas fa-filter"></i>Фильтры</p><hr>
             <label for="navigation-categoty">Категория:</label>
-            <select id="navigation-categoty">
+            <select v-model="selectedCategoryModel" id="navigation-categoty">
                 <option>Не выбрано</option>
                 <option v-for="category in categoriesModel">{{ category }}</option>
             </select>
             <label for="navigation-type">Тематика:</label>
-            <select id="navigation-type">
+            <select v-model="selectedThemeModel" id="navigation-type">
                 <option>Не выбрано</option>
                 <option v-for="theme in themesModel">{{ theme }}</option>
             </select><hr>
@@ -42,13 +42,13 @@
                 </select>
             </div><hr>
             <label for="navigation-type-off-onl">Тип:</label>
-            <select id="navigation-type-off-onl">
+            <select v-model="selectedType" id="navigation-type-off-onl">
                 <option>Не выбрано</option>
                 <option>Online</option>
                 <option>Offline</option>
             </select>
             <label for="navigation-sort">Сортировка:</label>
-            <select id="navigation-sort">
+            <select v-model="selectedSorting" id="navigation-sort">
                 <option>Не выбрано</option>
                 <option>По дате (возрастание)</option>
                 <option>По дате (убывание)</option>
@@ -66,7 +66,7 @@
                 <input v-model="priceToModel" type="number">
             </div><hr>
             <div class="wrapper">
-                <button class="navigation-button">Применить</button>
+                <button @click="onFilterButtonClick" class="navigation-button">Применить</button>
             </div>
         </div>
         <advertisement-component class="hidden-xs"></advertisement-component>
@@ -78,6 +78,7 @@
     "use strict";
 
     import * as network from "../scripts/network";
+    import * as protocol from "../scripts/protocol";
 
     import searchComponent from "../components/search-component";
     import advertisementComponent from "../components/advertisement-component";
@@ -93,11 +94,15 @@
             return {
                 searchCreativesPatternModel: "",
                 categoriesModel: [],
+                selectedCategoryModel: "Не выбрано",
                 themesModel: [],
+                selectedThemeModel: "Не выбрано",
                 countriesModel: [],
                 selectedCountryModel: "Не выбрано",
                 citiesModel: [],
                 selectedCityModel: "Не выбрано",
+                selectedType: "Не выбрано",
+                selectedSorting: "Не выбрано",
                 priceFromModel: 0,
                 priceToModel: 1000000,
             };
@@ -134,6 +139,37 @@
             },
             onSearchCreativesButtonClick() {
                 this.$root.$emit("search-creatives-button-clicked", this.searchCreativesPatternModel);
+            },
+            onFilterButtonClick() {
+                const filter = {}
+                filter.category = (this.selectedCategoryModel !== "Не выбрано") ? (this.selectedCategoryModel) : (null);
+                filter.theme = (this.selectedThemeModel !== "Не выбрано") ? (this.selectedThemeModel) : (null);
+                filter.country = (this.selectedCountryModel !== "Не выбрано") ? (this.selectedCountryModel) : (null);
+                filter.city = (this.selectedCityModel !== "Не выбрано") ? (this.selectedCityModel) : (null);
+                filter.price_from = this.priceFromModel;
+                filter.price_to = this.priceToModel;
+
+                if (this.selectedType === "Online") {
+                    filter.type = protocol.FILTER_ONLINE;
+                } else if (this.selectedType === "Offline") {
+                    filter.type = protocol.FILTER_OFFLINE;
+                }
+
+                if (this.selectedSorting === "По дате (возрастание)") {
+                    filter.sorting = protocol.SORTING_BY_DATE_ASC;
+                } else if (this.selectedSorting === "По дате (убывание)") {
+                    filter.sorting = protocol.SORTING_BY_DATE_DESC;
+                } else if (this.selectedSorting === "По цене (возрастание)") {
+                    filter.sorting = protocol.SORTING_BY_PRICE_ASC;
+                } else if (this.selectedSorting === "По цене (убывание)") {
+                    filter.sorting = protocol.SORTING_BY_PRICE_DESC;
+                } else if (this.selectedSorting === "По названию (возрастание)") {
+                    filter.sorting = protocol.SORTING_BY_NAME_ASC;
+                } else if (this.selectedSorting === "По названию (убывание)") {
+                    filter.sorting = protocol.SORTING_BY_NAME_DESC;
+                }
+
+                this.$root.$emit("filter-creatives-button-clicked", filter);
             }
         },
         created() {

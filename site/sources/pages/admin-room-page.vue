@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="filteredCreatives.length !== 0">
+                <div v-show="filteredCreatives.length !== 0" class="admin-room-creatives-wrapper">
                     <admin-room-content-component v-for="creative in filteredCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
                         :id="creative.id" :title="creative.title" :imageUrl="creative.imageUrl" :eventDate="creative.eventDate"
                         :moderationStatus="creative.moderationStatus" :moderationText="creative.moderationText"
@@ -252,7 +252,7 @@
 
 <style scoped>
 
-    .page {
+    .page, .admin-room-creatives-wrapper {
         position: relative;
         height: 100%;
     }

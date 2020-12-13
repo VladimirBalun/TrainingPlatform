@@ -100,7 +100,6 @@
 
     .admin-room-navigation-wrapper {
         margin-bottom: 30px;
-        height: 100%;
         position: relative;
     }
 

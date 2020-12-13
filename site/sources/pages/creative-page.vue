@@ -19,7 +19,7 @@
         <creative-header-component></creative-header-component>
         <div class="creative-page container">
             <div class="row">
-                <div v-show="(pageLoaded) && (creative.title !== null) && (creative.description !== null)">
+                <div v-show="(pageLoaded) && (creative.title !== '') && (creative.description !== '')">
                     <div v-show="moderation !== ''" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="creative-page-error-block">{{ moderation }}</div>
                     </div>
@@ -37,15 +37,13 @@
                     <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
                     <creative-proposed-creatives-component v-show="moderation === ''" :id="id"></creative-proposed-creatives-component>
                 </div>
-                <div v-show="(pageLoaded) && ((creative.title === null) || (creative.description === null))">
+                <div v-show="(pageLoaded) && ((creative.title === '') || (creative.description === ''))">
                     <div class="creative-page-error-message col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         Объявление не найдено, возможно оно было удалено или деактивировано рекламодателем...
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -130,6 +128,24 @@
                 const self = this;
                 network.loadCreativeById(this, self.id, response => {
                     console.log(response);
+                    const getCookie = (name) => {
+                        const value = `; ${document.cookie}`;
+                        const parts = value.split(`; ${name}=`);
+                        if (parts.length === 2) {
+                            return parts.pop().split(';').shift();
+                        }
+                    };
+
+                    if (response.moderationStatus !== protocol.MODERATION_STATUS_SUCCESS) {
+                        const cookieId = getCookie("trainster_id");
+                        const cookieHash = getCookie("trainster_hash");
+                        if ((cookieId !== response.advertiser_id) ||
+                            ((cookieHash !== response.advertiser_hash))) {
+                            self.pageLoaded = true;
+                            return;
+                        }
+                    }
+
                     self.creative.title = response.title;
                     self.creative.description = response.description;
                     self.creative.imageURL = response.image_url;

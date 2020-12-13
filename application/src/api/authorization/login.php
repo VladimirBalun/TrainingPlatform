@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $advertiser->setEmail($_POST['email']);
     $advertiser->setPassword($_POST['password']);
 
-    echo var_dump($advertiser);
     $controller = new AuthorizationController();
     echo $controller->loginAdvertiser($advertiser);
 }

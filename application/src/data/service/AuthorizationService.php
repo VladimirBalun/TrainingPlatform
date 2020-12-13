@@ -43,7 +43,7 @@ namespace App\Data\Service {
             }
 
             $advertiser_from_database = $this->advertisers_dao->getAdvertiserByEmailAndByPassword($advertiser->getEmail(), md5($advertiser->getPassword()));
-            if ($advertiser->getId() != null) {
+            if ($advertiser_from_database->getId() != null) {
                 $hash = Utils::generateMD5();
                 $result_hash_changing = $this->advertisers_dao->changeAdvertiserHashById($hash, $advertiser_from_database->getId());
                 if ($result_hash_changing) {

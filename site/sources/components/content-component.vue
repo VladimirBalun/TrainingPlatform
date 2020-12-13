@@ -27,7 +27,7 @@
                 <label v-show="!online" class="content-type"><i class="fas fa-toggle-off"></i>Offline</label>
             </p><hr>
             <p class="content-price">{{ price }}₽</p>
-            <router-link target="_blank" :to="'/creative-page/' + id" class="content-button">Подробнее<i class="fas fa-angle-double-right"></i></router-link>
+            <router-link target="_blank" :to="'/creative/' + id" class="content-button">Подробнее<i class="fas fa-angle-double-right"></i></router-link>
         </div>
     </div>
 </template>

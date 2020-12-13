@@ -28,19 +28,6 @@ namespace App\Data\DAO {
 
     class CreativesDAO {
 
-        public function getDemoCreatives() {
-            $database_creatives = R::getAll(
-                'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
-                        cr.price, cr.is_online, ad.image_url as advertiser_image_url
-                    FROM creatives cr
-                    LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id                    
-                    WHERE moderation_status != 0 AND cr.event_date >= CURDATE()
-                    ORDER BY last_action_date'
-            );
-
-            return $this->fillDemoCreativesFromDatabase($database_creatives);
-        }
-
         public function getDemoCreativesByTitlePattern($title_pattern) {
             $database_creatives = R::getAll(
                 'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
@@ -126,7 +113,8 @@ namespace App\Data\DAO {
                 'SELECT cr.title, cr.brief_description, cr.description, cr.image_url, cr.event_date, cr.price, 
                     cr.advertiser_site, cr.advertiser_email, cr.advertiser_phone, coun.name as country_name,
                     cit.name as city_name, cat.name as category_name, th.name as theme_name, is_online,
-                    moderation_status, ad.image_url as advertiser_image_url
+                    moderation_status, ad.id as advertiser_id, ad.hash as advertiser_hash,
+                    ad.image_url as advertiser_image_url
                 FROM creatives cr
                 LEFT JOIN countries coun ON cr.id_country = coun.id
                 LEFT JOIN cities cit ON cr.id_city = cit.id
@@ -152,6 +140,8 @@ namespace App\Data\DAO {
             $creative->setModerationStatus((int)$database_creative['moderation_status']);
 
             $advertiser = new AdvertiserEntity();
+            $advertiser->setId($database_creative['advertiser_id']);
+            $advertiser->setHash($database_creative['advertiser_hash']);
             $advertiser->setImageUrl($database_creative['advertiser_image_url']);
             $creative->setAdvertiser($advertiser);
 

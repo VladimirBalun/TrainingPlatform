@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $creative->setTheme($put_vars['theme']);
     $creative->setCountry($put_vars['country']);
     $creative->setCity($put_vars['city']);
-    $creative->setEventDate($put_vars['eventDate']);
+    $creative->setEventDate(($put_vars['eventDate'] != '') ? ($put_vars['eventDate']) : null);
     $creative->setImageUrl($put_vars['image']);
     $creative->setEmail($put_vars['email']);
     $creative->setSite($put_vars['site']);

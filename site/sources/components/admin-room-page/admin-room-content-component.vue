@@ -27,10 +27,10 @@
                 {{ moderation }}
             </p>
             <div class="admin-room-content-block-inner-wrapper">
-                <router-link target="_blank" :to="'/creative-page/' + id" class="admin-room-content-button">
+                <router-link target="_blank" :to="'/creative/' + id" class="admin-room-content-button">
                     Подробнее<i class="fas fa-angle-double-right"></i>
                 </router-link>
-                <button v-on:click="onChangeCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-pencil-alt"></i></button>
+                <button v-on:click="onChangeCreativeButtonClick" class="admin-room-content-button"><i class="fas fa-pencil-alt"></i></button>
                 <button data-toggle="modal" data-target="#delete-creative-modal" v-on:click="onDeleteCreativeButtonClick(id)" class="admin-room-content-button"><i class="fas fa-trash-alt"></i></button>
             </div>
         </div>
@@ -41,6 +41,7 @@
 
 <script>
 
+    import * as network from "../../scripts/network";
     import * as protocol from "../../scripts/protocol";
     import * as common from "../../scripts/common";
     import * as validation from "../../scripts/validation";
@@ -79,34 +80,32 @@
             onImageLoadFailure (event) {
                 event.target.src = common.defaultCreativeImage;
             },
-            onChangeCreativeButtonClick(creativeId) {
+            onChangeCreativeButtonClick() {
                 const self = this;
+                network.loadCreativeById(this, self.id, response => {
+                    console.log(response);
+                    let creative = {};
+                    creative.id = self.id;
+                    creative.title = response.title;
+                    creative.briefDescription = response.brief_description;
+                    creative.description = response.description;
+                    creative.imageURL = response.image_url;
+                    creative.eventDate = response.event_date;
+                    creative.price = response.price;
+                    creative.advertiserEmail = response.email;
+                    creative.advertiserPhone = response.phone;
+                    creative.advertiserSite = response.site;
+                    creative.city = response.city;
+                    creative.country = response.country;
+                    creative.category = response.category;
+                    creative.theme = response.theme;
+                    creative.online = response.online;
 
-                this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
-                    .then(response => {
-                        console.log(response);
-                        let creative = {};
-                        creative.id = self.id;
-                        creative.title = response.body.title;
-                        creative.briefDescription = response.body.brief_description;
-                        creative.description = response.body.description;
-                        creative.imageURL = response.body.image_url;
-                        creative.eventDate = response.body.event_date;
-                        creative.price = response.body.price;
-                        creative.advertiserEmail = response.body.email;
-                        creative.advertiserPhone = response.body.phone;
-                        creative.advertiserSite = response.body.site;
-                        creative.city = response.body.city;
-                        creative.country = response.body.country;
-                        creative.category = response.body.category;
-                        creative.theme = response.body.theme;
-                        creative.online = response.body.online;
-
-                        self.$root.$emit('click-change-creative-page', creative);
-                        self.$refs.btnTriggerChangeCreative.click();
-                    }, error => {
-                        console.log(error);
-                    });
+                    self.$root.$emit('click-change-creative-page', creative);
+                    self.$refs.btnTriggerChangeCreative.click();
+                }, error => {
+                    console.log(error);
+                });
             },
             onDeleteCreativeButtonClick(creativeId) {
                 this.$root.$emit('click-delete-creative-page', creativeId);
@@ -163,7 +162,7 @@
     .admin-room-content-moderation {
         font-size: 14px;
         font-weight: bold;
-        height: 115px;
+        height: 130px;
         padding: 20px 20px 20px 20px;
         display: flex;
         justify-content: center;

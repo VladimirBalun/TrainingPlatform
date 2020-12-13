@@ -73,6 +73,10 @@ export const logoutAdvertiser = (vueResource,onSuccessLoadClb, onFailedLoadClb) 
         });
 };
 
+export const loadDemoCreativesWithFilters = (vueResource, filters, onSuccessLoadClb, onFailedLoadClb) => {
+    loadDemoCreativesImpl(vueResource, '', filters, onSuccessLoadClb, onFailedLoadClb);
+};
+
 export const loadDemoCreativesWithTitlePattern = (vueResource, titlePattern, onSuccessLoadClb, onFailedLoadClb) => {
     loadDemoCreativesImpl(vueResource, titlePattern, {}, onSuccessLoadClb, onFailedLoadClb);
 };
@@ -82,7 +86,7 @@ export const loadDemoCreatives = (vueResource, onSuccessLoadClb, onFailedLoadClb
 };
 
 function loadDemoCreativesImpl(vueResource, titlePattern, filters, onSuccessLoadClb, onFailedLoadClb) {
-    vueResource.$http.get(scriptAddress + "api/creatives/get_demo_creatives.php", { params: { title_pattern: titlePattern }})
+    vueResource.$http.get(scriptAddress + "api/creatives/get_demo_creatives.php", { params: { title_pattern: titlePattern, filters }})
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {
@@ -156,6 +160,7 @@ export const addCreativeByAdvertiserId = (vueResource, advertiserId, creative, o
 }
 
 export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailedLoadClb) => {
+    correctCreativeForResponse(creative);
     vueResource.$http.put(scriptAddress + "api/creatives/change_creative.php", creative, { emulateJSON: true })
         .then(response => {
             console.log(response);
@@ -166,6 +171,7 @@ export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailed
 }
 
 function correctCreativeForResponse(creative) {
+    console.log(creative.eventDate);
     if (creative.country === "Не выбрано") {
         creative.country = null
     }
@@ -173,6 +179,7 @@ function correctCreativeForResponse(creative) {
         creative.city = null;
     }
     if (creative.eventDate === "") {
+        console.log("Changed date");
         creative.eventDate = null;
     }
     if (creative.email === "") {
