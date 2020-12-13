@@ -152,7 +152,7 @@
             onAllFilterButtonClick() {
                 this.activeFilterState = this.filterState.allCreatives;
                 this.filteredCreatives = this.advertiserCreatives;
-                self.sortCreatives();
+                this.sortCreatives();
             },
             onInModerationFilterButtonClick() {
                 this.activeFilterState = this.filterState.inModerationCreatives;
@@ -161,7 +161,7 @@
                         (creative.moderationStatus === protocol.MODERATION_STATUS_FAILED)) &&
                         (validation.validateCreativeEventDate(creative.eventDate));
                 });
-                self.sortCreatives();
+                this.sortCreatives();
             },
             onActiveFilterButtonClick() {
                 this.activeFilterState = this.filterState.activeCreative;
@@ -169,14 +169,14 @@
                     return (creative.moderationStatus === protocol.MODERATION_STATUS_SUCCESS) &&
                         (validation.validateCreativeEventDate(creative.eventDate));
                 });
-                self.sortCreatives();
+                this.sortCreatives();
             },
             onOverdueFilterButtonClick() {
                 this.activeFilterState = this.filterState.overdueCreatives;
                 this.filteredCreatives = this.advertiserCreatives.filter((creative) => {
                     return (!validation.validateCreativeEventDate(creative.eventDate));
                 });
-                self.sortCreatives();
+                this.sortCreatives();
             }
         },
         mounted() {
@@ -188,14 +188,15 @@
                     title : creative.title,
                     briefDescription : creative.briefDescription,
                     imageUrl : creative.image,
-                    eventDate : creative.eventDate,
+                    eventDate : (creative.eventDate !== "") ? (creative.eventDate) : (null),
                     moderationStatus: protocol.MODERATION_STATUS_IN_PROGRESS
                 };
 
                 self.advertiserCreatives.push(creativeForVisualization);
-                if ((self.activeFilterState === self.filterState.inModerationCreatives) ||
-                    (self.activeFilterState === self.filterState.allCreatives)) {
-                    self.filteredCreatives.push(creativeForVisualization);
+                if (self.activeFilterState === self.filterState.inModerationCreatives) {
+                    self.onInModerationFilterButtonClick();
+                } else if (self.activeFilterState === self.filterState.allCreatives) {
+                    self.onAllFilterButtonClick();
                 }
             });
 
@@ -218,6 +219,7 @@
                         creative.moderationStatus = protocol.MODERATION_STATUS_IN_PROGRESS;
                     }
                 });
+                self.sortCreatives();
             });
 
             this.$root.$on("deleted-creative-page", creativeId => {
@@ -227,6 +229,7 @@
                 self.filteredCreatives = self.filteredCreatives.filter(creative => {
                     return creative.id !== creativeId;
                 });
+                self.sortCreatives();
             });
 
             this.$root.$on("show-message-modal", messageData => {

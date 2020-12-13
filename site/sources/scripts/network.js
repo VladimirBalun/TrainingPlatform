@@ -179,7 +179,6 @@ function correctCreativeForResponse(creative) {
         creative.city = null;
     }
     if (creative.eventDate === "") {
-        console.log("Changed date");
         creative.eventDate = null;
     }
     if (creative.email === "") {
