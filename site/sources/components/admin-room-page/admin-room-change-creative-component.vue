@@ -220,8 +220,6 @@
                 self.creative.email = creative.advertiserEmail;
                 self.creative.phone = creative.advertiserPhone;
                 self.creative.site = creative.advertiserSite;
-                self.creative.city = creative.city;
-                self.creative.country = creative.country;
                 self.creative.category = creative.category;
                 self.creative.theme = creative.theme;
                 self.creative.online = creative.online;

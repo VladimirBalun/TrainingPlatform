@@ -18,7 +18,7 @@
     <div class="admin-room-navigation-wrapper">
         <div class="admin-room-block block">
             <p class="admin-room-navigation-advertiser-image-wrapper">
-                <img class="admin-room-navigation-advertiser-image" @error="onImageLoadFailure($event)" alt="advertiser_img" :src="advertiserImageUrl">
+                <img class="admin-room-navigation-advertiser-image" ref="advertiserImage" @error="onImageLoadFailure($event)" alt="advertiser_img" :src="advertiserImageUrl">
             </p>
             <input v-model="advertiserImageUrlModel" class="admin-room-navigation-input" type="text" placeholder="Введите адрес изображения..." maxlength="2083">
             <button @click="onChangeAdvertiserImageForm" class="admin-room-navigation-button">Сменить изображение</button>
@@ -80,7 +80,7 @@
                 network.changeAdvertiserImageUrlById(this, this.id, this.advertiserImageUrlModel.trim(), result => {
                     console.log(result);
                     if (result.result === 1) {
-                        self.advertiserImageUrl = self.advertiserImageUrlModel;
+                        this.$refs.advertiserImage.src = self.advertiserImageUrlModel;
                         self.advertiserImageUrlModel = "";
                         self.showMessageModal("info","Успешная операция", "Изображение пользователя изменено");
                     } else {
