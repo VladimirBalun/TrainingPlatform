@@ -73,8 +73,52 @@ export const logoutAdvertiser = (vueResource,onSuccessLoadClb, onFailedLoadClb) 
         });
 };
 
+export const loadDemoCreativesWithTitlePattern = (vueResource, titlePattern, onSuccessLoadClb, onFailedLoadClb) => {
+    loadDemoCreativesImpl(vueResource, titlePattern, {}, onSuccessLoadClb, onFailedLoadClb);
+};
+
+export const loadDemoCreatives = (vueResource, onSuccessLoadClb, onFailedLoadClb) => {
+    loadDemoCreativesImpl(vueResource, '', {}, onSuccessLoadClb, onFailedLoadClb);
+};
+
+function loadDemoCreativesImpl(vueResource, titlePattern, filters, onSuccessLoadClb, onFailedLoadClb) {
+    vueResource.$http.get(scriptAddress + "api/creatives/get_demo_creatives.php", { params: { title_pattern: titlePattern }})
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+}
+
+export const loadAdvertiserDemoCreatives = (vueResource, advertiserId, onSuccessLoadClb, onFailedLoadClb) => {
+    vueResource.$http.get(scriptAddress + "api/creatives/get_advertiser_demo_creatives_by_id.php", { params: { advertiser_id: advertiserId }})
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
+
+export const loadProposedDemoCreatives = (vueResource, creativeId, count, onSuccessLoadClb, onFailedLoadClb) => {
+    vueResource.$http.get(scriptAddress + "api/creatives/get_proposed_demo_creatives.php", { params: { creative_id: creativeId, count: count }})
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
+
+export const loadCreativeById = (vueResource, creativeId, onSuccessLoadClb, onFailedLoadClb) => {
+    vueResource.$http.get(scriptAddress + "api/creatives/get_creative_by_id.php", { params: { creative_id: creativeId } })
+        .then(response => {
+            onSuccessLoadClb(response.body);
+        }, error => {
+            onFailedLoadClb(error);
+        });
+};
+
 export const loadMetaInformation = (vueResource, onSuccessLoadClb, onFailedLoadClb) => {
-    vueResource.$http.get(restAddress + "/meta")
+    vueResource.$http.get(scriptAddress + "api/meta/get_meta.php")
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {
@@ -83,7 +127,7 @@ export const loadMetaInformation = (vueResource, onSuccessLoadClb, onFailedLoadC
 };
 
 export const loadCitiesByCountryName = (vueResource, countryName, onSuccessLoadClb, onFailedLoadClb) => {
-    vueResource.$http.get(restAddress + "/cities", { params: { country_name: countryName } })
+    vueResource.$http.get(scriptAddress + "api/meta/get_cities_by_country_name.php", { params: { country_name: countryName } })
         .then(response => {
             onSuccessLoadClb(response.body);
         }, error => {

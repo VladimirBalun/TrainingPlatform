@@ -29,6 +29,8 @@
 
 <script>
 
+    import * as network from "../../scripts/network";
+
     import contentComponent from "../content-component";
 
     export default {
@@ -46,29 +48,23 @@
             fillProposedDemoCreatives() {
                 const self = this;
                 const COUNT_CREATIVES = 3;
-                this.$http.get("http://localhost:8080/proposed_demo_creatives",
-                    {
-                        params:
-                        {
-                            creative_id: self.id,
-                            count: COUNT_CREATIVES
-                        }
-                    })
-                    .then(response => {
-                        console.log(response);
-                        response.body.forEach(creative => {
-                            self.proposedDemoCreatives.push({
-                                id : creative.id,
-                                title : creative.title,
-                                briefDescription : creative.brief_description,
-                                imageUrl : creative.image_url,
-                                advertiserImageUrl : creative.advertiser_image_url,
-                                eventDate : creative.event_date,
-                                price : creative.price,
-                                online : creative.online
-                            })
-                        });
+                network.loadProposedDemoCreatives(this, self.id, COUNT_CREATIVES, response => {
+                    console.log(response);
+                    response.forEach(creative => {
+                        self.proposedDemoCreatives.push({
+                            id : creative.id,
+                            title : creative.title,
+                            briefDescription : creative.brief_description,
+                            imageUrl : creative.image_url,
+                            advertiserImageUrl : creative.advertiser_image_url,
+                            eventDate : creative.event_date,
+                            price : creative.price,
+                            online : creative.online
+                        })
                     });
+                }, error => {
+                    console.log(error);
+                });
             }
         },
         created() {

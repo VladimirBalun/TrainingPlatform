@@ -77,6 +77,8 @@
 
     "use strict";
 
+    import * as network from "../scripts/network";
+
     import searchComponent from "../components/search-component";
     import advertisementComponent from "../components/advertisement-component";
 
@@ -103,12 +105,14 @@
         methods: {
             fillAllModels() {
               const self = this;
-              this.$http.get("http://localhost:8080/meta")
-                  .then(response => {
-                      self.countriesModel = response.body.countries;
-                      self.themesModel = response.body.themes;
-                      self.categoriesModel = response.body.categories;
-                  });
+              network.loadMetaInformation(this, response => {
+                  console.log(response);
+                  self.countriesModel = response.countries;
+                  self.themesModel = response.themes;
+                  self.categoriesModel = response.categories;
+              }, error => {
+                  console.log(error);
+              })
             },
             fillCitiesModelBySelectedCountry(event) {
                 if (event.target.value === "Не выбрано") {
@@ -117,10 +121,12 @@
                 } else {
                     const self = this;
                     this.selectedCityModel = "Не выбрано";
-                    this.$http.get("http://localhost:8080/cities", { params: { country_name: event.target.value } })
-                        .then(response => {
-                            self.citiesModel = response.body;
-                        });
+                    network.loadCitiesByCountryName(this, event.target.value, response => {
+                        console.log(response);
+                        self.citiesModel = response;
+                    }, error => {
+                        console.log(error);
+                    });
                 }
             },
             onChangeCountryModel(event) {

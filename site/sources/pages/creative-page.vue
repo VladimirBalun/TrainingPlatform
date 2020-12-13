@@ -60,7 +60,8 @@
     import creativeProposedCreativesComponent from "../components/creative-page/creative-proposed-creatives-component";
     import advertisementComponent from "../components/advertisement-component";
 
-    import * as protocol from '../scripts/protocol'
+    import * as network from "../scripts/network";
+    import * as protocol from "../scripts/protocol";
     import * as validation from "../scripts/validation";
 
     export default {
@@ -127,30 +128,29 @@
         methods: {
             loadCreativeInformation() {
                 const self = this;
-                this.$http.get("http://localhost:8080/creative", { params: { creative_id: self.id } })
-                    .then(response => {
-                        console.log(response);
-                        self.creative.title = response.body.title;
-                        self.creative.description = response.body.description;
-                        self.creative.imageURL = response.body.image_url;
-                        self.creative.eventDate = response.body.event_date;
-                        self.creative.price = response.body.price;
-                        self.creative.advertiserEmail = response.body.email;
-                        self.creative.advertiserPhone = response.body.phone;
-                        self.creative.advertiserSite = response.body.site;
-                        self.creative.city = response.body.city;
-                        self.creative.country = response.body.country;
-                        self.creative.category = response.body.category;
-                        self.creative.theme = response.body.theme;
-                        self.creative.moderationStatus = response.body.moderation_status;
-                        self.creative.online = response.body.online;
-                        self.creative.advertiserImageUrl = response.body.advertiser_image_url;
+                network.loadCreativeById(this, self.id, response => {
+                    console.log(response);
+                    self.creative.title = response.title;
+                    self.creative.description = response.description;
+                    self.creative.imageURL = response.image_url;
+                    self.creative.eventDate = response.event_date;
+                    self.creative.price = response.price;
+                    self.creative.advertiserEmail = response.email;
+                    self.creative.advertiserPhone = response.phone;
+                    self.creative.advertiserSite = response.site;
+                    self.creative.city = response.city;
+                    self.creative.country = response.country;
+                    self.creative.category = response.category;
+                    self.creative.theme = response.theme;
+                    self.creative.moderationStatus = response.moderation_status;
+                    self.creative.online = response.online;
+                    self.creative.advertiserImageUrl = response.advertiser_image_url;
 
-                        document.title = "Trainster - " + self.creative.title;
-                        self.pageLoaded = true;
-                    }, error => {
-                        console.log(error);
-                    });
+                    document.title = "Trainster - " + self.creative.title;
+                    self.pageLoaded = true;
+                }, error => {
+                    console.log(error);
+                });
             },
         },
         created() {

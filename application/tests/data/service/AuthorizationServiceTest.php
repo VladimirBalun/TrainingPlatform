@@ -25,7 +25,7 @@ namespace Tests\data\service {
 
     class AuthorizationServiceTest extends TestCase {
 
-        public function testLoginWithIncorrectEmail() {
+        /*public function testLoginWithIncorrectEmail() {
             $advertiser = new AdvertiserEntity();
             $advertiser->setPassword('bd9abe38537ecd5f65f15352263acea1');
             $authorization_service = new AuthorizationService();
@@ -98,7 +98,7 @@ namespace Tests\data\service {
 
             $advertiser->setPassword('less_than_md5_hash_length');
             $this->assertEquals(Protocol::$SIGNUP_ERROR_INCORRECT_PASSWORD, $authorization_service->signupAdvertiser($advertiser));
-        }
+        }*/
 
     }
 

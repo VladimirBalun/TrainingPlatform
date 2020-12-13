@@ -45,6 +45,8 @@
 
     "use strict";
 
+    import * as network from "../scripts/network";
+
     import headerComponent from "../components/header-component";
     import contentComponent from "../components/content-component";
     import navigationComponent from "../components/navigation-component.vue";
@@ -68,44 +70,47 @@
         methods: {
             fillDemoCreatives() {
                 const self = this;
-                this.$http.get("http://localhost:8080/demo_creatives")
-                    .then(response => {
-                        self.demoCreatives = [];
-                        response.body.forEach(creative => {
-                            self.demoCreatives.push({
-                                id : creative.id,
-                                title : creative.title,
-                                briefDescription : creative.brief_description,
-                                imageUrl : creative.image_url,
-                                advertiserImageUrl : creative.advertiser_image_url,
-                                eventDate : creative.event_date,
-                                price : creative.price,
-                                online : creative.online
-                            })
+                network.loadDemoCreatives(this, response => {
+                    console.log(response);
+                    self.demoCreatives = [];
+                    response.forEach(creative => {
+                        self.demoCreatives.push({
+                            id : creative.id,
+                            title : creative.title,
+                            briefDescription : creative.brief_description,
+                            imageUrl : creative.image_url,
+                            advertiserImageUrl : creative.advertiser_image_url,
+                            eventDate : creative.event_date,
+                            price : creative.price,
+                            online : creative.online
                         });
-
-                        self.pageLoaded = true;
                     });
+
+                    self.pageLoaded = true;
+                }, error => {
+                    console.log(error);
+                });
             },
             fillCreativesByTitlePattern(titlePattern) {
                 const self = this;
-                this.$http.get("http://localhost:8080/search_demo_creatives", { params: { title_pattern: encodeURI(titlePattern.trim()) } })
-                    .then(response => {
-                        self.demoCreatives = [];
-                        console.log(response);
-                        response.body.forEach(creative => {
-                            self.demoCreatives.push({
-                                id : creative.id,
-                                title : creative.title,
-                                briefDescription : creative.brief_description,
-                                imageUrl : creative.image_url,
-                                advertiserImageUrl : creative.advertiser_image_url,
-                                eventDate : creative.event_date,
-                                price : creative.price,
-                                online : creative.online
-                            })
+                network.loadDemoCreativesWithTitlePattern(this, encodeURI(titlePattern.trim()), response => {
+                    console.log(response);
+                    self.demoCreatives = [];
+                    response.forEach(creative => {
+                        self.demoCreatives.push({
+                            id : creative.id,
+                            title : creative.title,
+                            briefDescription : creative.brief_description,
+                            imageUrl : creative.image_url,
+                            advertiserImageUrl : creative.advertiser_image_url,
+                            eventDate : creative.event_date,
+                            price : creative.price,
+                            online : creative.online
                         });
                     });
+                }, error => {
+                    console.log(error);
+                });
             }
         },
         created() {

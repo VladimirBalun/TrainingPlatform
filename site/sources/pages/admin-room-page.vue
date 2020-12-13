@@ -65,7 +65,8 @@
 
 <script>
 
-    import * as protocol from '../scripts/protocol'
+    import * as network from "../scripts/network";
+    import * as protocol from "../scripts/protocol";
     import * as validation from "../scripts/validation";
 
     import adminRoomHeaderComponent from "../components/admin-room-page/admin-room-header-component";
@@ -128,24 +129,25 @@
             },
             fillAdvertiserCreatives() {
                 const self = this;
-                this.$http.get("http://localhost:8080/advertiser_demo_creative", { params: { advertiser_id: self.id } })
-                    .then(response => {
-                        console.log(response);
-                        self.advertiserImageUrl = response.body.advertiser_image_url;
-                        response.body.creatives.forEach(creative => {
-                            self.filteredCreatives.push({
-                                id : creative.id,
-                                title : creative.title,
-                                briefDescription : creative.brief_description,
-                                imageUrl : creative.image_url,
-                                eventDate : creative.event_date,
-                                moderationStatus : creative.moderation_status,
-                                moderationText : creative.moderation_text,
-                            });
+                network.loadAdvertiserDemoCreatives(this, self.id, response => {
+                    console.log(response);
+                    self.advertiserImageUrl = response.advertiser_image_url;
+                    response.creatives.forEach(creative => {
+                        self.filteredCreatives.push({
+                          id : creative.id,
+                          title : creative.title,
+                          briefDescription : creative.brief_description,
+                          imageUrl : creative.image_url,
+                          eventDate : creative.event_date,
+                          moderationStatus : creative.moderation_status,
+                          moderationText : creative.moderation_text,
                         });
-                        self.advertiserCreatives = self.filteredCreatives;
-                        self.sortCreatives();
                     });
+                    self.advertiserCreatives = self.filteredCreatives;
+                    self.sortCreatives();
+                }, error => {
+                    console.log(error);
+                });
             },
             onAllFilterButtonClick() {
                 this.activeFilterState = this.filterState.allCreatives;
@@ -233,17 +235,12 @@
                 self.modalMessageDescription = messageData.description;
                 self.$refs.triggerShowMessageModal.click();
             });
-
-            this.$root.$on("clicked-mobile-menu-button", messageData => {
-                alert("clicked");
-            });
         },
         beforeDestroy() {
             this.$root.$off("added-creative-page");
             this.$root.$off("changed-creative-page");
             this.$root.$off("deleted-creative-page");
             this.$root.$off("show-message-modal");
-            this.$root.$off("clicked-mobile-menu-button");
         },
         created() {
             this.fillAdvertiserCreatives();
