@@ -142,12 +142,21 @@
             },
             onFilterButtonClick() {
                 const filter = {}
-                filter.category = (this.selectedCategoryModel !== "Не выбрано") ? (this.selectedCategoryModel) : (null);
-                filter.theme = (this.selectedThemeModel !== "Не выбрано") ? (this.selectedThemeModel) : (null);
-                filter.country = (this.selectedCountryModel !== "Не выбрано") ? (this.selectedCountryModel) : (null);
-                filter.city = (this.selectedCityModel !== "Не выбрано") ? (this.selectedCityModel) : (null);
                 filter.price_from = this.priceFromModel;
                 filter.price_to = this.priceToModel;
+
+                if (this.selectedCategoryModel !== "Не выбрано") {
+                    filter.category = this.selectedCategoryModel;
+                }
+                if (this.selectedThemeModel !== "Не выбрано") {
+                    filter.theme = this.selectedThemeModel;
+                }
+                if (this.selectedCountryModel !== "Не выбрано") {
+                    filter.country = this.selectedCountryModel;
+                }
+                if (this.selectedCityModel !== "Не выбрано") {
+                    filter.city = this.selectedCityModel;
+                }
 
                 if (this.selectedType === "Online") {
                     filter.type = protocol.FILTER_ONLINE;

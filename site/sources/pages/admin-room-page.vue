@@ -19,7 +19,7 @@
         <admin-room-header-component></admin-room-header-component>
         <div class="container">
             <div class="row">
-                <admin-room-navigation-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
+                <admin-room-navigation-component class="col-lg-4 col-md-4 col-sm-5 col-xs-12 navigation"
                     :id="id" :advertiserImageUrl="advertiserImageUrl"></admin-room-navigation-component>
                 <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12">
                     <div class="admin-room-creative-type-buttons-block block">
@@ -145,6 +145,8 @@
                     });
                     self.advertiserCreatives = self.filteredCreatives;
                     self.sortCreatives();
+                  //self.$root.$forceUpdate();
+
                 }, error => {
                     console.log(error);
                 });
@@ -255,7 +257,7 @@
 
 <style scoped>
 
-    .page, .admin-room-creatives-wrapper {
+    .admin-room-creatives-wrapper {
         position: relative;
         height: 100%;
     }

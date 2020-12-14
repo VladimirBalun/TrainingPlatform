@@ -18,6 +18,7 @@
 
 namespace App\Data\DAO {
 
+    use App\Common\Utils;
     use App\Data\Entity\AdvertiserEntity;
     use App\Data\Entity\CityEntity;
     use App\Data\Entity\CountryEntity;
@@ -28,17 +29,47 @@ namespace App\Data\DAO {
 
     class CreativesDAO {
 
-        public function getDemoCreativesByTitlePattern($title_pattern) {
-            $database_creatives = R::getAll(
-                'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
-                    cr.price, cr.is_online, ad.image_url as advertiser_image_url
-                FROM creatives cr
-                LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
-                WHERE title LIKE ? AND moderation_status != 0 AND cr.event_date >= CURDATE()
-                ORDER BY last_action_date',
-                ['%' . $title_pattern . '%']
-            );
+        public function getDemoCreativesByTitlePatternAndFilters($title_pattern, $filters) {
+            $base_query = 'SELECT cr.id, cr.title, cr.brief_description, cr.image_url, cr.event_date, 
+                    cr.price, cr.is_online, coun.name, cit.name, cat.name, th.name, 
+                    ad.image_url as advertiser_image_url
+                    FROM creatives cr
+                    LEFT JOIN countries coun ON cr.id_country = coun.id
+                    LEFT JOIN cities cit ON cr.id_city = cit.id
+                    LEFT JOIN categories cat ON cr.id_category = cat.id
+                    LEFT JOIN themes th ON cr.id_theme = th.id
+                    LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id ';
 
+            $substitutions = array();
+            if ($filters != null) {
+                $query = $base_query . 'WHERE moderation_status != 0 AND cr.event_date >= CURDATE() AND ';
+                if ($filters["category"] != null) {
+                    $query .= 'cat.name = :category AND ';
+                    $substitutions['category'] = $filters["category"];
+                }
+                if ($filters["theme"] != null) {
+                    $query .= 'th.name = :theme AND ';
+                    $substitutions['theme'] = $filters["theme"];
+                }
+                if ($filters["country"] != null) {
+                    $query .= 'coun.name = :country AND ';
+                    $substitutions['country'] = $filters["country"];
+                }
+                if ($filters["city"] != null) {
+                    $query .= 'cit.name = :city AND ';
+                    $substitutions['city'] = $filters["city"];
+                }
+
+                if (Utils::stringEndsWith($query, 'AND ')) {
+                    $query = substr($query, 0, strlen($query) - 4);
+                }
+            } else {
+                $query = $base_query . 'WHERE title LIKE ? AND moderation_status != 0 AND cr.event_date >= CURDATE()
+                    ORDER BY last_action_date';
+                $substitutions = ['%' . $title_pattern . '%'];
+            }
+
+            $database_creatives = R::getAll($query, $substitutions);
             return $this->fillDemoCreativesFromDatabase($database_creatives);
         }
 

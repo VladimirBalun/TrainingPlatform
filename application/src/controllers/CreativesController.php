@@ -29,13 +29,8 @@ namespace App\Controllers {
             $this->creatives_service = new CreativesService();
         }
 
-        public function getDemoCreatives() {
-            $creatives_from_database = $this->creatives_service->getDemoCreatives();
-            return $this->generateDemoCreativesResponse($creatives_from_database);
-        }
-
-        public function getDemoCreativesByTitlePattern($title_pattern) {
-            $creatives_from_database = $this->creatives_service->getDemoCreativesByTitlePattern($title_pattern);
+        public function getDemoCreativesByTitlePatternAndFilters($title_pattern, $filters) {
+            $creatives_from_database = $this->creatives_service->getDemoCreativesByTitlePatternAndFilters($title_pattern, $filters);
             return $this->generateDemoCreativesResponse($creatives_from_database);
         }
 

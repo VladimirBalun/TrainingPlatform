@@ -223,6 +223,12 @@
                 self.creative.category = creative.category;
                 self.creative.theme = creative.theme;
                 self.creative.online = creative.online;
+                if (creative.city !== null) {
+                    self.creative.city = creative.city;
+                }
+                if (creative.country !== null) {
+                    self.creative.country = creative.country;
+                }
                 self.initialCreative = _.clone(self.creative);
             });
         }

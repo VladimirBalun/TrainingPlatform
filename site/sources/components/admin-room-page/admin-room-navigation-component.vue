@@ -100,22 +100,10 @@
 
     .admin-room-navigation-wrapper {
         margin-bottom: 30px;
-        position: relative;
     }
 
     .admin-room-block {
         margin-top: 30px;
-    }
-
-    .advertisement-block {
-        margin-top: 30px;
-        position: relative;
-        border-radius: 5px;
-    }
-
-    .advertisement-image {
-        width: 100%;
-        border-radius: 5px;
     }
 
     .admin-room-navigation-button {

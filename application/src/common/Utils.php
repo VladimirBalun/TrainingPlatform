@@ -28,6 +28,14 @@ namespace App\Common {
             return md5(uniqid());
         }
 
+        static function stringEndsWith($haystack, $needle) {
+            $length = strlen($needle);
+            if( !$length ) {
+                return true;
+            }
+            return substr($haystack, -$length) === $needle;
+        }
+
     }
 
 }

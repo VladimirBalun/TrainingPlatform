@@ -28,12 +28,8 @@ namespace App\Data\Service {
             $this->creatives_dao = new CreativesDAO();
         }
 
-        public function getDemoCreatives() {
-            return $this->creatives_dao->getDemoCreatives();
-        }
-
-        public function getDemoCreativesByTitlePattern($title_pattern) {
-            return $this->creatives_dao->getDemoCreativesByTitlePattern($title_pattern);
+        public function getDemoCreativesByTitlePatternAndFilters($title_pattern, $filters) {
+            return $this->creatives_dao->getDemoCreativesByTitlePatternAndFilters($title_pattern, $filters);
         }
 
         public function getAdvertiserDemoCreativesByAdvertiserId($advertiser_id) {

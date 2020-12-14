@@ -31,6 +31,7 @@ if (Utils::isTestEnvironment()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $controller = new CreativesController();
+    $filters = ($_GET['filters'] != null) ? ($_GET['filters']) : (null);
     $pattern = ($_GET['title_pattern'] != null) ? ($_GET['title_pattern']) : ('');
-    echo $controller->getDemoCreativesByTitlePattern(urldecode($pattern));
+    echo $controller->getDemoCreativesByTitlePatternAndFilters(urldecode($pattern), $filters);
 }
