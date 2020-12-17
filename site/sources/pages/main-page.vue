@@ -20,13 +20,16 @@
         <diV class="main-page container">
             <div class="row">
                 <navigation-component class="col-lg-4 col-md-4 col-sm-5 hidden-12"></navigation-component>
-                <div v-show="(pageLoaded) && (demoCreatives.length !== 0)">
-                    <content-component v-for="creative in demoCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
-                        :id="creative.id" :title="creative.title" :briefDescription="creative.briefDescription"
-                        :imageUrl="creative.imageUrl" :eventDate="creative.eventDate" :price="creative.price"
-                        :online="creative.online" :advertiserImageUrl="creative.advertiserImageUrl">
-                    </content-component>
-                    <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
+                <div v-show="(pageLoaded) && (demoCreatives.length !== 0)" class="col-lg-8 col-md-8 col-sm-7 col-xs-12">
+                    <div class="row">
+                        <content-component v-for="creative in demoCreatives" class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                             :id="creative.id" :title="creative.title" :briefDescription="creative.briefDescription"
+                             :imageUrl="creative.imageUrl" :eventDate="creative.eventDate" :price="creative.price"
+                             :online="creative.online" :advertiserImageUrl="creative.advertiserImageUrl">
+                        </content-component>
+                        <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
+                    </div>
+
                 </div>
                 <div v-show="(pageLoaded) && (demoCreatives.length === 0)">
                     <div class="main-page-error-message col-lg-8 col-md-8 col-sm-7 col-xs-12">

@@ -36,13 +36,15 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="filteredCreatives.length !== 0" class="admin-room-creatives-wrapper">
-                    <admin-room-content-component v-for="creative in filteredCreatives" class="col-lg-4 col-md-4 col-sm-7 col-xs-12"
-                        :id="creative.id" :title="creative.title" :imageUrl="creative.imageUrl" :eventDate="creative.eventDate"
-                        :moderationStatus="creative.moderationStatus" :moderationText="creative.moderationText"
-                        :briefDescription="creative.briefDescription">
-                    </admin-room-content-component>
-                    <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
+                <div v-show="filteredCreatives.length !== 0" class="admin-room-creatives-wrapper col-lg-8 col-md-8 col-sm-7 col-xs-12">
+                    <div class="row">
+                        <admin-room-content-component v-for="creative in filteredCreatives" class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                            :id="creative.id" :title="creative.title" :imageUrl="creative.imageUrl" :eventDate="creative.eventDate"
+                            :moderationStatus="creative.moderationStatus" :moderationText="creative.moderationText"
+                            :briefDescription="creative.briefDescription">
+                        </admin-room-content-component>
+                        <advertisement-component class="col-xs-12 hidden-sm hidden-md hidden-lg"></advertisement-component>
+                    </div>
                 </div>
                 <div v-show="filteredCreatives.length === 0">
                     <div class="admin-room-error-message col-lg-8 col-md-8 col-sm-7 col-xs-12">
