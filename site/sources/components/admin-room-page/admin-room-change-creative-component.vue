@@ -30,11 +30,11 @@
                             {{ errorMessage }}
                         </div>
                         <label for="creative-title"><label class="require-color">*</label> Введите название:</label>
-                        <input class="model-input" v-model="creative.title" v-bind:class="{ 'error-input': !creativeValidation.title }" type="text" id="creative-title">
+                        <input class="model-input" v-model="creative.title" v-bind:class="{ 'error-input': !creativeValidation.title }" type="text" id="creative-title" maxlength="50">
                         <label for="creative-brief-description"><label class="require-color">*</label> Введите краткое описание:</label>
-                        <textarea class="model-input" v-model="creative.briefDescription" v-bind:class="{ 'error-input': !creativeValidation.briefDescription }" id="creative-brief-description"/>
+                        <textarea class="model-input" v-model="creative.briefDescription" v-bind:class="{ 'error-input': !creativeValidation.briefDescription }" id="creative-brief-description" maxlength="170"/>
                         <label for="creative-description"><label class="require-color">*</label> Введите описание (можно использовать <a href="https://paulradzkov.com/2014/markdown_cheatsheet/">MarkDown разметку</a> вместе с картинками, ссылками и таблицами для улучшения визуальных качеств текста):</label>
-                        <textarea class="model-input" v-model="creative.description" v-bind:class="{ 'error-input': !creativeValidation.description }" id="creative-description"/>
+                        <textarea class="model-input" v-model="creative.description" v-bind:class="{ 'error-input': !creativeValidation.description }" id="creative-description" maxlength="10000"/>
                         <label for="creative-category"><label class="require-color">*</label> Выберите категорию:</label>
                         <select v-model="creative.category" class="model-input" v-bind:class="{ 'error-input': !creativeValidation.category }" id="creative-category">
                             <option>Не выбрано</option>
@@ -67,7 +67,7 @@
                         <label for="creative-site">Введите адрес сайта (если необходимо):</label>
                         <input v-model="creative.site" v-bind:class="{ 'error-input': !creativeValidation.site }"  class="model-input" type="text" id="creative-site" maxlength="2083">
                         <label for="creative-price"><label class="require-color">*</label> Введите цену (пока что только в рублях):</label>
-                        <input v-bind:class="{ 'error-input': !creativeValidation.price }" v-model="creative.price" class="model-input" type="number" id="creative-price">
+                        <input v-bind:class="{ 'error-input': !creativeValidation.price }" v-model="creative.price" class="model-input" type="number" id="creative-price" min="0" max="1000000">
                         <label for="navigation-type-off-onl"><label class="require-color">*</label> Выберите тип:</label>
                         <p id="navigation-type-off-onl" class="target-label">
                             <label><input value="true" v-model="creative.online" checked type="radio"/></label>Онлайн

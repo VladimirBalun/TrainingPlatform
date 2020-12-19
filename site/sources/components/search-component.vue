@@ -18,7 +18,7 @@
     <div>
         <div class="search-block block">
             <p class="navigation-title"><i class="fas fa-search"></i>Поиск</p><hr>
-            <input type="text" v-model="searchCreativesPatternModel" placeholder="Введите название...">
+            <input type="text" v-model="searchCreativesPatternModel" placeholder="Введите название..." maxlength="50">
             <button v-on:click="onSearchCreativesButtonClick" class="navigation-button">Искать</button>
         </div>
     </div>
@@ -61,7 +61,6 @@
         margin-bottom: 30px;
         border-radius: 5px;
     }
-
 
     .fa-search {
         font-size: 15px;

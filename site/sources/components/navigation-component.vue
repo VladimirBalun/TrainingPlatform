@@ -59,11 +59,11 @@
             </select><hr>
             <div class="price-wrapper">
                 <label>Цена от:</label>
-                <input v-model="priceFromModel" type="number">
+                <input v-model="priceFromModel" type="number" min="0" max="1000000">
             </div>
             <div class="price-wrapper">
                 <label>Цена до:</label>
-                <input v-model="priceToModel" type="number">
+                <input v-model="priceToModel" type="number" min="0" max="1000000">
             </div><hr>
             <div class="wrapper">
                 <button @click="onFilterButtonClick" class="navigation-button">Применить</button>
@@ -85,7 +85,6 @@
 
     export default {
         name: "navigation-component",
-        emits: ["search-creatives-button-clicked"],
         components: {
             searchComponent,
             advertisementComponent
@@ -136,9 +135,6 @@
             },
             onChangeCountryModel(event) {
                 this.fillCitiesModelBySelectedCountry(event);
-            },
-            onSearchCreativesButtonClick() {
-                this.$root.$emit("search-creatives-button-clicked", this.searchCreativesPatternModel);
             },
             onFilterButtonClick() {
                 const filter = {}
@@ -243,7 +239,7 @@
 
     .price-wrapper {
         display: inline-block;
-        width: calc(50% - 25px);
+        width: calc(50% - 22px);
     }
 
     input[type="number"] {

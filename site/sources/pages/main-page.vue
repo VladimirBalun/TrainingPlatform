@@ -148,7 +148,7 @@
                 self.fillCreativesByFilter(filter);
             });
             this.$root.$on("clicked-mobile-menu-button", () => {
-                //self.$refs.triggerMobileFiltersModal.click();
+                self.$refs.triggerMobileFiltersModal.click();
             });
         },
         beforeDestroy() {
