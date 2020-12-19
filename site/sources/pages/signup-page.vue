@@ -163,6 +163,7 @@
 
     .page {
         height: 100%;
+        min-height: 100vh;
         position: relative;
         background-color: #363636;
         display: flex;
