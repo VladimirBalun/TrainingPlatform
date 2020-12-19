@@ -1,7 +1,3 @@
 .idea/*
 application/vendor/*
 site/node_modules/*
-
-site/build/index.html
-site/build/index.css
-site/build/index.js
