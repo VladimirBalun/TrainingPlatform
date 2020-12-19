@@ -136,7 +136,7 @@
                         }
                     };
 
-                    if (response.moderationStatus !== protocol.MODERATION_STATUS_SUCCESS) {
+                    if (response.moderation_status !== protocol.MODERATION_STATUS_SUCCESS) {
                         const cookieId = getCookie("trainster_id");
                         const cookieHash = getCookie("trainster_hash");
                         if ((cookieId !== response.advertiser_id) ||

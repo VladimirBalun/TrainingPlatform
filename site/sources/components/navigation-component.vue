@@ -142,8 +142,9 @@
             },
             onFilterButtonClick() {
                 const filter = {}
-                filter.price_from = this.priceFromModel;
-                filter.price_to = this.priceToModel;
+                filter.price_from = parseInt(this.priceFromModel);
+                filter.price_to = parseInt(this.priceToModel);
+                console.log(filter);
 
                 if (this.selectedCategoryModel !== "Не выбрано") {
                     filter.category = this.selectedCategoryModel;

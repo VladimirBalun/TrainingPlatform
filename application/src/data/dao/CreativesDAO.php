@@ -18,6 +18,7 @@
 
 namespace App\Data\DAO {
 
+    use App\Common\Protocol;
     use App\Common\Utils;
     use App\Data\Entity\AdvertiserEntity;
     use App\Data\Entity\CityEntity;
@@ -55,13 +56,39 @@ namespace App\Data\DAO {
                     $query .= 'coun.name = :country AND ';
                     $substitutions['country'] = $filters["country"];
                 }
-                if ($filters["city"] != null) {
-                    $query .= 'cit.name = :city AND ';
-                    $substitutions['city'] = $filters["city"];
+                if ($filters["price_from"] != null) {
+                    $query .= 'price >= :price_from AND ';
+                    $substitutions['price_from'] = $filters["price_from"];
                 }
-
+                if ($filters["price_to"] != null) {
+                    $query .= 'price <= :price_to AND ';
+                    $substitutions['price_to'] = $filters["price_to"];
+                }
+                if ($filters["type"] != null) {
+                    if ($filters["type"] == Protocol::$FILTER_OFFLINE) {
+                        $query .= 'is_online = 0 AND ';
+                    } else if ($filters["type"] == Protocol::$FILTER_ONLINE) {
+                        $query .= 'is_online = 1 AND ';
+                    }
+                }
                 if (Utils::stringEndsWith($query, 'AND ')) {
                     $query = substr($query, 0, strlen($query) - 4);
+                }
+                if ($filters["sorting"] != null) {
+                    $query .= ' ORDER BY ';
+                    if ($filters["sorting"] == Protocol::$SORTING_BY_DATE_ASC) {
+                        $query .= 'event_date ASC';
+                    } else if ($filters["sorting"] == Protocol::$SORTING_BY_DATE_DESC) {
+                        $query .= 'event_date DESC';
+                    } else if ($filters["sorting"] == Protocol::$SORTING_BY_PRICE_ASC) {
+                        $query .= 'price ASC';
+                    } else if ($filters["sorting"] == Protocol::$SORTING_BY_PRICE_DESC) {
+                        $query .= 'price DESC';
+                    } else if ($filters["sorting"] == Protocol::$SORTING_BY_NAME_ASC) {
+                        $query .= 'title ASC';
+                    } else if ($filters["sorting"] == Protocol::$SORTING_BY_NAME_DESC) {
+                        $query .= 'title DESC';
+                    }
                 }
             } else {
                 $query = $base_query . 'WHERE title LIKE ? AND moderation_status != 0 AND cr.event_date >= CURDATE()
