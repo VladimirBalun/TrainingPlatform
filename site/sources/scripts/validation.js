@@ -17,7 +17,7 @@
 "use strict";
 
 export const validateCookies = () => {
-    return (document.cookie.indexOf("trainster_id=") !== -1) && (document.cookie.indexOf("trainster_hash=") !== -1);
+    return (document.cookie.indexOf("trainter_id=") !== -1) && (document.cookie.indexOf("trainter_hash=") !== -1);
 }
 
 export const validateLoginForm = (loginForm) => {

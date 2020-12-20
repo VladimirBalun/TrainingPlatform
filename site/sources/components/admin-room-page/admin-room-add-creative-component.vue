@@ -172,10 +172,11 @@
                 }
 
                 const self = this;
-                network.addCreativeByAdvertiserId(this, this.advertiserId, _.clone(this.creative), (result) => {
-                    console.log(result);
+                network.addCreativeByAdvertiserId(this, this.advertiserId, _.clone(this.creative), (response) => {
+                    console.log(response);
                     self.$refs.closeButton.click();
-                    if (result.result === 1) {
+                    if (response.result === 1) {
+                        self.creative.id = response.creative_id;
                         self.showMessageModal("info", "Успешная операция", "Объявление успешно добавлено, оно сразу" +
                             "же появится на сайте, как только пройдет модерацию");
                         self.$root.$emit('added-creative-page', _.clone(self.creative));
@@ -184,7 +185,7 @@
                         self.showMessageModal("error", "Ошибка", "Объявление не было добавлено");
                     }
                 }, error => {
-                    console.log(error);
+
                     self.$refs.closeButton.click();
                     self.showMessageModal("error", "Ошибка", "Объявление не было добавлено");
                 });
@@ -196,7 +197,7 @@
                     self.themesModel = meta.themes;
                     self.categoriesModel = meta.categories;
                 }, error => {
-                    console.log(error);
+
                 });
             },
             fillCitiesModelBySelectedCountry(event) {
@@ -209,7 +210,7 @@
                     network.loadCitiesByCountryName(self, event.target.value, cities => {
                         self.citiesModel = cities;
                     }, error => {
-                        console.log(error);
+
                     })
                 }
             },

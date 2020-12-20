@@ -76,22 +76,25 @@
                 network.loadDemoCreatives(this, response => {
                     console.log(response);
                     self.demoCreatives = [];
-                    response.forEach(creative => {
-                        self.demoCreatives.push({
-                            id : creative.id,
-                            title : creative.title,
-                            briefDescription : creative.brief_description,
-                            imageUrl : creative.image_url,
-                            advertiserImageUrl : creative.advertiser_image_url,
-                            eventDate : creative.event_date,
-                            price : creative.price,
-                            online : creative.online
+                    if (Array.isArray(response)) {
+                        response.forEach(creative => {
+                            self.demoCreatives.push({
+                                id : creative.id,
+                                title : creative.title,
+                                briefDescription : creative.brief_description,
+                                imageUrl : creative.image_url,
+                                advertiserImageUrl : creative.advertiser_image_url,
+                                eventDate : creative.event_date,
+                                price : creative.price,
+                                online : creative.online
+                            });
                         });
-                    });
+                    }
 
                     self.pageLoaded = true;
                 }, error => {
-                    console.log(error);
+
+                    self.pageLoaded = true;
                 });
             },
             fillCreativesByTitlePattern(titlePattern) {
@@ -112,7 +115,7 @@
                         });
                     });
                 }, error => {
-                    console.log(error);
+
                 });
             },
             fillCreativesByFilter(filter) {
@@ -133,7 +136,7 @@
                         });
                     });
                 }, error => {
-                    console.log(error);
+
                 });
             }
         },

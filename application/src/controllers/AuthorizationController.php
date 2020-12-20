@@ -37,8 +37,8 @@ namespace App\Controllers {
                 public $result;
             };
 
-            if (isset($_COOKIE['trainster_id']) and isset($_COOKIE['trainster_hash'])) {
-                $response->result = $this->authorization_service->identifyAdvertiser($_COOKIE['trainster_id'], $_COOKIE['trainster_hash']);
+            if (isset($_COOKIE['trainter_id']) and isset($_COOKIE['trainter_hash'])) {
+                $response->result = $this->authorization_service->identifyAdvertiser($_COOKIE['trainter_id'], $_COOKIE['trainter_hash']);
             } else {
                 $response->result = false;
             }
@@ -55,8 +55,8 @@ namespace App\Controllers {
             $login_result = $this->authorization_service->loginAdvertiser($advertiser);
             if (isset($login_result['id']) and isset($login_result['hash'])) {
                 $one_month_ttl = time() + 60 * 60 * 24 * 30;
-                setcookie('trainster_id', $login_result['id'], $one_month_ttl, "/");
-                setcookie('trainster_hash', $login_result['hash'], $one_month_ttl, "/");
+                setcookie('trainter_id', $login_result['id'], $one_month_ttl, "/");
+                setcookie('trainter_hash', $login_result['hash'], $one_month_ttl, "/");
             }
 
             $response->status = $login_result['status'];
@@ -66,8 +66,8 @@ namespace App\Controllers {
 
         public function logoutAdvertiser() {
             $one_month_tts = time() + 60 * 60 * 24 * 30;
-            setcookie("trainster_id", "", time() - $one_month_tts, "/");
-            setcookie("trainster_hash", "", time() - $one_month_tts, "/");
+            setcookie("trainter_id", "", time() - $one_month_tts, "/");
+            setcookie("trainter_hash", "", time() - $one_month_tts, "/");
 
             $response = new class() {
                 public $result;
@@ -85,8 +85,8 @@ namespace App\Controllers {
             $signup_result = $this->authorization_service->signupAdvertiser($advertiser);
             if (isset($signup_result['id']) and isset($signup_result['hash'])) {
                 $one_month_ttl = time() + 60 * 60 * 24 * 30;
-                setcookie('trainster_id', $signup_result['id'], $one_month_ttl, "/");
-                setcookie('trainster_hash', $signup_result['hash'], $one_month_ttl, "/");
+                setcookie('trainter_id', $signup_result['id'], $one_month_ttl, "/");
+                setcookie('trainter_hash', $signup_result['hash'], $one_month_ttl, "/");
             }
 
             $response->status = $signup_result['status'];

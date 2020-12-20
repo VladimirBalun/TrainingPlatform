@@ -38,10 +38,10 @@ function getCookie(name) {
 }
 
 function onAuthorizationFormForward(onAuthorized, onNotAuthorized) {
-    if ((document.cookie.indexOf("trainster_id=") !== -1) || (document.cookie.indexOf("trainster_hash=") !== -1)) {
+    if ((document.cookie.indexOf("trainter_id=") !== -1) || (document.cookie.indexOf("trainter_hash=") !== -1)) {
         network.identifyAdvertiser(response => {
             if (response.result) {
-                onAuthorized("/admin_room/" + getCookie("trainster_id"));
+                onAuthorized("/admin_room/" + getCookie("trainter_id"));
             } else {
                 onNotAuthorized();
             }
@@ -89,7 +89,7 @@ const router = new VueRouter({
             path: "/admin_room/:id",
             component: adminRoomPage,
             beforeEnter: (to, from, next) => {
-                if ((document.cookie.indexOf("trainster_id=") === -1) || (document.cookie.indexOf("trainster_hash=") === -1)) {
+                if ((document.cookie.indexOf("trainter_id=") === -1) || (document.cookie.indexOf("trainter_hash=") === -1)) {
                     next("/signup");
                 } else {
                     next();

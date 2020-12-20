@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="login-form block">
                         <p class="login-logo-wrapper">
-                            <img class="login-logo" alt="logo" src="http://mysite.local/trening/site/sources/assets/images/logo.png">
+                            <img class="login-logo" alt="logo" src="http://trainter.ru/platform/site/sources/assets/images/logo.png">
                         </p>
                         <p class="login-title">Авторизация</p>
                         <p class="login-error-message" v-show="errorMessage !== ''">{{ errorMessage }}</p>
@@ -120,7 +120,7 @@
                   }
                   self.loginInProgress = false;
               }, error => {
-                  console.log(error);
+
                   self.loginInProgress = false;
                   self.validation.email = false;
                   self.validation.password = false;

@@ -150,7 +150,7 @@
                   //self.$root.$forceUpdate();
 
                 }, error => {
-                    console.log(error);
+
                 });
             },
             onAllFilterButtonClick() {
@@ -251,7 +251,7 @@
         },
         created() {
             this.fillAdvertiserCreatives();
-            document.title = "Trainster - Комната администратора";
+            document.title = "Trainter - Комната администратора";
         }
     }
 

@@ -71,7 +71,7 @@
                         self.showMessageModal("error", "Ошибка", "Объявление не было удалено");
                     }
                 }, error => {
-                    console.log(error);
+
                     self.$refs.closeButton.click();
                     self.showMessageModal("error", "Ошибка", "Объявление не было удалено");
                 });

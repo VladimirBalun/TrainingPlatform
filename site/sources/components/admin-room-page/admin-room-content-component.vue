@@ -104,7 +104,7 @@
                     self.$root.$emit('click-change-creative-page', creative);
                     self.$refs.btnTriggerChangeCreative.click();
                 }, error => {
-                    console.log(error);
+
                 });
             },
             onDeleteCreativeButtonClick(creativeId) {
@@ -174,6 +174,8 @@
     .admin-room-content-image {
         width: 358px;
         height: 205px;
+        object-fit: cover;
+        object-position: 50% 50%;
     }
 
     .admin-room-content-block-inner-wrapper {
@@ -269,7 +271,6 @@
 
         .admin-room-content-image {
             width: 100%;
-            height: auto;
         }
 
     }
@@ -291,7 +292,6 @@
 
         .admin-room-content-image {
             width: 100%;
-            height: auto;
         }
 
     }

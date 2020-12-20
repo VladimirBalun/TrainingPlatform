@@ -25,7 +25,9 @@ namespace App\Common {
             'pass' => '1234'
         ];
         public static $production_access = [
-
+            'dsn' => 'mysql:host=u511939.mysql.masterhost.ru;dbname=u511939;charset=utf8',
+            'user' => 'u511939',
+            'pass' => 'Cab6E7T._P'
         ];
     }
 

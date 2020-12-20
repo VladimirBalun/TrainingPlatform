@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form class="signup-form block">
                         <p class="signup-logo-wrapper">
-                            <img class="signup-logo" alt="logo" src="http://mysite.local/trening/site/sources/assets/images/logo.png">
+                            <img class="signup-logo" alt="logo" src="http://trainter.ru/platform/site/sources/assets/images/logo.png">
                         </p>
                         <p class="signup-title">Регистрация</p>
                         <p class="signup-error-message" v-show="errorMessage !== ''">{{ errorMessage }}</p>
@@ -145,7 +145,7 @@
                     }
                     self.signupInProgress = false;
                 }, error => {
-                    console.log(error);
+
                     self.signupInProgress = false;
                     self.validation.username = false;
                     self.validation.email = false;

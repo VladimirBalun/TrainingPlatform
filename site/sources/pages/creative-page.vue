@@ -137,8 +137,8 @@
                     };
 
                     if (response.moderation_status !== protocol.MODERATION_STATUS_SUCCESS) {
-                        const cookieId = getCookie("trainster_id");
-                        const cookieHash = getCookie("trainster_hash");
+                        const cookieId = getCookie("trainter_id");
+                        const cookieHash = getCookie("trainter_hash");
                         if ((cookieId !== response.advertiser_id) ||
                             ((cookieHash !== response.advertiser_hash))) {
                             self.pageLoaded = true;
@@ -146,26 +146,28 @@
                         }
                     }
 
-                    self.creative.title = response.title;
-                    self.creative.description = response.description;
-                    self.creative.imageURL = response.image_url;
-                    self.creative.eventDate = response.event_date;
-                    self.creative.price = response.price;
-                    self.creative.advertiserEmail = response.email;
-                    self.creative.advertiserPhone = response.phone;
-                    self.creative.advertiserSite = response.site;
-                    self.creative.city = response.city;
-                    self.creative.country = response.country;
-                    self.creative.category = response.category;
-                    self.creative.theme = response.theme;
-                    self.creative.moderationStatus = response.moderation_status;
-                    self.creative.online = response.online;
-                    self.creative.advertiserImageUrl = response.advertiser_image_url;
+                    if (response instanceof Object) {
+                        self.creative.title = response.title;
+                        self.creative.description = response.description;
+                        self.creative.imageURL = response.image_url;
+                        self.creative.eventDate = response.event_date;
+                        self.creative.price = response.price;
+                        self.creative.advertiserEmail = response.email;
+                        self.creative.advertiserPhone = response.phone;
+                        self.creative.advertiserSite = response.site;
+                        self.creative.city = response.city;
+                        self.creative.country = response.country;
+                        self.creative.category = response.category;
+                        self.creative.theme = response.theme;
+                        self.creative.moderationStatus = response.moderation_status;
+                        self.creative.online = response.online;
+                        self.creative.advertiserImageUrl = response.advertiser_image_url;
+                        document.title = "Trainter - " + self.creative.title;
+                    }
 
-                    document.title = "Trainster - " + self.creative.title;
                     self.pageLoaded = true;
                 }, error => {
-                    console.log(error);
+                    self.pageLoaded = true;
                 });
             },
         },

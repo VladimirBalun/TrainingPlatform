@@ -63,6 +63,8 @@
     .content-image {
         width: 358px;
         height: 205px;
+        object-fit: cover;
+        object-position: 50% 50%;
     }
 
     .advertiser-image {
@@ -71,6 +73,8 @@
         border-radius: 50%;
         float: left;
         margin: 20px 20px 0 20px;
+        object-fit: cover;
+        object-position: 50% 50%;
     }
 
     .content-title {
@@ -185,7 +189,6 @@
 
         .content-image {
             width: 100%;
-            height: auto;
         }
 
     }
@@ -203,7 +206,6 @@
 
         .content-image {
             width: 100%;
-            height: auto;
         }
 
         .content-price {

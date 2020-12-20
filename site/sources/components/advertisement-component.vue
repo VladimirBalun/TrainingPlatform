@@ -16,14 +16,14 @@
 
 <template>
     <div>
-        <div class="advertisement-block-wrapper">
+        <!--<div class="advertisement-block-wrapper">
             <div class="advertisement-block">
                 <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
             <div class="advertisement-block">
                 <img class="advertisement-image" src="https://texterra.ru/upload/iblock/fbf/socialprev.jpg">
             </div>
-        </div>
+        </div>-->
     </div>
 </template>
 

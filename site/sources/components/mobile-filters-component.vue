@@ -118,7 +118,7 @@
                     self.themesModel = response.themes;
                     self.categoriesModel = response.categories;
                 }, error => {
-                    console.log(error);
+
                 })
             },
             fillCitiesModelBySelectedCountry(event) {
@@ -132,7 +132,7 @@
                         console.log(response);
                         self.citiesModel = response;
                     }, error => {
-                        console.log(error);
+
                     });
                 }
             },
@@ -265,6 +265,7 @@
         margin: 0 0 20px 0;
         font-family: 'Open Sans', sans-serif;
         transition: .3s;
+      -webkit-appearance:none;
     }
 
     input[type="text"], input[type="number"] {

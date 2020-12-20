@@ -19,5 +19,5 @@
 //https://www.pinclipart.com/picdir/big/164-1640714_user-symbol-interface-contact-phone-set-add-sign.png
 //https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103597_1280.png
 
-export const defaultUserImage = "http://mysite.local/trening/site/sources/assets/images/user_logo.png";
-export const defaultCreativeImage = "http://mysite.local/trening/site/sources/assets/images/default_creative_image.png";
+export const defaultUserImage = "http://trainter.ru/platform/site/sources/assets/images/user_logo.png";
+export const defaultCreativeImage = "http://trainter.ru/platform/site/sources/assets/images/default_creative_image.png";

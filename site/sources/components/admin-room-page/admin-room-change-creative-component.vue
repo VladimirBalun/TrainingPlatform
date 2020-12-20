@@ -172,7 +172,7 @@
                         self.showMessageModal("error", "Ошибка", "Объявление не было изменено");
                     }
                 }, error => {
-                    console.log(error);
+
                     self.$refs.closeButton.click();
                     self.showMessageModal("error", "Ошибка", "Объявление не было изменено");
                 });
@@ -184,7 +184,7 @@
                     self.themesModel = meta.themes;
                     self.categoriesModel = meta.categories;
                 }, error => {
-                    console.log(error);
+
                 });
             },
             fillCitiesModelBySelectedCountry(event) {
@@ -197,7 +197,7 @@
                     network.loadCitiesByCountryName(self, event.target.value, cities => {
                         self.citiesModel = cities;
                     }, error => {
-                        console.log(error);
+
                     })
                 }
             },

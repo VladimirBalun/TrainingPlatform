@@ -20,7 +20,7 @@
           <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                   <div class="header-title-wrapper">
-                      <router-link to="/" class="header-title">Trainster</router-link>
+                      <router-link to="/" class="header-title">Trainter</router-link>
                   </div>
                   </div>
                   <div class="hidden-lg hidden-md hidden-sm col-xs-2">
@@ -43,7 +43,7 @@
     export default {
         computed: {
             buttonText() {
-                if ((document.cookie.indexOf("trainster_id=") !== -1) && (document.cookie.indexOf("trainster_hash=") !== -1)) {
+                if ((document.cookie.indexOf("trainter_id=") !== -1) && (document.cookie.indexOf("trainter_hash=") !== -1)) {
                     return "Комната администратора";
                 } else {
                     return "Подать объявление";

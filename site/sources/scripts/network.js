@@ -19,9 +19,9 @@
 import $ from "jquery";
 import MD5 from "crypto-js/md5";
 
-
-const restAddress = "http://localhost:8080";
-const scriptAddress = "http://mysite.local/trening/application/src/";
+const testScriptAddress = "http://mysite.local/trening/application/src/";
+const prodScriptAddress = "http://trainter.ru/platform/application/src/";
+const scriptAddress = testScriptAddress;
 
 function getServerAddress() {
     if (process.env.PRODUCTION_MODE) {

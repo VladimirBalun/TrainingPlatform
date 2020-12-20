@@ -43,7 +43,7 @@ namespace App\Data\DAO {
 
             $substitutions = array();
             if ($filters != null) {
-                $query = $base_query . 'WHERE moderation_status != 0 AND cr.event_date >= CURDATE() AND ';
+                $query = $base_query . 'WHERE moderation_status != 0 AND ((cr.event_date >= CURDATE()) OR (cr.event_date IS NULL)) AND ';
                 if ($filters["category"] != null) {
                     $query .= 'cat.name = :category AND ';
                     $substitutions['category'] = $filters["category"];
@@ -91,9 +91,9 @@ namespace App\Data\DAO {
                     }
                 }
             } else {
-                $query = $base_query . 'WHERE title LIKE ? AND moderation_status != 0 AND cr.event_date >= CURDATE()
+                $query = $base_query . 'WHERE moderation_status != 0 AND ((cr.event_date >= CURDATE()) OR (cr.event_date IS NULL)) 
                     ORDER BY last_action_date';
-                $substitutions = ['%' . $title_pattern . '%'];
+                $substitutions = ['title_pattern' => ('%' . $title_pattern . '%')];
             }
 
             $database_creatives = R::getAll($query, $substitutions);

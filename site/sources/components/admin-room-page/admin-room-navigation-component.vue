@@ -149,6 +149,8 @@
         width: 120px;
         height: 120px;
         border-radius: 50%;
+        object-fit: cover;
+        object-position: 50% 50%;
     }
 
     .fa-comment-dots {

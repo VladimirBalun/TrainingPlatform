@@ -50,20 +50,22 @@
                 const COUNT_CREATIVES = 3;
                 network.loadProposedDemoCreatives(this, self.id, COUNT_CREATIVES, response => {
                     console.log(response);
-                    response.forEach(creative => {
-                        self.proposedDemoCreatives.push({
-                            id : creative.id,
-                            title : creative.title,
-                            briefDescription : creative.brief_description,
-                            imageUrl : creative.image_url,
-                            advertiserImageUrl : creative.advertiser_image_url,
-                            eventDate : creative.event_date,
-                            price : creative.price,
-                            online : creative.online
-                        })
-                    });
+                    if (Array.isArray(response)) {
+                        response.forEach(creative => {
+                            self.proposedDemoCreatives.push({
+                                id : creative.id,
+                                title : creative.title,
+                                briefDescription : creative.brief_description,
+                                imageUrl : creative.image_url,
+                                advertiserImageUrl : creative.advertiser_image_url,
+                                eventDate : creative.event_date,
+                                price : creative.price,
+                                online : creative.online
+                            })
+                        });
+                    }
                 }, error => {
-                    console.log(error);
+
                 });
             }
         },

@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
                     <div class="header-title-wrapper">
-                        <router-link to="/" class="header-title">Trainster</router-link>
+                        <router-link to="/" class="header-title">Trainter</router-link>
                     </div>
                 </div>
                 <div class="hidden-lg hidden-md hidden-sm col-xs-2">
@@ -52,7 +52,7 @@
                     console.log(response);
                     this.$router.push("/");
                 }, error => {
-                    console.log(error);
+
                     this.$router.push("/");
                 });
             }

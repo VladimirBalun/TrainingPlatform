@@ -111,11 +111,13 @@
               const self = this;
               network.loadMetaInformation(this, response => {
                   console.log(response);
-                  self.countriesModel = response.countries;
-                  self.themesModel = response.themes;
-                  self.categoriesModel = response.categories;
+                  if (response instanceof Object) {
+                      self.countriesModel = response.countries;
+                      self.themesModel = response.themes;
+                      self.categoriesModel = response.categories;
+                  }
               }, error => {
-                  console.log(error);
+
               })
             },
             fillCitiesModelBySelectedCountry(event) {
@@ -129,7 +131,7 @@
                         console.log(response);
                         self.citiesModel = response;
                     }, error => {
-                        console.log(error);
+
                     });
                 }
             },
