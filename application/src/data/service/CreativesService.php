@@ -45,7 +45,12 @@ namespace App\Data\Service {
         }
 
         public function addCreative($creative) {
-            return $this->creatives_dao->addCreative($creative);
+            $was_added_creative = $this->creatives_dao->addCreative($creative);
+            if ($was_added_creative) {
+                $creative_id = $this->creatives_dao->getCreativeIdByTitle($creative->getTitle());
+                return array("result" => $was_added_creative, "creative_id" => $creative_id);
+            }
+            return array("result" => $was_added_creative);
         }
 
         public function changeCreative($creative) {

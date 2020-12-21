@@ -251,7 +251,7 @@
         },
         created() {
             this.fillAdvertiserCreatives();
-            document.title = "Trainter - Комната администратора";
+            document.title = "Trainter: Комната администратора";
         }
     }
 

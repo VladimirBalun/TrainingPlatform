@@ -102,7 +102,7 @@ function checkSignupFormOnEmpty(signupForm) {
 function checkSignUpFormOnValidInformation(signupForm) {
     if (!validateUsername(signupForm.model.username)) {
         signupForm.validation.username = false;
-        return "Некорректное имя пользователя";
+        return "Некорректное имя пользователя, можно использовать только латинские буквы и цифры";
     }
     if (!validateEmail(signupForm.model.email)) {
         signupForm.validation.email = false;

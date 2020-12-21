@@ -70,7 +70,7 @@
                         <input v-bind:class="{ 'error-input': !creativeValidation.price }" v-model="creative.price" class="model-input" type="number" id="creative-price" min="0" max="1000000">
                         <label for="navigation-type-off-onl"><label class="require-color">*</label> Выберите тип:</label>
                         <p id="navigation-type-off-onl" class="target-label">
-                            <label><input value="true" v-model="creative.online" checked type="radio"/></label>Онлайн
+                            <label><input value="true" v-model="creative.online" type="radio"/></label>Онлайн
                             <label><input value="false" v-model="creative.online" type="radio"/></label>Оффлайн
                         </p>
                     </div>
@@ -222,7 +222,7 @@
                 self.creative.site = creative.advertiserSite;
                 self.creative.category = creative.category;
                 self.creative.theme = creative.theme;
-                self.creative.online = creative.online;
+                self.creative.online = (creative.online === 1);
                 if (creative.city !== null) {
                     self.creative.city = creative.city;
                 }

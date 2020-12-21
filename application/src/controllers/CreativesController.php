@@ -119,8 +119,12 @@ namespace App\Controllers {
         public function addCreative($creative) {
             $response = new class() {
                 public $result;
+                public $creative_id;
             };
-            $response->result = $this->creatives_service->addCreative($creative);
+
+            $result = $this->creatives_service->addCreative($creative);
+            $response->result = $result['result'];
+            $response->creative_id = $result['creative_id'];
             return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
 

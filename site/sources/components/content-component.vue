@@ -84,7 +84,7 @@
         align-items: center;
         font-family: 'Roboto', sans-serif;
         font-weight: bold;
-        font-size: 17px;
+        font-size: 16px;
         padding: 17px 20px 5px 0;
     }
 
@@ -149,10 +149,6 @@
     }
 
     @media (min-width: 992px) and (max-width: 1199px) {
-
-        .content-title {
-            font-size: 16px;
-        }
 
         .fa-angle-double-right {
             font-size: 14px;

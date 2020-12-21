@@ -20,7 +20,7 @@
             <img class="advertiser-image" alt="image" @error="onProfileImageLoadFailure($event)" :src="advertiserImageUrl">
             <p class="creative-information-title">{{ title }}</p><hr>
             <div class="creative-information-meta-block">
-                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тип:</span> {{ (online === 0) ? ('Online') : ('Offline') }}</p>
+                <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Тип:</span> {{ (online === 1) ? ('Online') : ('Offline') }}</p>
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Дата:</span> {{ (eventDate === null) ? ('Не указана') : (eventDate) }}</p>
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Город:</span> {{ (city === null) ? ('Не указан') : (city) }}</p>
                 <p class="creative-information-meta-data"><span class="bold-label"><i class="fas fa-circle"></i>Страна:</span> {{ (country === null) ? ('Не указана') : (country) }}</p>
@@ -73,6 +73,8 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
+        object-fit: cover;
+        object-position: 50% 50%;
         float: left;
         margin: 5px 20px 0 0;
     }

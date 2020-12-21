@@ -162,7 +162,7 @@
                         self.creative.moderationStatus = response.moderation_status;
                         self.creative.online = response.online;
                         self.creative.advertiserImageUrl = response.advertiser_image_url;
-                        document.title = "Trainter - " + self.creative.title;
+                        document.title = "Trainter: " + self.creative.title;
                     }
 
                     self.pageLoaded = true;

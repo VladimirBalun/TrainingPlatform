@@ -92,7 +92,7 @@ namespace App\Data\DAO {
                 }
             } else {
                 $query = $base_query . 'WHERE moderation_status != 0 AND ((cr.event_date >= CURDATE()) OR (cr.event_date IS NULL)) 
-                    ORDER BY last_action_date';
+                    ORDER BY last_action_date DESC';
                 $substitutions = ['title_pattern' => ('%' . $title_pattern . '%')];
             }
 
@@ -112,7 +112,7 @@ namespace App\Data\DAO {
                 FROM creatives cr
                 LEFT JOIN advertisers ad ON cr.id_advertiser = ad.id
                 WHERE cr.id != :id_creative AND moderation_status != 0 AND cr.event_date >= CURDATE()
-                ORDER BY last_action_date
+                ORDER BY last_action_date DESC
                 LIMIT :count_creatives',
                 ['id_creative' => $creative_id, 'count_creatives' => $count]
             );
@@ -166,6 +166,11 @@ namespace App\Data\DAO {
             return $creatives;
         }
 
+        public function getCreativeIdByTitle($title) {
+            $database_creative = R::getRow('SELECT id FROM creatives WHERE title = ? LIMIT 1', [$title]);
+            return $database_creative['id'];
+        }
+
         public function getCreativeById($id) {
             $database_creative = R::getRow(
                 'SELECT cr.title, cr.brief_description, cr.description, cr.image_url, cr.event_date, cr.price, 
@@ -194,7 +199,7 @@ namespace App\Data\DAO {
             $creative->setEmail($database_creative['advertiser_email']);
             $creative->setSite($database_creative['advertiser_site']);
             $creative->setPhone($database_creative['advertiser_phone']);
-            $creative->setOnline($database_creative['is_online']);
+            $creative->setOnline((int)$database_creative['is_online']);
             $creative->setModerationStatus((int)$database_creative['moderation_status']);
 
             $advertiser = new AdvertiserEntity();

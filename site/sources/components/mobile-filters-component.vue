@@ -249,7 +249,6 @@
         font-weight: normal;
         font-family: 'Open Sans', sans-serif;
         font-size: 14px;
-        margin-left: 20px;
         color: #666666;
     }
 

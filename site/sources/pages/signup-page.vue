@@ -57,7 +57,6 @@
 
     "use strict";
 
-    import MD5 from "crypto-js/md5";
     import _ from "underscore";
     import * as network from "../scripts/network";
     import * as protocol from "../scripts/protocol";

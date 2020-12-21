@@ -163,7 +163,6 @@ export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailed
     correctCreativeForResponse(creative);
     vueResource.$http.put(scriptAddress + "api/creatives/change_creative.php", creative, { emulateJSON: true })
         .then(response => {
-            console.log(response);
             onSuccessLoadClb(response.body);
         }, error => {
             onFailedLoadClb(error);
@@ -171,7 +170,6 @@ export const changeCreative = (vueResource, creative, onSuccessLoadClb, onFailed
 }
 
 function correctCreativeForResponse(creative) {
-    console.log(creative.eventDate);
     if (creative.country === "Не выбрано") {
         creative.country = null
     }

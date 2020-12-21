@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $creative->setSite($put_vars['site']);
     $creative->setPhone($put_vars['number']);
     $creative->setPrice((int)$put_vars['price']);
-    $creative->setOnline((bool)$put_vars['online']);
+    $creative->setOnline((int)(($put_vars['online']=== 'true') ? (true) : (false)));
 
     $controller = new CreativesController();
     echo $controller->changeCreative($creative);
