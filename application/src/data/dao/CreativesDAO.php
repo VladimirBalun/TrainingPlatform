@@ -91,7 +91,7 @@ namespace App\Data\DAO {
                     }
                 }
             } else {
-                $query = $base_query . 'WHERE moderation_status != 0 AND ((cr.event_date >= CURDATE()) OR (cr.event_date IS NULL)) 
+                $query = $base_query . 'WHERE title LIKE :title_pattern AND moderation_status != 0 AND ((cr.event_date >= CURDATE()) OR (cr.event_date IS NULL)) 
                     ORDER BY last_action_date DESC';
                 $substitutions = ['title_pattern' => ('%' . $title_pattern . '%')];
             }

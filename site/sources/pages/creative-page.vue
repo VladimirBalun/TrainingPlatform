@@ -161,10 +161,12 @@
                         self.creative.theme = response.theme;
                         self.creative.moderationStatus = response.moderation_status;
                         self.creative.online = response.online;
+
                         self.creative.advertiserImageUrl = response.advertiser_image_url;
                         document.title = "Trainter: " + self.creative.title;
                     }
 
+                    console.log('Online:' + self.creative.online);
                     self.pageLoaded = true;
                 }, error => {
                     self.pageLoaded = true;
