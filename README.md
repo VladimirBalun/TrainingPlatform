@@ -1,3 +1,5 @@
+# Source code of the [Trainter.ru](http://trainter.ru/#/)
+
 ## How to install application
 
 ### Server side installation
